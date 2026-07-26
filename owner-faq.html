@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Property Owner FAQ</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --gold:#d4af37; --gold-ink:#8a6d16;
+    --muted:#6b6b6b; --line:#e5e4e1; --panel:#f5f4f1; --paper:#ffffff;
+    --maxw:720px;
+    --display:"Arial Black","Arial Bold",Arial,sans-serif;
+    --sans:Arial,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:17px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;}
+
+  /* ---------- Builder panel (yours only) ---------- */
+  .builder{background:var(--panel);border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:10;}
+  .builder-inner{max-width:var(--maxw);margin:0 auto;padding:16px 28px;}
+  .builder h3{margin:0 0 3px;font-size:15px;font-weight:700;letter-spacing:.01em;}
+  .builder p{margin:0 0 12px;font-size:13px;color:var(--muted);}
+  .bbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .btn{font-family:var(--sans);font-size:13.5px;padding:9px 15px;border-radius:0;
+    border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;line-height:1;font-weight:700;}
+  .btn:hover{background:#faf9f7;}
+  .btn.primary{background:var(--gold);border-color:var(--gold);color:#1a1a1a;}
+  .btn.primary:hover{background:#c39f2c;}
+  .count{font-size:13px;color:var(--muted);margin-left:auto;}
+  .feecontrols{display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+    margin-top:14px;padding-top:13px;border-top:1px solid var(--line);font-size:13px;}
+  .feecontrols .fclabel{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:12px;}
+  .feecontrols label{display:inline-flex;align-items:center;gap:6px;color:var(--ink);}
+  .feecontrols input{width:64px;padding:6px 8px;border:1px solid var(--ink);border-radius:0;
+    font-family:var(--sans);font-size:13px;font-weight:700;}
+  .feecontrols .fcnote{color:var(--muted);}
+  .linkwrap{display:none;margin-top:13px;padding-top:13px;border-top:1px solid var(--line);}
+  .linkhint{font-size:12px;color:var(--gold-ink);font-weight:700;margin:0 0 7px;}
+  .linkout{width:100%;padding:9px 11px;border:1px solid var(--ink);border-radius:0;
+    font-family:var(--sans);font-size:13px;background:#fff;color:var(--ink);}
+
+  /* ---------- Masthead ---------- */
+  .masthead{background:var(--ink);}
+  .mast-inner{max-width:var(--maxw);margin:0 auto;padding:46px 28px 42px;}
+  .kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);margin:0 0 14px;font-weight:700;}
+  h1{font-family:var(--display);font-size:44px;line-height:1.05;font-weight:700;
+    margin:0;letter-spacing:-.01em;color:#fff;text-transform:uppercase;}
+  .goldbar{display:block;width:56px;height:4px;background:var(--gold);margin-top:20px;}
+
+  /* ---------- Document ---------- */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:44px 28px 92px;}
+  .rule{height:1px;background:var(--line);border:0;margin:40px 0;}
+  h2{font-family:var(--display);font-size:15px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink);font-weight:700;margin:0 0 22px;display:inline-block;
+    padding-bottom:7px;border-bottom:3px solid var(--gold);}
+
+  /* Fees dashboard */
+  .feegrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fcard{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);
+    border-radius:0;padding:18px 20px;}
+  .fcard .flabel{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .fcard .famt{font-family:var(--display);font-size:26px;line-height:1.1;margin:8px 0 9px;letter-spacing:-.01em;}
+  .fcard .fscope{font-size:14px;color:var(--muted);line-height:1.5;}
+
+  /* Lease-speed tiers */
+  .leasetiers{display:flex;flex-direction:column;gap:10px;margin:18px 0 4px;}
+  .tier{display:flex;align-items:stretch;border:1px solid var(--line);
+    border-left:4px solid var(--gold);background:var(--panel);}
+  .tier .tdays{flex:0 0 128px;padding:14px 16px;font-family:var(--display);font-size:18px;
+    color:var(--ink);display:flex;align-items:center;border-right:1px solid var(--line);line-height:1.15;}
+  .tier .tdesc{padding:14px 16px;font-size:15px;color:var(--ink);display:flex;
+    align-items:center;line-height:1.45;}
+  .tier.pass{border-left-color:#bdbab1;}
+  .tier.pass .tdays{color:var(--muted);font-size:16px;}
+  .tier.pass .tdesc{color:var(--muted);}
+  @media (max-width:560px){.tier .tdays{flex-basis:96px;font-size:15px;}}
+
+  /* Them-vs-us comparison */
+  .compare{display:flex;flex-direction:column;gap:14px;margin:18px 0 4px;}
+  .lever{border:1px solid var(--line);}
+  .lever-benefit{font-family:var(--display);font-size:13.5px;text-transform:uppercase;
+    letter-spacing:.07em;background:var(--ink);color:var(--gold);padding:10px 16px;}
+  .lever-cols{display:grid;grid-template-columns:1fr 1fr;}
+  .lcol{padding:14px 16px;font-size:14.5px;line-height:1.5;}
+  .lcol.them{background:var(--panel);color:var(--muted);border-right:1px solid var(--line);}
+  .lcol.us{background:#fff;color:var(--ink);}
+  .ltag{display:block;font-weight:700;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;margin-bottom:6px;}
+  .lcol.them .ltag{color:#9a988f;}
+  .lcol.us .ltag{color:var(--gold-ink);}
+  @media (max-width:560px){.lever-cols{grid-template-columns:1fr;}
+    .lcol.them{border-right:0;border-bottom:1px solid var(--line);}}
+
+  /* Cost comparison */
+  .costsetup{font-size:14.5px;color:var(--muted);margin:16px 0 12px;}
+  .costgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .ccard{border:1px solid var(--line);display:flex;flex-direction:column;}
+  .ccard-head{padding:12px 16px;font-weight:700;font-size:12px;letter-spacing:.08em;
+    text-transform:uppercase;border-bottom:1px solid var(--line);}
+  .ccard.them .ccard-head{background:var(--panel);color:#8f8d84;}
+  .ccard.us .ccard-head{background:var(--ink);color:var(--gold);}
+  .ccard-body{padding:16px;flex:1;}
+  .feepill{display:inline-block;font-size:11.5px;font-weight:700;padding:5px 11px;border:1px solid;
+    margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em;background:#fff;}
+  .them .feepill{border-color:#c9c6bd;color:#8f8d84;}
+  .us .feepill{border-color:var(--gold);color:var(--gold-ink);}
+  .crow{display:flex;justify-content:space-between;gap:12px;font-size:14.5px;padding:5px 0;color:var(--ink);}
+  .crow .cnum{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;}
+  .crow.cmuted{color:var(--muted);}
+  .crow.cmuted .cnum{font-weight:400;font-style:italic;}
+  .ctotal{display:flex;justify-content:space-between;align-items:baseline;
+    border-top:2px solid var(--ink);margin-top:10px;padding-top:10px;}
+  .them .ctotal{border-top-color:#c9c6bd;}
+  .ctotal .clabel{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .ctotal .cbig{font-family:var(--display);font-size:29px;line-height:1;}
+  .them .cbig{color:#6b6b6b;}
+  .us .cbig{color:var(--ink);}
+  .costpunch{margin-top:14px;background:var(--ink);color:#fff;padding:16px 18px;
+    display:flex;align-items:center;gap:16px;}
+  .costpunch .cdelta{font-family:var(--display);font-size:28px;color:var(--gold);white-space:nowrap;line-height:1;}
+  .costpunch .ctext{font-size:14.5px;line-height:1.45;}
+  @media (max-width:560px){.costgrid{grid-template-columns:1fr;}
+    .costpunch{flex-direction:column;align-items:flex-start;gap:8px;}}
+
+  /* ---------- Q&A cards ---------- */
+  .qcard{border-bottom:1px solid var(--line);}
+  .qrow{display:flex;align-items:flex-start;gap:14px;}
+  .qcheck{flex:0 0 auto;padding-top:22px;display:none;}
+  .qcheck input{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;}
+  .qhead{flex:1;appearance:none;background:none;border:0;text-align:left;cursor:pointer;
+    font-family:var(--sans);color:var(--ink);font-size:20px;line-height:1.4;font-weight:700;
+    padding:18px 0;display:flex;justify-content:space-between;gap:16px;align-items:baseline;}
+  .chev{flex:0 0 auto;font-size:22px;color:var(--gold-ink);transition:transform .18s ease;line-height:1;}
+  .answer{padding:0;overflow:hidden;}
+  .answer-pad{padding-bottom:22px;}
+  .lead{font-weight:700;color:var(--ink);}
+  .answer p{margin:0 0 14px;}
+  .answer p:last-child{margin-bottom:0;}
+  ul{margin:14px 0;padding-left:0;list-style:none;}
+  li{position:relative;padding-left:26px;margin:0 0 12px;}
+  li::before{content:"";position:absolute;left:2px;top:11px;width:7px;height:7px;
+    background:var(--gold);}
+  li b, .lead b{font-weight:700;color:var(--gold-ink);}
+
+  /* ---------- BUILD MODE ---------- */
+  body[data-mode="build"] .qcheck{display:block;}
+  body[data-mode="build"] .qhead{cursor:default;}
+  body[data-mode="build"] .chev{display:none;}
+  body[data-mode="build"] .answer{display:block;}
+  body[data-mode="build"] .qcard.excluded{opacity:.34;}
+
+  /* ---------- READ MODE (accordion / owner view) ---------- */
+  body[data-mode="read"] .answer{display:none;}
+  body[data-mode="read"] .qcard.open .answer{display:block;}
+  body[data-mode="read"] .qcard.open .chev{transform:rotate(45deg);}
+  body[data-mode="read"] .qcard.excluded{display:none;}
+
+  /* ---------- PRINT / SAVE AS PDF ---------- */
+  @media print{
+    .builder{display:none;}
+    .masthead{background:#fff;}
+    .mast-inner{padding:0 0 10px;border-bottom:3px solid var(--gold);}
+    .kicker{color:var(--gold-ink);}
+    h1{color:#000;font-size:30px;}
+    .goldbar{display:none;}
+    .wrap{padding:22px 0;}
+    .qcard.excluded{display:none !important;}
+    .answer{display:block !important;}
+    .chev, .qcheck{display:none !important;}
+    body{font-size:12pt;}
+    .qhead{font-size:14pt;padding:14px 0;}
+    a{color:inherit;text-decoration:none;}
+  }
+  @page{margin:16mm 18mm;}
+
+  @media (max-width:560px){
+    .mast-inner{padding:40px 22px 36px;}
+    .builder-inner{padding:14px 22px;}
+    .wrap{padding:36px 22px 72px;}
+    h1{font-size:34px;}.qhead{font-size:18px;}.feegrid{grid-template-columns:1fr;}
+  }
+
+  /* Reviews footer */
+  .reviews{margin-top:52px;padding-top:34px;border-top:1px solid var(--line);}
+  .rev-rating{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+  .stars{color:var(--gold);font-size:18px;letter-spacing:2px;}
+  .rev-score{font-weight:700;}
+  .rev-count{color:var(--muted);font-size:14px;}
+  .rev-link{color:var(--gold-ink);font-weight:700;text-decoration:none;font-size:13px;margin-left:auto;}
+  .rev-link:hover{text-decoration:underline;}
+  .quote{background:var(--panel);border-left:4px solid var(--gold);padding:20px 22px;}
+  .quote .qstars{color:var(--gold);font-size:14px;letter-spacing:1px;margin-bottom:10px;}
+  .quote .qtext{font-size:16px;line-height:1.65;font-style:italic;color:var(--ink);margin:0 0 12px;}
+  .quote .qby{font-size:13px;color:var(--muted);font-weight:700;}
+
+  /* Contract */
+  .contractrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:11px;
+    padding-top:11px;border-top:1px solid var(--line);font-size:13px;}
+  .contractrow .fclabel{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:12px;}
+  .contractrow input{flex:1;min-width:220px;padding:7px 9px;border:1px solid var(--ink);
+    border-radius:0;font-family:var(--sans);font-size:13px;}
+  .contract{margin-top:52px;padding-top:34px;border-top:1px solid var(--line);}
+  .contract p{color:var(--muted);margin:0 0 16px;}
+  .contractbtn{display:inline-block;background:var(--gold);color:#1a1a1a;font-weight:700;
+    border:0;cursor:pointer;font-family:var(--sans);padding:14px 26px;font-size:15px;
+    letter-spacing:.02em;text-transform:uppercase;}
+  .contractbtn:hover{background:#c39f2c;}
+  #contractViewer iframe{display:block;width:100%;height:720px;border:1px solid var(--line);margin-top:18px;}
+  @media (max-width:560px){#contractViewer iframe{height:520px;}}
+
+  /* Get-started CTA */
+  .startcta{margin-top:52px;padding-top:34px;border-top:1px solid var(--line);}
+  .startcta p{color:var(--muted);margin:0 0 18px;}
+</style>
+</head>
+<body data-mode="build">
+
+  <div class="builder" id="builder">
+    <div class="builder-inner">
+      <h3>Build this owner&rsquo;s FAQ</h3>
+      <p>Pick the questions and set the fees for this owner, then copy the link and send it. They open an interactive page &mdash; nothing to download.</p>
+      <div class="bbtns">
+        <button class="btn" onclick="selectAll(true)">Select all</button>
+        <button class="btn" onclick="selectAll(false)">Clear all</button>
+        <button class="btn" id="modeBtn" onclick="toggleMode()">Preview as owner sees it</button>
+        <button class="btn" onclick="window.print()">Save as PDF</button>
+        <button class="btn primary" id="copyBtn" onclick="copyLink()">Copy owner link</button>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="feecontrols">
+        <span class="fclabel">Fees for this owner</span>
+        <label>Admin fee&nbsp; $<input id="admFee" type="number" min="0" step="25" value="200"></label>
+        <label>Rent collection <input id="rentPct" type="number" min="0" step="1" value="8">%</label>
+        <span class="fcnote">Maintenance stays 15%.</span>
+      </div>
+      <div class="contractrow">
+        <span class="fclabel">Contract</span>
+        <input id="contractLink" type="text" placeholder="Paste this owner's view-only Google Drive link (optional)">
+      </div>
+      <div class="linkwrap" id="linkwrap">
+        <p class="linkhint" id="linkHint">Link copied &mdash; paste it into an email or text to the owner.</p>
+        <input class="linkout" id="linkOut" type="text" readonly onclick="this.select()">
+      </div>
+    </div>
+  </div>
+
+  <header class="masthead">
+    <div class="mast-inner">
+      <p class="kicker">Detroit Section 8 &middot; Property Management</p>
+      <h1>Property Owner FAQ</h1>
+      <span class="goldbar"></span>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <h2>What we charge</h2>
+    <div class="feegrid">
+      <div class="fcard">
+        <div class="flabel">Onboarding</div>
+        <div class="famt" id="amtOnboard">$200</div>
+        <div class="fscope">Initial visit to the property, scope of any repairs, and an estimate.</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">Leasing</div>
+        <div class="famt" id="amtLease">1st mo. + $200</div>
+        <div class="fscope">Marketing the unit, leasing, Section 8 paperwork, and Section 8 inspections.</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">Rent collection</div>
+        <div class="famt" id="amtRent">8% of rent</div>
+        <div class="fscope">Collecting rent, dealing with tenant issues, and coordinating with the agencies.</div>
+      </div>
+      <div class="fcard">
+        <div class="flabel">Maintenance &amp; renovations</div>
+        <div class="famt">15% of cost</div>
+        <div class="fscope">Coordinating the work, inspecting it, and paying the person who swings the hammer directly.</div>
+      </div>
+    </div>
+
+    <hr class="rule">
+
+    <h2>Questions owners ask</h2>
+    <div id="qlist">
+
+      <article class="qcard">
+        <div class="qrow">
+          <label class="qcheck"><input type="checkbox" checked></label>
+          <button class="qhead" type="button">What makes you different from all other PM companies, and how does it help my cashflow?<span class="chev">+</span></button>
+        </div>
+        <div class="answer"><div class="answer-pad">
+          <p class="lead">Three structural choices set us apart &mdash; and each one puts money back in your pocket.</p>
+          <div class="compare">
+            <div class="lever">
+              <div class="lever-benefit">Lower maintenance costs</div>
+              <div class="lever-cols">
+                <div class="lcol them"><span class="ltag">Typical PM</span>Outsources repairs to general contractors who add a 20&ndash;40% markup to every job.</div>
+                <div class="lcol us"><span class="ltag">Us</span>We stay tight to Detroit and pay the worker who swings the hammer directly &mdash; no middleman markup.</div>
+              </div>
+            </div>
+            <div class="lever">
+              <div class="lever-benefit">Higher collections, faster leasing</div>
+              <div class="lever-cols">
+                <div class="lcol them"><span class="ltag">Typical PM</span>Manages every property type across multiple cities. Section 8 is an afterthought.</div>
+                <div class="lcol us"><span class="ltag">Us</span>Exclusively Detroit Section 8. Every process, tool, and team member is built to make it profitable.</div>
+              </div>
+            </div>
+            <div class="lever">
+              <div class="lever-benefit">Less overhead, more attention</div>
+              <div class="lever-cols">
+                <div class="lcol them"><span class="ltag">Typical PM</span>Layers of middle management and bureaucracy between you and your property.</div>
+                <div class="lcol us"><span class="ltag">Us</span>Small enough to care, large enough to have real resources. No bureaucracy.</div>
+              </div>
+            </div>
+          </div>
+          <p>The net effect is lower costs, higher collections, and faster leasing &mdash; which is where your cashflow actually comes from.</p>
+        </div></div>
+      </article>
+
+      <article class="qcard">
+        <div class="qrow">
+          <label class="qcheck"><input type="checkbox" checked></label>
+          <button class="qhead" type="button">How fast can you lease my property?<span class="chev">+</span></button>
+        </div>
+        <div class="answer"><div class="answer-pad">
+          <p class="lead">It depends on the property&rsquo;s condition &mdash; here&rsquo;s the honest breakdown.</p>
+          <div class="leasetiers">
+            <div class="tier">
+              <div class="tdays">30&ndash;45 days</div>
+              <div class="tdesc">Above-average upgrades &mdash; move-in ready and priced right.</div>
+            </div>
+            <div class="tier">
+              <div class="tdays">46&ndash;60 days</div>
+              <div class="tdesc">Average-quality house in typical condition.</div>
+            </div>
+            <div class="tier pass">
+              <div class="tdays">Won&rsquo;t manage</div>
+              <div class="tdesc">We won&rsquo;t take on any property we&rsquo;re not confident will lease in 60 days or less.</div>
+            </div>
+          </div>
+          <p>For context, our current average across the properties we manage is 34 days.</p>
+        </div></div>
+      </article>
+
+      <article class="qcard">
+        <div class="qrow">
+          <label class="qcheck"><input type="checkbox" checked></label>
+          <button class="qhead" type="button">Can anything in the management agreement &mdash; terms or pricing &mdash; be changed?<span class="chev">+</span></button>
+        </div>
+        <div class="answer"><div class="answer-pad">
+          <p class="lead">No. We can&rsquo;t change the pricing or the contract terms.</p>
+          <p>Here&rsquo;s how your risk is limited instead:</p>
+          <ul>
+            <li><b>No long-term lock-in.</b> If we stop performing, you can terminate with 30 days&rsquo; notice. No termination fees.</li>
+            <li><b>No upfront fees.</b> We don&rsquo;t get paid until a tenant is placed and rent is collected.</li>
+            <li><b>Licensed and insured.</b> If we act negligently, we&rsquo;re accountable to state licensing oversight.</li>
+          </ul>
+        </div></div>
+      </article>
+
+      <article class="qcard">
+        <div class="qrow">
+          <label class="qcheck"><input type="checkbox" checked></label>
+          <button class="qhead" type="button">My property has a market-rate, cash-paying tenant. Will you still manage it?<span class="chev">+</span></button>
+        </div>
+        <div class="answer"><div class="answer-pad">
+          <p class="lead">Yes.</p>
+          <p>We manage cash-paying tenants we&rsquo;ve inherited. We won&rsquo;t needlessly disrupt a working situation.</p>
+        </div></div>
+      </article>
+
+      <article class="qcard">
+        <div class="qrow">
+          <label class="qcheck"><input type="checkbox" checked></label>
+          <button class="qhead" type="button">Will you place a conventional (non-Section 8) tenant?<span class="chev">+</span></button>
+        </div>
+        <div class="answer"><div class="answer-pad">
+          <p class="lead">Rarely.</p>
+          <p>More than 90% of the tenants we place are Section 8. That&rsquo;s where our systems, experience, and relationships are strongest. If we find a well-qualified market-rate tenant for your property, we won&rsquo;t turn them away.</p>
+        </div></div>
+      </article>
+
+      <article class="qcard">
+        <div class="qrow">
+          <label class="qcheck"><input type="checkbox" checked></label>
+          <button class="qhead" type="button">Can you lease a duplex or 2-family flat on a rough block?<span class="chev">+</span></button>
+        </div>
+        <div class="answer"><div class="answer-pad">
+          <p class="lead">Sometimes &mdash; with realistic expectations.</p>
+          <p>A few things to understand going in:</p>
+          <ul>
+            <li>Duplexes generally lease <b>slower</b> than single-family homes.</li>
+            <li>They&rsquo;re often a tenant&rsquo;s second choice, not their first.</li>
+            <li>Location and condition matter. Not every duplex can be rented in a reasonable time frame at a reasonable rent.</li>
+          </ul>
+          <p>We selectively take on duplexes and 4-plexes when we&rsquo;re confident your expectations match market conditions.</p>
+        </div></div>
+      </article>
+
+      <article class="qcard">
+        <div class="qrow">
+          <label class="qcheck"><input type="checkbox" checked></label>
+          <button class="qhead" type="button">I&rsquo;ve been burned by Detroit property managers before. Why should I trust you?<span class="chev">+</span></button>
+        </div>
+        <div class="answer"><div class="answer-pad">
+          <p class="lead">We don&rsquo;t expect to be trusted. Just watch for results.</p>
+          <p>We start working after a signed contract and only get paid if we deliver cashflow. If we don&rsquo;t deliver, you can fire us at any time with no termination fee.</p>
+        </div></div>
+      </article>
+
+      <article class="qcard">
+        <div class="qrow">
+          <label class="qcheck"><input type="checkbox" checked></label>
+          <button class="qhead" type="button">Some companies quote lower fees than you. Why not go with the cheaper one?<span class="chev">+</span></button>
+        </div>
+        <div class="answer"><div class="answer-pad">
+          <p class="lead">Fair question &mdash; but PM contracts can&rsquo;t be compared apples to apples.</p>
+          <p class="costsetup">Say a toilet needs replacing. Here&rsquo;s the same job priced two ways:</p>
+          <div class="costgrid">
+            <div class="ccard them">
+              <div class="ccard-head">A &ldquo;cheaper&rdquo; PM</div>
+              <div class="ccard-body">
+                <span class="feepill">0% maintenance fee</span>
+                <div class="crow"><span>Toilet replacement, billed to you</span><span class="cnum">$300</span></div>
+                <div class="crow cmuted"><span>Their 20&ndash;40% markup, baked in</span><span class="cnum">hidden</span></div>
+                <div class="ctotal"><span class="clabel">You pay</span><span class="cbig">$300</span></div>
+              </div>
+            </div>
+            <div class="ccard us">
+              <div class="ccard-head">Us</div>
+              <div class="ccard-body">
+                <span class="feepill">15% maintenance fee</span>
+                <div class="crow"><span>Toilet, paid to the worker</span><span class="cnum">$200</span></div>
+                <div class="crow"><span>Our fee (15%)</span><span class="cnum">$30</span></div>
+                <div class="ctotal"><span class="clabel">You pay</span><span class="cbig">$230</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="costpunch">
+            <span class="cdelta">$70 less</span>
+            <span class="ctext">on a single repair. The lower &ldquo;fee&rdquo; isn&rsquo;t the lower cost &mdash; we cut the markup instead of hiding it.</span>
+          </div>
+          <p>That&rsquo;s the whole point: we generate more cashflow because we&rsquo;re hyper-specialized in Detroit Section 8. Our geographic focus drives down maintenance costs; our Section 8 competency drives up rent collection and speeds up leasing.</p>
+        </div></div>
+      </article>
+
+    </div>
+
+    <div class="reviews">
+      <h2>What owners say</h2>
+      <div class="rev-rating">
+        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span class="rev-score">5.0 on Google</span>
+        <span class="rev-count">&middot; 10 reviews</span>
+        <a class="rev-link" href="https://www.google.com/maps/search/Detroit+Section+8+Property+Management" target="_blank" rel="noopener">Read all reviews &rarr;</a>
+      </div>
+      <div class="quote">
+        <div class="qstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="qtext">&ldquo;Every interaction has been smooth, transparent, and stress-free. Maintenance requests are handled quickly and efficiently, and communication is always clear and friendly. It&rsquo;s rare to find a company this reliable and well-organized.&rdquo;</p>
+        <div class="qby">&mdash; Gregory Martire &middot; Local Guide &middot; Verified Google review</div>
+      </div>
+    </div>
+
+    <div class="contract" id="contractBox" style="display:none;">
+      <h2>Management agreement</h2>
+      <p>Here&rsquo;s the actual management agreement for your property. Take your time and read it in full &mdash; then we&rsquo;ll talk next steps.</p>
+      <button class="contractbtn" id="viewContractBtn" type="button" onclick="showContract()">Review the management agreement</button>
+      <div id="contractViewer"></div>
+      <p style="margin-top:14px;"><a class="rev-link" id="contractOpen" href="#" target="_blank" rel="noopener" style="margin:0;">Open full screen &rarr;</a></p>
+    </div>
+
+    <div class="startcta">
+      <h2>Ready to get started?</h2>
+      <p>Send us a few basics about you and your property, and we&rsquo;ll prepare your management agreement.</p>
+      <a class="contractbtn" id="manageBtn" href="https://forms.gle/wsy8KJ9qRyXYakti8" target="_blank" rel="noopener">Manage my property</a>
+    </div>
+
+  </div>
+
+<script>
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.qcard'));
+
+  cards.forEach(function(card){
+    var cb = card.querySelector('input[type=checkbox]');
+    var head = card.querySelector('.qhead');
+    cb.addEventListener('change', function(){ sync(); });
+    head.addEventListener('click', function(){
+      if(document.body.dataset.mode === 'read'){ card.classList.toggle('open'); }
+    });
+  });
+
+  function sync(){
+    var n = 0;
+    cards.forEach(function(card){
+      var on = card.querySelector('input[type=checkbox]').checked;
+      card.classList.toggle('excluded', !on);
+      if(on) n++;
+    });
+    var c = document.getElementById('count');
+    if(c) c.textContent = n + ' of ' + cards.length + ' included';
+  }
+
+  function selectAll(v){
+    cards.forEach(function(card){ card.querySelector('input[type=checkbox]').checked = v; });
+    sync();
+  }
+
+  var admFee = document.getElementById('admFee');
+  var rentPct = document.getElementById('rentPct');
+  function applyFees(){
+    var a = parseInt(admFee.value, 10); if(isNaN(a) || a < 0) a = 0;
+    var r = parseInt(rentPct.value, 10); if(isNaN(r) || r < 0) r = 0;
+    document.getElementById('amtOnboard').textContent = '$' + a;
+    document.getElementById('amtLease').textContent = '1st mo. + $' + a;
+    document.getElementById('amtRent').textContent = r + '% of rent';
+  }
+  admFee.addEventListener('input', applyFees);
+  rentPct.addEventListener('input', applyFees);
+  applyFees();
+
+  function toggleMode(){
+    var b = document.body, btn = document.getElementById('modeBtn');
+    if(b.dataset.mode === 'build'){
+      b.dataset.mode = 'read';
+      cards.forEach(function(c){ c.classList.remove('open'); });
+      btn.textContent = 'Back to editing';
+    } else {
+      b.dataset.mode = 'build';
+      btn.textContent = 'Preview as owner sees it';
+    }
+  }
+
+  function copyLink(){
+    var inc = [];
+    cards.forEach(function(card, i){
+      if(card.querySelector('input[type=checkbox]').checked) inc.push(i);
+    });
+    var a = parseInt(admFee.value, 10); if(isNaN(a) || a < 0) a = 0;
+    var r = parseInt(rentPct.value, 10); if(isNaN(r) || r < 0) r = 0;
+    var url = location.origin + location.pathname + '?owner=1&q=' + inc.join(',') + '&a=' + a + '&r=' + r;
+    var cid = parseDriveId(document.getElementById('contractLink').value);
+    if(cid) url += '&c=' + cid;
+    var wrap = document.getElementById('linkwrap');
+    var out = document.getElementById('linkOut');
+    out.value = url;
+    wrap.style.display = 'block';
+    out.focus(); out.select();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(flashCopied, function(){});
+    }
+  }
+  function flashCopied(){
+    var b = document.getElementById('copyBtn');
+    var t = b.textContent;
+    b.textContent = 'Copied!';
+    setTimeout(function(){ b.textContent = t; }, 1600);
+  }
+
+  // ---- Contract (Google Drive) ----
+  var CONTRACT_ID = null;
+  function parseDriveId(u){
+    if(!u) return null;
+    u = u.trim();
+    var m = u.match(/\/d\/([-\w]{20,})/) || u.match(/[?&]id=([-\w]{20,})/);
+    if(m) return m[1];
+    return /^[-\w]{20,}$/.test(u) ? u : null;
+  }
+  function showContract(){
+    var v = document.getElementById('contractViewer');
+    if(v.querySelector('iframe')) return;
+    var f = document.createElement('iframe');
+    f.src = 'https://drive.google.com/file/d/' + CONTRACT_ID + '/preview';
+    f.setAttribute('allow', 'autoplay');
+    v.appendChild(f);
+    document.getElementById('viewContractBtn').style.display = 'none';
+  }
+
+  // ---- Owner view: if the URL carries choices, hide the builder and show only what was picked ----
+  (function(){
+    var params = new URLSearchParams(location.search);
+    if(params.get('owner') === '1' || params.has('q')){
+      if(params.has('a')) admFee.value = params.get('a');
+      if(params.has('r')) rentPct.value = params.get('r');
+      applyFees();
+      var inc = (params.get('q') || '').split(',').filter(function(x){ return x !== ''; }).map(Number);
+      cards.forEach(function(card, i){
+        card.querySelector('input[type=checkbox]').checked = inc.indexOf(i) !== -1;
+      });
+      sync();
+      if(params.has('c')){
+        CONTRACT_ID = params.get('c');
+        document.getElementById('contractBox').style.display = 'block';
+        document.getElementById('contractOpen').href = 'https://drive.google.com/file/d/' + CONTRACT_ID + '/view';
+      }
+      document.getElementById('builder').style.display = 'none';
+      document.body.dataset.mode = 'read';
+    } else {
+      sync();
+    }
+  })();
+</script>
+</body>
+</html>
