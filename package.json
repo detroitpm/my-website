@@ -1,0 +1,9 @@
+{
+  "name": "section8pm-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static site for section8pm.com, plus one Netlify Function for the SOW builder's CompanyCam upload.",
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
+}
