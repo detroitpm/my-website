@@ -244,6 +244,76 @@ document.getElementById("addQuestionBtn").onclick = function () {
   renderBuilder();
 };
 
+// ---- Upload a SOW file (e.g. one produced by the /build-sow skill) ----
+function isValidSowShape(obj) {
+  if (!obj || typeof obj !== "object") return false;
+  if (!Array.isArray(obj.sections)) return false;
+  if (!Array.isArray(obj.questions)) return false;
+  for (var i = 0; i < obj.sections.length; i++) {
+    var s = obj.sections[i];
+    if (typeof s.room !== "string" || !Array.isArray(s.items)) return false;
+    for (var j = 0; j < s.items.length; j++) {
+      if (typeof s.items[j].text !== "string") return false;
+    }
+  }
+  return true;
+}
+
+document.getElementById("uploadSowBtn").onclick = function () {
+  document.getElementById("uploadSowInput").click();
+};
+
+document.getElementById("uploadSowInput").onchange = function (e) {
+  var file = e.target.files[0];
+  var status = document.getElementById("uploadStatus");
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function () {
+    var parsed;
+    try {
+      parsed = JSON.parse(reader.result);
+    } catch (err) {
+      status.textContent = "That file isn't valid JSON — was it exported by the SOW skill?";
+      status.className = "sendstatus err";
+      return;
+    }
+    if (!isValidSowShape(parsed)) {
+      status.textContent = "That file doesn't look like a SOW export (missing rooms/items). Nothing was loaded.";
+      status.className = "sendstatus err";
+      return;
+    }
+    if (sow.sections.length && !confirm("This will replace everything currently in the editor with the uploaded file. Continue?")) {
+      return;
+    }
+    sow = {
+      address: parsed.address || "",
+      typeOfWork: parsed.typeOfWork || "Pre-inspection list",
+      mediaLink: parsed.mediaLink || "",
+      bufferPct: parsed.bufferPct != null ? parsed.bufferPct : 20,
+      sections: parsed.sections.map(function (s) {
+        return {
+          room: s.room || "",
+          items: s.items.map(function (it) {
+            return { text: it.text || "", labor: it.labor != null ? it.labor : null, material: it.material != null ? it.material : null, optional: !!it.optional };
+          })
+        };
+      }),
+      questions: parsed.questions.length ? parsed.questions.map(function (q) {
+        return { text: q.text || "", answer: q.answer || "" };
+      }) : JSON.parse(JSON.stringify(DEFAULT_SOW.questions))
+    };
+    status.textContent = "Loaded “" + (sow.address || "SOW") + "” — " + sow.sections.length + " rooms. Fill in prices, then download or send.";
+    status.className = "sendstatus ok";
+    renderBuilder();
+  };
+  reader.onerror = function () {
+    status.textContent = "Couldn't read that file.";
+    status.className = "sendstatus err";
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+};
+
 // ---- Print views (static, built fresh each time) ----
 function buildPrintHtml(mode) {
   var total = computeTotals();
