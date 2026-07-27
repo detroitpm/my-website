@@ -47,8 +47,8 @@ exports.handler = async function (event) {
       },
       body: JSON.stringify({
         document: {
-          file_name: filename,
-          content: base64
+          name: filename,
+          attachment: `data:application/pdf;base64,${base64}`
         }
       })
     });
