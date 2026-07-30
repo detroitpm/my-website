@@ -8,10 +8,7 @@ var DEFAULT_SOW = {
   mediaLink: "",
   bufferPct: 20,
   sections: [],
-  questions: [
-    { text: "Is the job 100% done?", answer: "" },
-    { text: "Did I put the keys back?", answer: "" }
-  ]
+  questions: []
 };
 
 function escapeHtml(s) {
@@ -68,6 +65,15 @@ function pushStateToUrl() {
 }
 
 // ---- Totals ----
+function computeRoomSubtotal(section) {
+  var subtotal = 0;
+  section.items.forEach(function (item) {
+    if (item.optional) return;
+    subtotal += (Number(item.labor) || 0) + (Number(item.material) || 0);
+  });
+  return subtotal;
+}
+
 function computeTotals() {
   var labor = 0, materialPlusLabor = 0;
   sow.sections.forEach(function (section) {
@@ -105,7 +111,7 @@ function renderBuilder() {
     roomRow.innerHTML =
       '<div class="room-name-wrap"><input type="text" class="room-name" value="' +
       escapeHtml(section.room) + '" data-s="' + sIdx + '"></div>' +
-      '<div class="room-rest"><button class="btn small no-print" data-s="' + sIdx + '" data-act="delroom">Delete room</button></div>';
+      '<div class="room-rest"><span class="room-subtotal" data-s="' + sIdx + '">' + currency(computeRoomSubtotal(section)) + '</span><button class="btn small no-print" data-s="' + sIdx + '" data-act="delroom">Delete room</button></div>';
     container.appendChild(roomRow);
 
     section.items.forEach(function (item, iIdx) {
@@ -187,6 +193,8 @@ function attachBuilderListeners() {
       var totals = computeTotals();
       document.getElementById("contractorTotalDisplay").textContent = currency(totals.contractorTotal);
       document.getElementById("ownerTotalDisplay").textContent = currency(totals.ownerTotal);
+      var subtotalEl = document.querySelector('.room-subtotal[data-s="' + s + '"]');
+      if (subtotalEl) subtotalEl.textContent = currency(computeRoomSubtotal(sow.sections[s]));
       pushStateToUrl();
     };
   });
