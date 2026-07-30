@@ -202,8 +202,8 @@
   .contractrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:11px;
     padding-top:11px;border-top:1px solid var(--line);font-size:13px;}
   .contractrow .fclabel{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:12px;}
-  .contractrow input{flex:1;min-width:220px;padding:7px 9px;border:1px solid var(--ink);
-    border-radius:0;font-family:var(--sans);font-size:13px;}
+  .contractrow input, .contractrow select{flex:1;min-width:200px;padding:7px 9px;border:1px solid var(--ink);
+    border-radius:0;font-family:var(--sans);font-size:13px;background:#fff;color:var(--ink);}
   .contract{margin-top:52px;padding-top:34px;border-top:1px solid var(--line);}
   .contract p{color:var(--muted);margin:0 0 16px;}
   .contractbtn{display:inline-block;background:var(--gold);color:#1a1a1a;font-weight:700;
@@ -241,7 +241,12 @@
       </div>
       <div class="contractrow">
         <span class="fclabel">Contract</span>
-        <input id="contractLink" type="text" placeholder="Paste this owner's view-only Google Drive link (optional)">
+        <select id="contractSelect">
+          <option value="">None</option>
+          <!-- STANDARD CONTRACTS: add one <option> per agreement; value = the Google Drive file ID -->
+          <option value="__custom">Paste a custom link&hellip;</option>
+        </select>
+        <input id="contractLink" type="text" placeholder="Paste a view-only Google Drive link" style="display:none;">
       </div>
       <div class="linkwrap" id="linkwrap">
         <p class="linkhint" id="linkHint">Link copied &mdash; paste it into an email or text to the owner.</p>
@@ -527,6 +532,14 @@
   rentPct.addEventListener('input', applyFees);
   applyFees();
 
+  var contractSelect = document.getElementById('contractSelect');
+  var contractLinkInput = document.getElementById('contractLink');
+  contractSelect.addEventListener('change', function(){
+    var custom = contractSelect.value === '__custom';
+    contractLinkInput.style.display = custom ? '' : 'none';
+    if(custom) contractLinkInput.focus();
+  });
+
   function toggleMode(){
     var b = document.body, btn = document.getElementById('modeBtn');
     if(b.dataset.mode === 'build'){
@@ -548,7 +561,8 @@
     var l = parseInt(leaseFee.value, 10); if(isNaN(l) || l < 0) l = 0;
     var r = parseInt(rentPct.value, 10); if(isNaN(r) || r < 0) r = 0;
     var url = location.origin + location.pathname + '?owner=1&q=' + inc.join(',') + '&o=' + o + '&l=' + l + '&r=' + r;
-    var cid = parseDriveId(document.getElementById('contractLink').value);
+    var sel = document.getElementById('contractSelect').value;
+    var cid = (sel === '__custom') ? parseDriveId(document.getElementById('contractLink').value) : (sel ? parseDriveId(sel) : null);
     if(cid) url += '&c=' + cid;
     var wrap = document.getElementById('linkwrap');
     var out = document.getElementById('linkOut');
