@@ -125,23 +125,28 @@
   .pv-header{background:var(--ink);color:#fff;padding:14px 18px;font-weight:800;font-size:19px;letter-spacing:.01em;
     border:4px solid #000;border-bottom:3px solid var(--gold);}
   .pv-sub{background:var(--gold);color:var(--ink);padding:9px 18px;font-size:13.5px;font-weight:800;
-    text-transform:uppercase;letter-spacing:.05em;border-left:4px solid #000;border-right:4px solid #000;border-bottom:3px solid #000;}
-  .pv-colheader{display:flex;background:var(--ink);color:#fff;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.03em;
-    border-left:4px solid #000;border-right:4px solid #000;border-bottom:2px solid #000;}
-  .pv-colheader .pv-c-room{flex:0 0 26%;padding:9px 10px;}
-  .pv-colheader .pv-c-desc{flex:1;padding:9px 10px;border-left:1.5px solid rgba(255,255,255,.35);}
-  .pv-room{display:flex;font-weight:800;background:#faf3dc;border-top:2px solid #000;
-    border-left:4px solid #000;border-right:4px solid #000;}
-  .pv-room .pv-c-room{flex:0 0 26%;padding:8px 10px 8px 14px;border-left:6px solid var(--gold);}
-  .pv-room .pv-c-desc{flex:1;border-left:1.5px solid #000;}
-  .pv-item{display:flex;border-top:1.5px solid #bbb;border-left:4px solid #000;border-right:4px solid #000;}
-  .pv-item.optional{background:var(--grey-opt);}
-  .pv-item .pv-c-room{flex:0 0 26%;}
-  .pv-item .pv-c-desc{flex:1;border-left:1.5px solid #bbb;padding:6px 10px;}
-  .pv-item .pv-c-desc .tag{font-size:10px;font-weight:800;background:var(--gold);color:var(--ink);padding:1px 6px;margin-right:6px;}
-  .pv-footer{display:flex;border-top:2px solid #000;border-left:4px solid #000;border-right:4px solid #000;}
-  .pv-footer .pv-c-room{flex:0 0 26%;padding:9px 10px;font-weight:800;background:var(--ink);color:#fff;}
-  .pv-footer .pv-c-desc{flex:1;border-left:1.5px solid #000;padding:9px 10px;word-break:break-all;}
+    text-transform:uppercase;letter-spacing:.05em;border-left:4px solid #000;border-right:4px solid #000;}
+
+  /* Real <table> markup (not styled divs) - see the note above buildPrintHtml
+     in sow.js for why: tagged table structure is what lets a PDF importer
+     (e.g. CompanyCam) recognize this as rows to turn into a checklist. */
+  .pv-table{width:100%;border-collapse:collapse;table-layout:fixed;border:4px solid #000;}
+  .pv-table th, .pv-table td{text-align:left;vertical-align:top;}
+  .pv-table col.pv-col-room{width:26%;}
+  .pv-table thead th{background:var(--ink);color:#fff;font-weight:800;font-size:12px;text-transform:uppercase;
+    letter-spacing:.03em;padding:9px 10px;border-bottom:2px solid #000;}
+  .pv-table thead th.pv-th-desc{border-left:1.5px solid rgba(255,255,255,.35);}
+  .pv-table tr.pv-room-row{background:#faf3dc;font-weight:800;border-top:2px solid #000;}
+  .pv-table tr.pv-room-row td.pv-c-room{padding:8px 10px 8px 14px;border-left:6px solid var(--gold);}
+  .pv-table tr.pv-room-row td.pv-c-desc{border-left:1.5px solid #000;}
+  .pv-table tr.pv-item-row{border-top:1.5px solid #bbb;}
+  .pv-table tr.pv-item-row.optional{background:var(--grey-opt);}
+  .pv-table tr.pv-item-row td.pv-c-desc{border-left:1.5px solid #bbb;padding:6px 10px;}
+  .pv-table tr.pv-item-row td.pv-c-desc .tag{font-size:10px;font-weight:800;background:var(--gold);color:var(--ink);padding:1px 6px;margin:0 6px;}
+  .pv-table tr.pv-footer-row{border-top:2px solid #000;}
+  .pv-table tr.pv-footer-row td.pv-c-room{padding:9px 10px;font-weight:800;background:var(--ink);color:#fff;}
+  .pv-table tr.pv-footer-row td.pv-c-desc{border-left:1.5px solid #000;padding:9px 10px;word-break:break-all;}
+
   .pv-total{border:4px solid #000;border-top:2px solid #000;background:var(--ink);color:#fff;padding:14px 18px;
     display:flex;justify-content:space-between;font-weight:800;font-size:17px;}
   .pv-total .n{color:var(--gold);font-size:19px;}

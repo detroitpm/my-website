@@ -323,33 +323,40 @@ document.getElementById("uploadSowInput").onchange = function (e) {
 };
 
 // ---- Print views (static, built fresh each time) ----
+// NOTE: the room/item grid below is a real <table> (thead/tbody/tr/td), not
+// styled divs. Third-party tools that turn an uploaded PDF into a checklist
+// (e.g. CompanyCam) read the PDF's tagged table structure to find rows to
+// convert - a div-based "fake table" prints visually the same but carries no
+// real table tags, so it comes through as one untagged block of text instead
+// of individual checkable lines. Keep this a genuine <table> for that reason.
 function buildPrintHtml(mode) {
   var total = computeTotals();
   var html = "";
   html += '<div class="pv-header">Scope of Work' + (mode === "contractor" ? " &mdash; Contractor Copy" : " &mdash; Owner Copy") + ": " + escapeHtml(sow.address || "(address not set)") + "</div>";
   html += '<div class="pv-sub">' + escapeHtml(sow.typeOfWork || "") + "</div>";
-  html += '<div class="pv-colheader"><div class="pv-c-room">Room</div><div class="pv-c-desc">Description</div></div>';
+  html += '<table class="pv-table"><colgroup><col class="pv-col-room"><col></colgroup><thead><tr><th class="pv-th-room">Room</th><th class="pv-th-desc">Description</th></tr></thead><tbody>';
 
   sow.sections.forEach(function (section) {
     var visibleItems = section.items.filter(function (it) { return (it.text || "").trim() !== ""; });
     if (!visibleItems.length) return;
-    html += '<div class="pv-room"><div class="pv-c-room">' + escapeHtml(section.room) + '</div><div class="pv-c-desc"></div></div>';
+    html += '<tr class="pv-room-row"><td class="pv-c-room">' + escapeHtml(section.room) + '</td><td class="pv-c-desc"></td></tr>';
     visibleItems.forEach(function (item) {
-      html += '<div class="pv-item' + (item.optional ? " optional" : "") + '">' +
-        '<div class="pv-c-room"></div>' +
-        '<div class="pv-c-desc">' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + escapeHtml(item.text) + "</div></div>";
+      html += '<tr class="pv-item-row' + (item.optional ? " optional" : "") + '">' +
+        '<td class="pv-c-room"></td>' +
+        '<td class="pv-c-desc">&#9744; ' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + escapeHtml(item.text) + "</td></tr>";
     });
   });
 
   var qItems = sow.questions.filter(function (q) { return (q.text || "").trim() !== ""; });
   if (qItems.length) {
-    html += '<div class="pv-room"><div class="pv-c-room">Questions</div><div class="pv-c-desc"></div></div>';
+    html += '<tr class="pv-room-row"><td class="pv-c-room">Questions</td><td class="pv-c-desc"></td></tr>';
     qItems.forEach(function (q) {
-      html += '<div class="pv-item"><div class="pv-c-room"></div><div class="pv-c-desc"><b>' + escapeHtml(q.text) + "</b> &mdash; " + escapeHtml(q.answer || "(unanswered)") + "</div></div>";
+      html += '<tr class="pv-item-row"><td class="pv-c-room"></td><td class="pv-c-desc"><b>' + escapeHtml(q.text) + "</b> &mdash; " + escapeHtml(q.answer || "(unanswered)") + "</td></tr>";
     });
   }
 
-  html += '<div class="pv-footer"><div class="pv-c-room">Pictures / Videos</div><div class="pv-c-desc">' + escapeHtml(sow.mediaLink || "none") + "</div></div>";
+  html += '<tr class="pv-footer-row"><td class="pv-c-room">Pictures / Videos</td><td class="pv-c-desc">' + escapeHtml(sow.mediaLink || "none") + "</td></tr>";
+  html += "</tbody></table>";
 
   if (mode === "contractor") {
     html += '<div class="pv-total"><span>Total (Labor)</span><span class="n">' + currency(total.contractorTotal) + "</span></div>";
