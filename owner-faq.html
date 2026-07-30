@@ -234,7 +234,8 @@
       </div>
       <div class="feecontrols">
         <span class="fclabel">Fees for this owner</span>
-        <label>Admin fee&nbsp; $<input id="admFee" type="number" min="0" step="25" value="200"></label>
+        <label>Onboarding fee&nbsp; $<input id="onbFee" type="number" min="0" step="25" value="200"></label>
+        <label>Leasing admin fee&nbsp; $<input id="leaseFee" type="number" min="0" step="25" value="200"></label>
         <label>Rent collection <input id="rentPct" type="number" min="0" step="1" value="8">%</label>
         <span class="fcnote">Maintenance stays 15%.</span>
       </div>
@@ -510,16 +511,19 @@
     sync();
   }
 
-  var admFee = document.getElementById('admFee');
+  var onbFee = document.getElementById('onbFee');
+  var leaseFee = document.getElementById('leaseFee');
   var rentPct = document.getElementById('rentPct');
   function applyFees(){
-    var a = parseInt(admFee.value, 10); if(isNaN(a) || a < 0) a = 0;
+    var o = parseInt(onbFee.value, 10); if(isNaN(o) || o < 0) o = 0;
+    var l = parseInt(leaseFee.value, 10); if(isNaN(l) || l < 0) l = 0;
     var r = parseInt(rentPct.value, 10); if(isNaN(r) || r < 0) r = 0;
-    document.getElementById('amtOnboard').textContent = '$' + a;
-    document.getElementById('amtLease').textContent = '1st mo. + $' + a;
+    document.getElementById('amtOnboard').textContent = '$' + o;
+    document.getElementById('amtLease').textContent = l > 0 ? ('1st mo. + $' + l) : '1st month’s rent';
     document.getElementById('amtRent').textContent = r + '% of rent';
   }
-  admFee.addEventListener('input', applyFees);
+  onbFee.addEventListener('input', applyFees);
+  leaseFee.addEventListener('input', applyFees);
   rentPct.addEventListener('input', applyFees);
   applyFees();
 
@@ -540,9 +544,10 @@
     cards.forEach(function(card, i){
       if(card.querySelector('input[type=checkbox]').checked) inc.push(i);
     });
-    var a = parseInt(admFee.value, 10); if(isNaN(a) || a < 0) a = 0;
+    var o = parseInt(onbFee.value, 10); if(isNaN(o) || o < 0) o = 0;
+    var l = parseInt(leaseFee.value, 10); if(isNaN(l) || l < 0) l = 0;
     var r = parseInt(rentPct.value, 10); if(isNaN(r) || r < 0) r = 0;
-    var url = location.origin + location.pathname + '?owner=1&q=' + inc.join(',') + '&a=' + a + '&r=' + r;
+    var url = location.origin + location.pathname + '?owner=1&q=' + inc.join(',') + '&o=' + o + '&l=' + l + '&r=' + r;
     var cid = parseDriveId(document.getElementById('contractLink').value);
     if(cid) url += '&c=' + cid;
     var wrap = document.getElementById('linkwrap');
@@ -584,7 +589,9 @@
   (function(){
     var params = new URLSearchParams(location.search);
     if(params.get('owner') === '1' || params.has('q')){
-      if(params.has('a')) admFee.value = params.get('a');
+      if(params.has('a')){ onbFee.value = params.get('a'); leaseFee.value = params.get('a'); }
+      if(params.has('o')) onbFee.value = params.get('o');
+      if(params.has('l')) leaseFee.value = params.get('l');
       if(params.has('r')) rentPct.value = params.get('r');
       applyFees();
       var inc = (params.get('q') || '').split(',').filter(function(x){ return x !== ''; }).map(Number);
