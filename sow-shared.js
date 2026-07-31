@@ -52,11 +52,18 @@ function computeTotals(sow) {
 // convert - a div-based "fake table" prints visually the same but carries no
 // real table tags, so it comes through as one untagged block of text instead
 // of individual checkable lines. Keep this a genuine <table> for that reason.
+// Everything renders inside a single .pv-doc frame (one outer border) rather
+// than several separately-bordered bands, and the only accent color is gold,
+// used consistently in exactly two places (the room-label stripe and the
+// total figure) - not a one-off band that shows up nowhere else.
 function buildPrintHtml(sow, mode) {
   var total = computeTotals(sow);
   var html = "";
-  html += '<div class="pv-header">Scope of Work' + (mode === "contractor" ? " &mdash; Contractor Copy" : " &mdash; Owner Copy") + ": " + escapeHtml(sow.address || "(address not set)") + "</div>";
-  html += '<div class="pv-sub">' + escapeHtml(sow.typeOfWork || "") + "</div>";
+  html += '<div class="pv-doc">';
+  html += '<div class="pv-header">';
+  html += '<div class="pv-addr">Scope of Work' + (mode === "contractor" ? " &mdash; Contractor Copy" : " &mdash; Owner Copy") + ": " + escapeHtml(sow.address || "(address not set)") + "</div>";
+  html += '<div class="pv-type">' + escapeHtml(sow.typeOfWork || "") + "</div>";
+  html += "</div>";
   html += '<table class="pv-table"><colgroup><col class="pv-col-room"><col></colgroup><thead><tr><th class="pv-th-room">Room</th><th class="pv-th-desc">Description</th></tr></thead><tbody>';
 
   sow.sections.forEach(function (section) {
@@ -70,7 +77,10 @@ function buildPrintHtml(sow, mode) {
     });
   });
 
-  var qItems = sow.questions.filter(function (q) { return (q.text || "").trim() !== ""; });
+  // Questions are internal/contractor-facing (e.g. "did you put the keys
+  // back") - not relevant to an owner reviewing the scope, so they're
+  // dropped from the Owner copy entirely.
+  var qItems = mode === "owner" ? [] : sow.questions.filter(function (q) { return (q.text || "").trim() !== ""; });
   if (qItems.length) {
     html += '<tr class="pv-room-row"><td class="pv-c-room">Questions</td><td class="pv-c-desc"></td></tr>';
     qItems.forEach(function (q) {
@@ -86,6 +96,7 @@ function buildPrintHtml(sow, mode) {
   } else {
     html += '<div class="pv-total"><span>Total (Estimate)</span><span class="n">' + currency(total.ownerTotal) + "</span></div>";
   }
+  html += "</div>";
   return html;
 }
 
@@ -93,27 +104,33 @@ function buildPrintHtml(sow, mode) {
 // Used to build a standalone HTML page for the server-side (headless Chrome)
 // PDF render in send-to-companycam.js. If you change the print styling in
 // sow.html, mirror the change here too - see PRINT_CSS's callers.
+// One outer frame (.pv-doc), one structural line color (#000, for section
+// boundaries) and one soft line color (--line-soft, for item rows) - not a
+// mix of #999/#bbb/#ccc. Gold shows up in exactly two places: the room-label
+// stripe and the total figure. Nowhere else picks up a stray accent color.
 var PRINT_CSS = [
-  ':root{ --ink:#1a1a1a; --gold:#d4af37; --gold-ink:#8a6d16; --muted:#6b6b6b; --line:#e5e4e1; --panel:#f5f4f1; --paper:#ffffff; --grey-opt:#e9e7e1; --sans:Arial,Helvetica,sans-serif; }',
+  ':root{ --ink:#1a1a1a; --gold:#d4af37; --gold-ink:#8a6d16; --muted:#6b6b6b; --line:#e5e4e1; --line-soft:#d3d3d3; --panel:#f5f4f1; --paper:#ffffff; --grey-opt:#e9e7e1; --sans:Arial,Helvetica,sans-serif; }',
   '*{box-sizing:border-box;} body{margin:0;background:#fff;color:var(--ink);font-family:var(--sans);font-size:16px;}',
-  '.pv-header{background:var(--ink);color:#fff;padding:14px 18px;font-weight:800;font-size:19px;letter-spacing:.01em;border:4px solid #000;border-bottom:3px solid var(--gold);}',
-  '.pv-sub{background:var(--gold);color:var(--ink);padding:9px 18px;font-size:13.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-left:4px solid #000;border-right:4px solid #000;}',
-  '.pv-table{width:100%;border-collapse:collapse;table-layout:fixed;border:4px solid #000;}',
+  '.pv-doc{border:4px solid #000;}',
+  '.pv-header{background:var(--ink);color:#fff;padding:16px 18px 14px;}',
+  '.pv-header .pv-addr{font-weight:800;font-size:19px;letter-spacing:.01em;}',
+  '.pv-header .pv-type{margin-top:5px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);}',
+  '.pv-table{width:100%;border-collapse:collapse;table-layout:fixed;}',
   '.pv-table th, .pv-table td{text-align:left;vertical-align:top;}',
   '.pv-table col.pv-col-room{width:26%;}',
-  '.pv-table thead th{background:var(--ink);color:#fff;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.03em;padding:9px 10px;border-bottom:2px solid #000;}',
-  '.pv-table thead th.pv-th-desc{border-left:1.5px solid rgba(255,255,255,.35);}',
-  '.pv-table tr.pv-room-row{background:#faf3dc;font-weight:800;border-top:2px solid #000;}',
-  '.pv-table tr.pv-room-row td.pv-c-room{padding:8px 10px 8px 14px;border-left:6px solid var(--gold);}',
+  '.pv-table thead th{background:var(--ink);color:#fff;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.03em;padding:9px 10px;border-top:2px solid #000;}',
+  '.pv-table thead th.pv-th-desc{border-left:1.5px solid rgba(255,255,255,.3);}',
+  '.pv-table tr.pv-room-row{background:#fff;font-weight:800;border-top:2px solid #000;}',
+  '.pv-table tr.pv-room-row td.pv-c-room{padding:8px 10px 8px 14px;border-left:5px solid var(--gold);}',
   '.pv-table tr.pv-room-row td.pv-c-desc{border-left:1.5px solid #000;}',
-  '.pv-table tr.pv-item-row{border-top:1.5px solid #bbb;}',
+  '.pv-table tr.pv-item-row{border-top:1px solid var(--line-soft);}',
   '.pv-table tr.pv-item-row.optional{background:var(--grey-opt);}',
-  '.pv-table tr.pv-item-row td.pv-c-desc{border-left:1.5px solid #bbb;padding:6px 10px;}',
+  '.pv-table tr.pv-item-row td.pv-c-desc{border-left:1.5px solid var(--line-soft);padding:6px 10px;}',
   '.pv-table tr.pv-item-row td.pv-c-desc .tag{font-size:10px;font-weight:800;background:var(--gold);color:var(--ink);padding:1px 6px;margin:0 6px;}',
   '.pv-table tr.pv-footer-row{border-top:2px solid #000;}',
   '.pv-table tr.pv-footer-row td.pv-c-room{padding:9px 10px;font-weight:800;background:var(--ink);color:#fff;}',
   '.pv-table tr.pv-footer-row td.pv-c-desc{border-left:1.5px solid #000;padding:9px 10px;word-break:break-all;}',
-  '.pv-total{border:4px solid #000;border-top:2px solid #000;background:var(--ink);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;font-weight:800;font-size:17px;}',
+  '.pv-total{border-top:4px solid #000;background:var(--ink);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;font-weight:800;font-size:17px;}',
   '.pv-total .n{color:var(--gold);font-size:19px;}'
 ].join("\n");
 
