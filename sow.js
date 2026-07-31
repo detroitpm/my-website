@@ -16,6 +16,21 @@ var DEFAULT_SOW = {
   questions: []
 };
 
+// A failed function call's JSON body isn't always shaped the way our own
+// functions shape it ({error: "..."}) - a platform-level crash (e.g. the
+// function throwing before it reaches its own try/catch) comes back as
+// {errorMessage: "...", errorType: "...", trace: [...]} instead, which
+// used to fall through to a useless "unknown error". Check both shapes and
+// fall back to the HTTP status so there's always something to go on.
+function extractErrorMessage(result) {
+  var data = result.data;
+  if (data) {
+    if (data.error) return data.error;
+    if (data.errorMessage) return data.errorMessage;
+  }
+  return "HTTP " + (result.status || "?");
+}
+
 // ---- URL state encoding ----
 function encodeState(sow) {
   var json = JSON.stringify(sow);
@@ -316,7 +331,7 @@ document.getElementById("saveSowBtn").onclick = function () {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ sow: sow })
   })
-    .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+    .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, status: r.status, data: data }; }); })
     .then(function (result) {
       btn.disabled = false;
       if (result.ok) {
@@ -324,7 +339,7 @@ document.getElementById("saveSowBtn").onclick = function () {
         status.className = "sendstatus ok";
         refreshSowList();
       } else {
-        status.textContent = "Failed: " + (result.data && result.data.error ? result.data.error : "unknown error");
+        status.textContent = "Failed: " + extractErrorMessage(result);
         status.className = "sendstatus err";
       }
     })
@@ -485,14 +500,14 @@ document.getElementById("sendCCBtn").onclick = function () {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ projectId: projectId, sow: sow })
   })
-    .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+    .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, status: r.status, data: data }; }); })
     .then(function (result) {
       btn.disabled = false;
       if (result.ok) {
         status.textContent = "Sent to CompanyCam Files.";
         status.className = "sendstatus ok";
       } else {
-        status.textContent = "Failed: " + (result.data && result.data.error ? result.data.error : "unknown error");
+        status.textContent = "Failed: " + extractErrorMessage(result);
         status.className = "sendstatus err";
       }
     })

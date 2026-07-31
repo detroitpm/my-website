@@ -21,10 +21,10 @@ exports.handler = async function (event) {
     return { statusCode: 400, body: JSON.stringify({ error: "sow.address is required" }) };
   }
 
-  const db = getDatabase();
   const addressKey = normalizeKey(sow.address);
 
   try {
+    const db = getDatabase();
     const [row] = await db.sql`
       INSERT INTO sows (address_key, address, type_of_work, media_link, buffer_pct, sections, questions, updated_at)
       VALUES (

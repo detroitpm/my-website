@@ -7,8 +7,8 @@ exports.handler = async function (event) {
     return { statusCode: 405, body: JSON.stringify({ error: "Method not allowed" }) };
   }
 
-  const db = getDatabase();
   try {
+    const db = getDatabase();
     const rows = await db.sql`
       SELECT id, address, updated_at FROM sows ORDER BY updated_at DESC LIMIT 200
     `;

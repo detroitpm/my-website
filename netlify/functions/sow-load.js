@@ -12,8 +12,8 @@ exports.handler = async function (event) {
     return { statusCode: 400, body: JSON.stringify({ error: "id query param is required" }) };
   }
 
-  const db = getDatabase();
   try {
+    const db = getDatabase();
     const rows = await db.sql`
       SELECT address, type_of_work, media_link, buffer_pct, sections, questions
       FROM sows WHERE id = ${id}

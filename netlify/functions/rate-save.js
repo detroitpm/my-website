@@ -27,10 +27,10 @@ exports.handler = async function (event) {
     return { statusCode: 200, body: JSON.stringify({ ok: true, skipped: true }) };
   }
 
-  const db = getDatabase();
   const taskKey = normalizeKey(text);
 
   try {
+    const db = getDatabase();
     await db.sql`
       INSERT INTO rate_items (task_key, task_text, labor, material, updated_at)
       VALUES (${taskKey}, ${text}, ${payload.labor}, ${payload.material}, NOW())
