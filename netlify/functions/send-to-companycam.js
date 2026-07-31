@@ -26,7 +26,12 @@
 // cold start instead, keeping the deployed function small at the cost of a
 // few extra seconds on a cold start. Keep CHROMIUM_PACK_URL's version number
 // in sync with the @sparticuz/chromium-min version in package.json.
-const chromium = require("@sparticuz/chromium-min");
+// @sparticuz/chromium-min ships as a pure ESM package ("type": "module",
+// `export default Chromium`). require()-ing an ESM module gets you the
+// module namespace object ({ default: Chromium, ... }), not Chromium
+// itself - hence the `.default`. Omitting it is what caused the deployed
+// "chromium.executablePath is not a function" error.
+const chromium = require("@sparticuz/chromium-min").default;
 const puppeteer = require("puppeteer-core");
 const { buildStandalonePrintPage } = require("../../sow-shared.js");
 
@@ -90,11 +95,13 @@ exports.handler = async function (event) {
 
 async function buildContractorPdf(sow) {
   const html = buildStandalonePrintPage(sow, "contractor");
+  // v149 of @sparticuz/chromium-min has no defaultViewport/headless
+  // properties (older versions did) - set headless explicitly rather than
+  // pass through a property that no longer exists on this package.
   const browser = await puppeteer.launch({
     args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath(CHROMIUM_PACK_URL),
-    headless: chromium.headless
+    headless: true
   });
   try {
     const page = await browser.newPage();
