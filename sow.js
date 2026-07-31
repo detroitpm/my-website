@@ -55,6 +55,40 @@ function pushStateToUrl() {
   history.replaceState(null, "", url);
 }
 
+// ---- Rate cache (exact-match price auto-fill) ----
+// Fetched once on load into a plain object keyed by normalizeKey(taskText)
+// -> {labor, material}, so matching a line item's text is a local lookup,
+// not a network call per keystroke/blur.
+var ratesCache = {};
+
+function loadRatesCache() {
+  return fetch("/.netlify/functions/rates-list")
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      ratesCache = {};
+      (data.rates || []).forEach(function (r) {
+        ratesCache[r.taskKey] = { labor: r.labor, material: r.material };
+      });
+    })
+    .catch(function () { /* no rate data yet, or offline - fine, just no auto-fill */ });
+}
+
+// Fills any item that has no price yet but whose text exactly matches a
+// cached rate. Mutates sow in place; caller is responsible for re-rendering.
+function autofillAllFromRates() {
+  var changed = false;
+  sow.sections.forEach(function (section) {
+    section.items.forEach(function (item) {
+      if (item.labor != null || item.material != null) return;
+      var match = ratesCache[normalizeKey(item.text)];
+      if (!match) return;
+      if (match.labor != null) { item.labor = match.labor; changed = true; }
+      if (match.material != null) { item.material = match.material; changed = true; }
+    });
+  });
+  return changed;
+}
+
 // ---- Builder (editable) view ----
 function autoGrow(el) {
   el.style.height = "auto";
@@ -149,6 +183,19 @@ function attachBuilderListeners() {
       autoGrow(e.target);
       pushStateToUrl();
     };
+    // On blur (done typing this line), check whether the finished text
+    // exactly matches a known rate and pre-fill its price if so.
+    el.onblur = function (e) {
+      var item = sow.sections[e.target.dataset.s].items[e.target.dataset.i];
+      if (item.labor == null && item.material == null) {
+        var match = ratesCache[normalizeKey(item.text)];
+        if (match) {
+          if (match.labor != null) item.labor = match.labor;
+          if (match.material != null) item.material = match.material;
+          renderBuilder();
+        }
+      }
+    };
   });
 
   document.querySelectorAll(".price").forEach(function (el) {
@@ -161,6 +208,21 @@ function attachBuilderListeners() {
       var subtotalEl = document.querySelector('.room-subtotal[data-s="' + s + '"]');
       if (subtotalEl) subtotalEl.textContent = currency(computeRoomSubtotal(sow.sections[s]));
       pushStateToUrl();
+    };
+    // On blur (done entering this price), remember it in the rate table -
+    // "each line I enter gets stored" happens live, not just on explicit save.
+    el.onblur = function (e) {
+      var s = e.target.dataset.s, i = e.target.dataset.i;
+      var item = sow.sections[s].items[i];
+      var text = (item.text || "").trim();
+      if (!text || (item.labor == null && item.material == null)) return;
+      fetch("/.netlify/functions/rate-save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text, labor: item.labor, material: item.material })
+      }).then(function () {
+        ratesCache[normalizeKey(text)] = { labor: item.labor, material: item.material };
+      }).catch(function () { /* background save - fine to silently drop */ });
     };
   });
 
@@ -215,6 +277,84 @@ document.getElementById("addRoomBtn").onclick = function () {
 document.getElementById("addQuestionBtn").onclick = function () {
   sow.questions.push({ text: "", answer: "" });
   renderBuilder();
+};
+
+// ---- Save / load SOWs from the database ----
+function refreshSowList() {
+  var select = document.getElementById("loadSowSelect");
+  return fetch("/.netlify/functions/sow-list")
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var current = select.value;
+      select.innerHTML = '<option value="">Load previous SOW&hellip;</option>';
+      (data.sows || []).forEach(function (row) {
+        var opt = document.createElement("option");
+        opt.value = row.id;
+        var d = new Date(row.updated_at);
+        opt.textContent = row.address + " (" + (d.toString() !== "Invalid Date" ? d.toLocaleDateString() : "") + ")";
+        select.appendChild(opt);
+      });
+      select.value = current;
+    })
+    .catch(function () { /* list unavailable - dropdown just stays empty, not fatal */ });
+}
+
+document.getElementById("saveSowBtn").onclick = function () {
+  var status = document.getElementById("saveStatus");
+  if (!sow.address || !sow.address.trim()) {
+    status.textContent = "Enter a property address before saving.";
+    status.className = "sendstatus err";
+    return;
+  }
+  var btn = document.getElementById("saveSowBtn");
+  btn.disabled = true;
+  status.textContent = "Saving...";
+  status.className = "sendstatus";
+
+  fetch("/.netlify/functions/sow-save", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sow: sow })
+  })
+    .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+    .then(function (result) {
+      btn.disabled = false;
+      if (result.ok) {
+        status.textContent = "Saved. It'll show up in “Load previous SOW”.";
+        status.className = "sendstatus ok";
+        refreshSowList();
+      } else {
+        status.textContent = "Failed: " + (result.data && result.data.error ? result.data.error : "unknown error");
+        status.className = "sendstatus err";
+      }
+    })
+    .catch(function (err) {
+      btn.disabled = false;
+      status.textContent = "Failed: " + err.message;
+      status.className = "sendstatus err";
+    });
+};
+
+document.getElementById("loadSowSelect").onchange = function (e) {
+  var id = e.target.value;
+  if (!id) return;
+  if (sow.sections.length && !confirm("This will replace everything currently in the editor. Continue?")) {
+    e.target.value = "";
+    return;
+  }
+  fetch("/.netlify/functions/sow-load?id=" + encodeURIComponent(id))
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data.sow) throw new Error(data.error || "Not found");
+      sow = data.sow;
+      autofillAllFromRates();
+      renderBuilder();
+      e.target.value = "";
+    })
+    .catch(function (err) {
+      alert("Couldn't load that SOW: " + err.message);
+      e.target.value = "";
+    });
 };
 
 // ---- Upload a SOW file (e.g. one produced by the /build-sow skill) ----
@@ -275,6 +415,7 @@ document.getElementById("uploadSowInput").onchange = function (e) {
         return { text: q.text || "", answer: q.answer || "" };
       }) : JSON.parse(JSON.stringify(DEFAULT_SOW.questions))
     };
+    autofillAllFromRates();
     status.textContent = "Loaded “" + (sow.address || "SOW") + "” — " + sow.sections.length + " rooms. Fill in prices, then download or send.";
     status.className = "sendstatus ok";
     renderBuilder();
@@ -363,3 +504,7 @@ document.getElementById("sendCCBtn").onclick = function () {
 };
 
 renderBuilder();
+refreshSowList();
+loadRatesCache().then(function () {
+  if (autofillAllFromRates()) renderBuilder();
+});

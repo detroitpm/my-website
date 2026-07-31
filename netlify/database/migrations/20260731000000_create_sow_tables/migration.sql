@@ -1,0 +1,29 @@
+-- Saved Scopes of Work, one row per property address (upserted, not
+-- versioned - "last save wins" for the address, matching how the rate
+-- table below also treats new entries).
+CREATE TABLE sows (
+  id SERIAL PRIMARY KEY,
+  address_key TEXT UNIQUE NOT NULL,
+  address TEXT NOT NULL,
+  type_of_work TEXT,
+  media_link TEXT,
+  buffer_pct NUMERIC,
+  sections JSONB NOT NULL DEFAULT '[]',
+  questions JSONB NOT NULL DEFAULT '[]',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX sows_updated_at_idx ON sows (updated_at DESC);
+
+-- Price lookup, one row per distinct line-item task (exact text match,
+-- normalized via task_key = lowercased/trimmed task_text). Whenever a price
+-- is entered for a matching line item elsewhere in the app, this gets
+-- upserted - last price entered wins.
+CREATE TABLE rate_items (
+  id SERIAL PRIMARY KEY,
+  task_key TEXT UNIQUE NOT NULL,
+  task_text TEXT NOT NULL,
+  labor NUMERIC,
+  material NUMERIC,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

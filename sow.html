@@ -33,6 +33,9 @@
   .btn.primary:hover{background:#c39f2c;}
   .btn.small{padding:6px 10px;font-size:12.5px;}
   .btn:disabled{opacity:.5;cursor:default;}
+  .bbtns select{font-family:var(--sans);font-size:13.5px;padding:10px 15px;border-radius:0;
+    border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;line-height:1;font-weight:700;
+    max-width:220px;}
 
   .jobcard{background:var(--panel);border:1px solid var(--line);padding:16px 18px;margin-bottom:18px;}
   .jobcard-hint{margin:0 0 4px;font-size:12.5px;color:var(--muted);}
@@ -178,6 +181,10 @@
   <div class="builder no-print" id="builder">
     <div class="builder-inner">
       <div class="bbtns">
+        <select id="loadSowSelect">
+          <option value="">Load previous SOW&hellip;</option>
+        </select>
+        <button class="btn" id="saveSowBtn">Save SOW</button>
         <button class="btn" id="uploadSowBtn">Upload SOW file</button>
         <input type="file" id="uploadSowInput" accept="application/json,.json" style="display:none;">
         <button class="btn" id="addRoomBtn">+ Add room</button>
@@ -190,6 +197,7 @@
         <p class="linkhint" id="linkHint">Link copied.</p>
         <input class="linkout" id="linkOut" type="text" readonly onclick="this.select()">
       </div>
+      <div class="sendstatus" id="saveStatus"></div>
       <div class="sendstatus" id="sendStatus"></div>
       <div class="sendstatus" id="uploadStatus"></div>
     </div>

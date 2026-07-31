@@ -20,6 +20,14 @@ function currency(n) {
   return sign + "$" + s;
 }
 
+// Exact-match key for both the saved-SOW lookup (by address) and the rate
+// lookup (by line-item task text). Used identically client-side (building
+// the in-memory rate cache) and server-side (the DB's unique key column),
+// so a given string always maps to the same row on both ends.
+function normalizeKey(s) {
+  return (s || "").toLowerCase().trim().replace(/\s+/g, " ");
+}
+
 function computeRoomSubtotal(section) {
   var subtotal = 0;
   section.items.forEach(function (item) {
@@ -147,6 +155,7 @@ if (typeof module !== "undefined" && module.exports) {
     currency: currency,
     computeRoomSubtotal: computeRoomSubtotal,
     computeTotals: computeTotals,
+    normalizeKey: normalizeKey,
     buildPrintHtml: buildPrintHtml,
     buildStandalonePrintPage: buildStandalonePrintPage,
     PRINT_CSS: PRINT_CSS
