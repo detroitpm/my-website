@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Static site for section8pm.com, plus one Netlify Function for the SOW builder's CompanyCam upload.",
   "dependencies": {
-    "pdf-lib": "^1.17.1"
+    "@sparticuz/chromium-min": "^149.0.0",
+    "puppeteer-core": "^23.11.1"
   }
 }

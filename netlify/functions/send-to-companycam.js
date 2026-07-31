@@ -1,15 +1,36 @@
-// Builds a simple PDF of the Contractor Copy and attaches it to the
-// CompanyCam project it came from. The CompanyCam API key lives only in
-// this server-side function (COMPANYCAM_API_KEY env var) — it is never
-// sent to the browser.
+// Builds the Contractor Copy PDF and attaches it to the CompanyCam project
+// it came from. The CompanyCam API key lives only in this server-side
+// function (COMPANYCAM_API_KEY env var) - it is never sent to the browser.
+//
+// The PDF is rendered with real headless Chrome (via puppeteer-core +
+// @sparticuz/chromium), reusing the exact same buildPrintHtml()/PRINT_CSS
+// from sow-shared.js that the "Download Contractor/Owner Copy" buttons use
+// in the browser. This matters: CompanyCam's PDF-to-checklist importer reads
+// the PDF's tagged table structure to find rows to convert. A hand-drawn PDF
+// (this function used to build one line-by-line with pdf-lib) has no table
+// tags at all, so CompanyCam only saw one untagged block of bullet text per
+// room. Real <table> markup, printed through Chrome's own print pipeline,
+// comes out with actual /Table /TR /TD structure tags - verified by
+// inspecting the PDF's object structure after a manual test print.
 //
 // NOTE: CompanyCam's public docs don't show the exact request-body schema
 // for POST /v2/projects/{id}/documents (it's rendered client-side on their
 // docs site). This implementation is a best-effort based on their other
 // endpoints' conventions. If CompanyCam rejects the shape, the error
-// message it returns will say which field it expected — adjust from there.
+// message it returns will say which field it expected - adjust from there.
 
-const { PDFDocument, StandardFonts, rgb } = require("pdf-lib");
+// @sparticuz/chromium-min (not the full @sparticuz/chromium) - the full
+// package bundles a ~60MB Chromium binary directly into the function, which
+// risks exceeding Netlify/Lambda's ~50MB compressed function size limit. The
+// -min variant downloads the browser from Sparticuz's GitHub release at
+// cold start instead, keeping the deployed function small at the cost of a
+// few extra seconds on a cold start. Keep CHROMIUM_PACK_URL's version number
+// in sync with the @sparticuz/chromium-min version in package.json.
+const chromium = require("@sparticuz/chromium-min");
+const puppeteer = require("puppeteer-core");
+const { buildStandalonePrintPage } = require("../../sow-shared.js");
+
+const CHROMIUM_PACK_URL = "https://github.com/Sparticuz/chromium/releases/download/v149.0.0/chromium-v149.0.0-pack.x64.tar";
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {
@@ -68,78 +89,18 @@ exports.handler = async function (event) {
 };
 
 async function buildContractorPdf(sow) {
-  const doc = await PDFDocument.create();
-  const font = await doc.embedFont(StandardFonts.Helvetica);
-  const bold = await doc.embedFont(StandardFonts.HelveticaBold);
-
-  const pageW = 612, pageH = 792;
-  const margin = 48;
-  let page = doc.addPage([pageW, pageH]);
-  let y = pageH - margin;
-
-  function ensureRoom(lines) {
-    if (y - lines * 14 < margin) {
-      page = doc.addPage([pageW, pageH]);
-      y = pageH - margin;
-    }
-  }
-
-  function drawText(text, opts) {
-    opts = opts || {};
-    const size = opts.size || 11;
-    const f = opts.bold ? bold : font;
-    const maxWidth = pageW - margin * 2 - (opts.indent || 0);
-    const words = String(text).split(" ");
-    let line = "";
-    const lines = [];
-    words.forEach(function (w) {
-      const test = line ? line + " " + w : w;
-      if (f.widthOfTextAtSize(test, size) > maxWidth && line) {
-        lines.push(line);
-        line = w;
-      } else {
-        line = test;
-      }
-    });
-    if (line) lines.push(line);
-    ensureRoom(lines.length);
-    lines.forEach(function (l) {
-      page.drawText(l, { x: margin + (opts.indent || 0), y: y, size: size, font: f, color: opts.color || rgb(0, 0, 0) });
-      y -= size + 4;
-    });
-  }
-
-  drawText("Scope of Work — Contractor Copy", { size: 16, bold: true });
-  drawText(sow.address || "(address not set)", { size: 13, bold: true });
-  drawText(sow.typeOfWork || "", { size: 11, color: rgb(0.35, 0.35, 0.35) });
-  y -= 8;
-
-  let laborTotal = 0;
-  (sow.sections || []).forEach(function (section) {
-    const items = (section.items || []).filter(function (it) { return (it.text || "").trim() !== ""; });
-    if (!items.length) return;
-    y -= 4;
-    drawText(section.room, { size: 12.5, bold: true });
-    items.forEach(function (item) {
-      const prefix = item.optional ? "(optional) " : "• ";
-      drawText(prefix + item.text, { size: 11, indent: 14, color: item.optional ? rgb(0.45, 0.45, 0.45) : rgb(0, 0, 0) });
-      if (!item.optional) laborTotal += Number(item.labor) || 0;
-    });
+  const html = buildStandalonePrintPage(sow, "contractor");
+  const browser = await puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(CHROMIUM_PACK_URL),
+    headless: chromium.headless
   });
-
-  const qItems = (sow.questions || []).filter(function (q) { return (q.text || "").trim() !== ""; });
-  if (qItems.length) {
-    y -= 4;
-    drawText("Questions", { size: 12.5, bold: true });
-    qItems.forEach(function (q) {
-      drawText(q.text + " — " + (q.answer || "(unanswered)"), { size: 11, indent: 14 });
-    });
+  try {
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: "networkidle0" });
+    return await page.pdf({ format: "Letter", printBackground: true });
+  } finally {
+    await browser.close();
   }
-
-  y -= 4;
-  drawText("Pictures / Videos: " + (sow.mediaLink || "none"), { size: 10.5, color: rgb(0.35, 0.35, 0.35) });
-  y -= 10;
-  drawText("Total (Labor): $" + laborTotal.toFixed(2), { size: 13, bold: true });
-
-  return doc.save();
 }

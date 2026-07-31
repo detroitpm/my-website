@@ -1,6 +1,11 @@
 // Scope of Work Builder — vanilla JS, no build step, no backend except the
 // one CompanyCam upload function. State lives entirely in the page's own URL
 // (same trick as owner-faq.html's link-copy feature), so there is no database.
+//
+// escapeHtml/currency/computeTotals/computeRoomSubtotal/buildPrintHtml now
+// live in sow-shared.js (loaded before this file) so the server-side
+// "Send to CompanyCam Files" function can reuse the exact same PDF-building
+// logic instead of drifting out of sync with it.
 
 var DEFAULT_SOW = {
   address: "",
@@ -10,20 +15,6 @@ var DEFAULT_SOW = {
   sections: [],
   questions: []
 };
-
-function escapeHtml(s) {
-  return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-
-function currency(n) {
-  var num = Number(n);
-  if (isNaN(num)) num = 0;
-  var sign = num < 0 ? "-" : "";
-  num = Math.abs(num);
-  var s = num.toFixed(2);
-  if (s.endsWith(".00")) s = s.slice(0, -3);
-  return sign + "$" + s;
-}
 
 // ---- URL state encoding ----
 function encodeState(sow) {
@@ -62,32 +53,6 @@ function currentUrlWithState() {
 function pushStateToUrl() {
   var url = currentUrlWithState();
   history.replaceState(null, "", url);
-}
-
-// ---- Totals ----
-function computeRoomSubtotal(section) {
-  var subtotal = 0;
-  section.items.forEach(function (item) {
-    if (item.optional) return;
-    subtotal += (Number(item.labor) || 0) + (Number(item.material) || 0);
-  });
-  return subtotal;
-}
-
-function computeTotals() {
-  var labor = 0, materialPlusLabor = 0;
-  sow.sections.forEach(function (section) {
-    section.items.forEach(function (item) {
-      if (item.optional) return;
-      var l = Number(item.labor) || 0;
-      var m = Number(item.material) || 0;
-      labor += l;
-      materialPlusLabor += l + m;
-    });
-  });
-  var bufferPct = Number(sow.bufferPct) || 0;
-  var ownerTotal = materialPlusLabor * (1 + bufferPct / 100);
-  return { contractorTotal: labor, ownerTotal: ownerTotal };
 }
 
 // ---- Builder (editable) view ----
@@ -142,7 +107,7 @@ function renderBuilder() {
     ? '<a href="' + escapeHtml(sow.mediaLink) + '" target="_blank" rel="noopener">' + escapeHtml(sow.mediaLink) + "</a>"
     : '<span style="color:#999;">none yet</span>';
 
-  var totals = computeTotals();
+  var totals = computeTotals(sow);
   document.getElementById("contractorTotalDisplay").textContent = currency(totals.contractorTotal);
   document.getElementById("ownerTotalDisplay").textContent = currency(totals.ownerTotal);
 
@@ -190,7 +155,7 @@ function attachBuilderListeners() {
     el.oninput = function (e) {
       var s = e.target.dataset.s, i = e.target.dataset.i, f = e.target.dataset.field;
       sow.sections[s].items[i][f] = e.target.value === "" ? null : Number(e.target.value);
-      var totals = computeTotals();
+      var totals = computeTotals(sow);
       document.getElementById("contractorTotalDisplay").textContent = currency(totals.contractorTotal);
       document.getElementById("ownerTotalDisplay").textContent = currency(totals.ownerTotal);
       var subtotalEl = document.querySelector('.room-subtotal[data-s="' + s + '"]');
@@ -323,51 +288,9 @@ document.getElementById("uploadSowInput").onchange = function (e) {
 };
 
 // ---- Print views (static, built fresh each time) ----
-// NOTE: the room/item grid below is a real <table> (thead/tbody/tr/td), not
-// styled divs. Third-party tools that turn an uploaded PDF into a checklist
-// (e.g. CompanyCam) read the PDF's tagged table structure to find rows to
-// convert - a div-based "fake table" prints visually the same but carries no
-// real table tags, so it comes through as one untagged block of text instead
-// of individual checkable lines. Keep this a genuine <table> for that reason.
-function buildPrintHtml(mode) {
-  var total = computeTotals();
-  var html = "";
-  html += '<div class="pv-header">Scope of Work' + (mode === "contractor" ? " &mdash; Contractor Copy" : " &mdash; Owner Copy") + ": " + escapeHtml(sow.address || "(address not set)") + "</div>";
-  html += '<div class="pv-sub">' + escapeHtml(sow.typeOfWork || "") + "</div>";
-  html += '<table class="pv-table"><colgroup><col class="pv-col-room"><col></colgroup><thead><tr><th class="pv-th-room">Room</th><th class="pv-th-desc">Description</th></tr></thead><tbody>';
-
-  sow.sections.forEach(function (section) {
-    var visibleItems = section.items.filter(function (it) { return (it.text || "").trim() !== ""; });
-    if (!visibleItems.length) return;
-    html += '<tr class="pv-room-row"><td class="pv-c-room">' + escapeHtml(section.room) + '</td><td class="pv-c-desc"></td></tr>';
-    visibleItems.forEach(function (item) {
-      html += '<tr class="pv-item-row' + (item.optional ? " optional" : "") + '">' +
-        '<td class="pv-c-room"></td>' +
-        '<td class="pv-c-desc">&#9744; ' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + escapeHtml(item.text) + "</td></tr>";
-    });
-  });
-
-  var qItems = sow.questions.filter(function (q) { return (q.text || "").trim() !== ""; });
-  if (qItems.length) {
-    html += '<tr class="pv-room-row"><td class="pv-c-room">Questions</td><td class="pv-c-desc"></td></tr>';
-    qItems.forEach(function (q) {
-      html += '<tr class="pv-item-row"><td class="pv-c-room"></td><td class="pv-c-desc"><b>' + escapeHtml(q.text) + "</b> &mdash; " + escapeHtml(q.answer || "(unanswered)") + "</td></tr>";
-    });
-  }
-
-  html += '<tr class="pv-footer-row"><td class="pv-c-room">Pictures / Videos</td><td class="pv-c-desc">' + escapeHtml(sow.mediaLink || "none") + "</td></tr>";
-  html += "</tbody></table>";
-
-  if (mode === "contractor") {
-    html += '<div class="pv-total"><span>Total (Labor)</span><span class="n">' + currency(total.contractorTotal) + "</span></div>";
-  } else {
-    html += '<div class="pv-total"><span>Total (Estimate)</span><span class="n">' + currency(total.ownerTotal) + "</span></div>";
-  }
-  return html;
-}
-
+// buildPrintHtml lives in sow-shared.js - see the note there.
 function downloadCopy(mode) {
-  document.getElementById("printView").innerHTML = buildPrintHtml(mode);
+  document.getElementById("printView").innerHTML = buildPrintHtml(sow, mode);
   document.title = (mode === "contractor" ? "Contractor Copy - " : "Owner Copy - ") + (sow.address || "SOW");
   document.body.dataset.printing = mode;
   window.print();
