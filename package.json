@@ -2,9 +2,9 @@
   "name": "section8pm-website",
   "private": true,
   "version": "1.0.0",
-  "description": "Static site for section8pm.com, plus Netlify Functions for the SOW builder's CompanyCam upload and its saved-SOWs/rate-table database.",
+  "description": "Static site for section8pm.com, plus Netlify Functions for the SOW builder's CompanyCam upload and its saved-SOWs/rate-table database (Supabase Postgres).",
   "dependencies": {
-    "@netlify/database": "^1.1.0",
+    "pg": "^8.13.0",
     "@sparticuz/chromium-min": "^149.0.0",
     "puppeteer-core": "^23.11.1"
   }

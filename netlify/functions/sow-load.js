@@ -1,6 +1,6 @@
 // Loads one full saved SOW by id, shaped to match the front-end's `sow`
 // object exactly so it can be dropped in as-is.
-const { getDatabase } = require("@netlify/database");
+const { getPool } = require("../../db.js");
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "GET") {
@@ -13,11 +13,12 @@ exports.handler = async function (event) {
   }
 
   try {
-    const db = getDatabase();
-    const rows = await db.sql`
-      SELECT address, type_of_work, media_link, buffer_pct, sections, questions
-      FROM sows WHERE id = ${id}
-    `;
+    const pool = getPool();
+    const { rows } = await pool.query(
+      `SELECT address, type_of_work, media_link, buffer_pct, sections, questions
+       FROM sows WHERE id = $1`,
+      [id]
+    );
     if (!rows.length) {
       return { statusCode: 404, body: JSON.stringify({ error: "Not found" }) };
     }

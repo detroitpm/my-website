@@ -1,7 +1,7 @@
 // Returns the entire rate table for the browser to cache client-side, so
 // price auto-fill (exact match on line-item text) doesn't need a network
 // round trip per line item - just one fetch on page load.
-const { getDatabase } = require("@netlify/database");
+const { getPool } = require("../../db.js");
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "GET") {
@@ -9,10 +9,8 @@ exports.handler = async function (event) {
   }
 
   try {
-    const db = getDatabase();
-    const rows = await db.sql`
-      SELECT task_key, task_text, labor, material FROM rate_items
-    `;
+    const pool = getPool();
+    const { rows } = await pool.query(`SELECT task_key, task_text, labor, material FROM rate_items`);
     return {
       statusCode: 200,
       body: JSON.stringify({

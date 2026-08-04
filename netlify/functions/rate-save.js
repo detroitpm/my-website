@@ -4,7 +4,7 @@
 // field that was actually provided (COALESCE keeps the other one intact),
 // so blurring an empty Labor field doesn't wipe out a previously-recorded
 // Material price for the same task, or vice versa.
-const { getDatabase } = require("@netlify/database");
+const { getPool } = require("../../db.js");
 const { normalizeKey } = require("../../sow-shared.js");
 
 exports.handler = async function (event) {
@@ -30,16 +30,17 @@ exports.handler = async function (event) {
   const taskKey = normalizeKey(text);
 
   try {
-    const db = getDatabase();
-    await db.sql`
-      INSERT INTO rate_items (task_key, task_text, labor, material, updated_at)
-      VALUES (${taskKey}, ${text}, ${payload.labor}, ${payload.material}, NOW())
-      ON CONFLICT (task_key) DO UPDATE SET
-        task_text = EXCLUDED.task_text,
-        labor = COALESCE(EXCLUDED.labor, rate_items.labor),
-        material = COALESCE(EXCLUDED.material, rate_items.material),
-        updated_at = NOW()
-    `;
+    const pool = getPool();
+    await pool.query(
+      `INSERT INTO rate_items (task_key, task_text, labor, material, updated_at)
+       VALUES ($1, $2, $3, $4, NOW())
+       ON CONFLICT (task_key) DO UPDATE SET
+         task_text = EXCLUDED.task_text,
+         labor = COALESCE(EXCLUDED.labor, rate_items.labor),
+         material = COALESCE(EXCLUDED.material, rate_items.material),
+         updated_at = NOW()`,
+      [taskKey, text, payload.labor, payload.material]
+    );
     return { statusCode: 200, body: JSON.stringify({ ok: true }) };
   } catch (err) {
     return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
