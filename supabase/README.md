@@ -31,3 +31,11 @@ two-step process every time:
 **Connection:** the live connection string lives only in Netlify's
 environment variables as `SUPABASE_DB_URL` (Site settings → Environment
 variables on the `section8pm` project) - never commit it to this repo.
+
+**Standing permission:** Claude has standing permission to open the
+Supabase SQL Editor (via browser) and run migrations from this folder
+directly against the live database, and to run read/write queries against
+this project, without asking first each time. This does not extend to
+destructive operations outside a normal migration (dropping tables,
+deleting rows, truncating) - those still get confirmed with a human first,
+same as anywhere else.

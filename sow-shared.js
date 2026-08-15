@@ -53,6 +53,21 @@ function computeTotals(sow) {
   return { contractorTotal: labor, ownerTotal: ownerTotal };
 }
 
+// Sum of labor only, for lines assigned to one specific contractor - what a
+// single contractor's downloaded copy shows as its total, as opposed to the
+// whole-job contractorTotal from computeTotals() above.
+function computeContractorLaborTotal(sow, contractorName) {
+  var total = 0;
+  sow.sections.forEach(function (section) {
+    section.items.forEach(function (item) {
+      if (item.optional) return;
+      if ((item.contractor || "") !== contractorName) return;
+      total += Number(item.labor) || 0;
+    });
+  });
+  return total;
+}
+
 // ---- Print view (static HTML string) ----
 // NOTE: the room/item grid below is a real <table> (thead/tbody/tr/td), not
 // styled divs. Third-party tools that turn an uploaded PDF into a checklist
@@ -64,24 +79,41 @@ function computeTotals(sow) {
 // than several separately-bordered bands, and the only accent color is gold,
 // used consistently in exactly two places (the room-label stripe and the
 // total figure) - not a one-off band that shows up nowhere else.
-function buildPrintHtml(sow, mode) {
+function buildPrintHtml(sow, mode, contractorFilter) {
   var total = computeTotals(sow);
+  // "" / undefined means no filter - the "All contractors" copy. A non-empty
+  // string narrows the printed lines (and the total) down to just that one
+  // contractor's assigned items.
+  var isFiltered = mode === "contractor" && !!contractorFilter;
   var html = "";
   html += '<div class="pv-doc">';
   html += '<div class="pv-header">';
-  html += '<div class="pv-addr">Scope of Work' + (mode === "contractor" ? " &mdash; Contractor Copy" : " &mdash; Owner Copy") + ": " + escapeHtml(sow.address || "(address not set)") + "</div>";
+  var modeLabel = mode === "contractor" ? " &mdash; Contractor Copy" + (isFiltered ? " (" + escapeHtml(contractorFilter) + ")" : "") : " &mdash; Owner Copy";
+  html += '<div class="pv-addr">Scope of Work' + modeLabel + ": " + escapeHtml(sow.address || "(address not set)") + "</div>";
   html += '<div class="pv-type">' + escapeHtml(sow.typeOfWork || "") + "</div>";
   html += "</div>";
   html += '<table class="pv-table"><colgroup><col class="pv-col-room"><col></colgroup><thead><tr><th class="pv-th-room">Room</th><th class="pv-th-desc">Description</th></tr></thead><tbody>';
 
   sow.sections.forEach(function (section) {
-    var visibleItems = section.items.filter(function (it) { return (it.text || "").trim() !== ""; });
+    var visibleItems = section.items.filter(function (it) {
+      if ((it.text || "").trim() === "") return false;
+      // Unassigned lines only ever show up on the unfiltered "All" copy -
+      // once you're looking at one contractor's copy, only their lines
+      // belong there.
+      if (isFiltered) return (it.contractor || "") === contractorFilter;
+      return true;
+    });
     if (!visibleItems.length) return;
     html += '<tr class="pv-room-row"><td class="pv-c-room">' + escapeHtml(section.room) + '</td><td class="pv-c-desc"></td></tr>';
     visibleItems.forEach(function (item) {
+      // Contractor names are only printed on the unfiltered "All" copy (so
+      // whoever's holding it can see who's doing what) and never on the
+      // Owner copy - a filtered single-contractor copy already only shows
+      // their own lines, so repeating the name on every row is redundant.
+      var contractorTag = (mode === "contractor" && !isFiltered && item.contractor) ? ' <span class="tag">' + escapeHtml(item.contractor) + "</span>" : "";
       html += '<tr class="pv-item-row' + (item.optional ? " optional" : "") + '">' +
         '<td class="pv-c-room"></td>' +
-        '<td class="pv-c-desc">&#9744; ' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + escapeHtml(item.text) + "</td></tr>";
+        '<td class="pv-c-desc">&#9744; ' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + escapeHtml(item.text) + contractorTag + "</td></tr>";
     });
   });
 
@@ -100,7 +132,14 @@ function buildPrintHtml(sow, mode) {
   html += "</tbody></table>";
 
   if (mode === "contractor") {
-    html += '<div class="pv-total"><span>Total (Labor)</span><span class="n">' + currency(total.contractorTotal) + "</span></div>";
+    // Filtered (one contractor): their own labor sum only - never the
+    // whole-job override, which would show them the full crew's total.
+    // Unfiltered ("All"): the manual override if one's set, else the
+    // computed whole-job labor sum - matching the builder's own display.
+    var contractorTotalValue = isFiltered
+      ? computeContractorLaborTotal(sow, contractorFilter)
+      : (sow.contractorTotalOverride != null ? Number(sow.contractorTotalOverride) : total.contractorTotal);
+    html += '<div class="pv-total"><span>Total (Labor)</span><span class="n">' + currency(contractorTotalValue) + "</span></div>";
   } else {
     html += '<div class="pv-total"><span>Total (Estimate)</span><span class="n">' + currency(total.ownerTotal) + "</span></div>";
   }
@@ -155,6 +194,7 @@ if (typeof module !== "undefined" && module.exports) {
     currency: currency,
     computeRoomSubtotal: computeRoomSubtotal,
     computeTotals: computeTotals,
+    computeContractorLaborTotal: computeContractorLaborTotal,
     normalizeKey: normalizeKey,
     buildPrintHtml: buildPrintHtml,
     buildStandalonePrintPage: buildStandalonePrintPage,

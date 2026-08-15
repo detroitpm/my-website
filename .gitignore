@@ -4,3 +4,4 @@ Thumbs.db
 node_modules/
 .netlify/
 .claude/
+.npm-cache-local

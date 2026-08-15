@@ -13,7 +13,14 @@ var DEFAULT_SOW = {
   mediaLink: "",
   bufferPct: 20,
   sections: [],
-  questions: []
+  questions: [],
+  // Managed contractor list, scoped to this one SOW (not shared globally
+  // like the rate cache) - add/remove happens inline in the builder.
+  contractors: [],
+  // Manual override for the Contractor Total (labor only). null = use the
+  // computed line-item sum; a number means "the real total is this,
+  // regardless of what the lines add up to."
+  contractorTotalOverride: null
 };
 
 // A failed function call's JSON body isn't always shaped the way our own
@@ -110,11 +117,24 @@ function autoGrow(el) {
   el.style.height = el.scrollHeight + "px";
 }
 
+// <option> markup for a contractor <select>: a blank/"unassigned" option
+// plus one per name in sow.contractors, with `selected` on the current value.
+function contractorOptionsHtml(selectedValue) {
+  var html = '<option value=""' + (!selectedValue ? " selected" : "") + '>&mdash;</option>';
+  (sow.contractors || []).forEach(function (name) {
+    html += '<option value="' + escapeHtml(name) + '"' + (selectedValue === name ? " selected" : "") + '>' + escapeHtml(name) + "</option>";
+  });
+  return html;
+}
+
 function renderBuilder() {
   document.getElementById("addressInput").value = sow.address || "";
   document.getElementById("typeInput").value = sow.typeOfWork || "";
   document.getElementById("bufferInput").value = sow.bufferPct;
   document.getElementById("mediaInput").value = sow.mediaLink || "";
+
+  renderContractorChips();
+  renderContractorFilterSelect();
 
   var container = document.getElementById("sectionsContainer");
   container.innerHTML = "";
@@ -125,7 +145,11 @@ function renderBuilder() {
     roomRow.innerHTML =
       '<div class="room-name-wrap"><input type="text" class="room-name" value="' +
       escapeHtml(section.room) + '" data-s="' + sIdx + '"></div>' +
-      '<div class="room-rest"><span class="room-subtotal" data-s="' + sIdx + '">' + currency(computeRoomSubtotal(section)) + '</span><button class="btn small no-print" data-s="' + sIdx + '" data-act="delroom">Delete room</button></div>';
+      '<div class="room-rest">' +
+      '<select class="room-contractor-assign" data-s="' + sIdx + '"><option value="">Assign all to&hellip;</option>' +
+      (sow.contractors || []).map(function (name) { return '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + "</option>"; }).join("") +
+      '</select>' +
+      '<span class="room-subtotal" data-s="' + sIdx + '">' + currency(computeRoomSubtotal(section)) + '</span><button class="btn small no-print" data-s="' + sIdx + '" data-act="delroom">Delete room</button></div>';
     container.appendChild(roomRow);
 
     section.items.forEach(function (item, iIdx) {
@@ -134,6 +158,7 @@ function renderBuilder() {
       row.innerHTML =
         '<div class="c-room-blank"></div>' +
         '<div class="c-desc"><textarea rows="1" class="item-text" data-s="' + sIdx + '" data-i="' + iIdx + '">' + escapeHtml(item.text) + '</textarea></div>' +
+        '<div class="c-contractor"><select class="contractor-select" data-s="' + sIdx + '" data-i="' + iIdx + '">' + contractorOptionsHtml(item.contractor || "") + '</select></div>' +
         '<div class="c-labor"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="labor" value="' + (item.labor != null ? item.labor : "") + '" placeholder="0"></div>' +
         '<div class="c-material"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="material" value="' + (item.material != null ? item.material : "") + '" placeholder="0"></div>' +
         '<div class="c-opt"><input type="checkbox" data-s="' + sIdx + '" data-i="' + iIdx + '" class="optcheck" ' + (item.optional ? "checked" : "") + '></div>' +
@@ -157,12 +182,68 @@ function renderBuilder() {
     : '<span style="color:#999;">none yet</span>';
 
   var totals = computeTotals(sow);
-  document.getElementById("contractorTotalDisplay").textContent = currency(totals.contractorTotal);
+  var overrideInput = document.getElementById("contractorTotalOverrideInput");
+  overrideInput.value = sow.contractorTotalOverride != null ? sow.contractorTotalOverride : "";
+  overrideInput.placeholder = String(totals.contractorTotal);
+  updateContractorVariance(totals.contractorTotal);
   document.getElementById("ownerTotalDisplay").textContent = currency(totals.ownerTotal);
 
   attachBuilderListeners();
   document.querySelectorAll(".item-text").forEach(autoGrow);
   pushStateToUrl();
+}
+
+// Shows how far the manual override is from the computed (line-item-sum)
+// total - blank when there's no override, or the override matches exactly.
+function updateContractorVariance(computedTotal) {
+  var el = document.getElementById("contractorTotalVariance");
+  var override = sow.contractorTotalOverride;
+  if (override == null || Number(override) === computedTotal) {
+    el.textContent = "";
+    return;
+  }
+  var diff = Number(override) - computedTotal;
+  var word = diff > 0 ? "above" : "below";
+  el.textContent = "Override is " + currency(Math.abs(diff)) + " " + word + " the computed total of " + currency(computedTotal) + ".";
+}
+
+function renderContractorChips() {
+  var wrap = document.getElementById("contractorChips");
+  wrap.innerHTML = "";
+  (sow.contractors || []).forEach(function (name, idx) {
+    var chip = document.createElement("span");
+    chip.className = "chip";
+    chip.innerHTML = escapeHtml(name) + ' <button type="button" data-c="' + idx + '" data-act="delcontractor">&times;</button>';
+    wrap.appendChild(chip);
+  });
+  wrap.querySelectorAll('[data-act="delcontractor"]').forEach(function (btn) {
+    btn.onclick = function (e) {
+      var idx = Number(e.currentTarget.dataset.c);
+      var removed = sow.contractors[idx];
+      sow.contractors.splice(idx, 1);
+      // Unassign anyone who had this contractor set, rather than leaving
+      // items pointing at a name that no longer exists in the list.
+      sow.sections.forEach(function (section) {
+        section.items.forEach(function (item) {
+          if (item.contractor === removed) item.contractor = "";
+        });
+      });
+      renderBuilder();
+    };
+  });
+}
+
+function renderContractorFilterSelect() {
+  var sel = document.getElementById("contractorFilterSelect");
+  var current = sel.value;
+  sel.innerHTML = '<option value="">All contractors</option>';
+  (sow.contractors || []).forEach(function (name) {
+    var opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    sel.appendChild(opt);
+  });
+  if ((sow.contractors || []).indexOf(current) !== -1) sel.value = current;
 }
 
 function renderQuestions() {
@@ -218,7 +299,8 @@ function attachBuilderListeners() {
       var s = e.target.dataset.s, i = e.target.dataset.i, f = e.target.dataset.field;
       sow.sections[s].items[i][f] = e.target.value === "" ? null : Number(e.target.value);
       var totals = computeTotals(sow);
-      document.getElementById("contractorTotalDisplay").textContent = currency(totals.contractorTotal);
+      document.getElementById("contractorTotalOverrideInput").placeholder = String(totals.contractorTotal);
+      updateContractorVariance(totals.contractorTotal);
       document.getElementById("ownerTotalDisplay").textContent = currency(totals.ownerTotal);
       var subtotalEl = document.querySelector('.room-subtotal[data-s="' + s + '"]');
       if (subtotalEl) subtotalEl.textContent = currency(computeRoomSubtotal(sow.sections[s]));
@@ -240,6 +322,29 @@ function attachBuilderListeners() {
       }).catch(function () { /* background save - fine to silently drop */ });
     };
   });
+
+  document.querySelectorAll(".contractor-select").forEach(function (el) {
+    el.onchange = function (e) {
+      sow.sections[e.target.dataset.s].items[e.target.dataset.i].contractor = e.target.value;
+      pushStateToUrl();
+    };
+  });
+
+  document.querySelectorAll(".room-contractor-assign").forEach(function (el) {
+    el.onchange = function (e) {
+      var value = e.target.value;
+      if (!value) return;
+      sow.sections[e.target.dataset.s].items.forEach(function (item) { item.contractor = value; });
+      renderBuilder();
+    };
+  });
+
+  var overrideInput = document.getElementById("contractorTotalOverrideInput");
+  overrideInput.oninput = function (e) {
+    sow.contractorTotalOverride = e.target.value === "" ? null : Number(e.target.value);
+    updateContractorVariance(computeTotals(sow).contractorTotal);
+    pushStateToUrl();
+  };
 
   document.querySelectorAll(".optcheck").forEach(function (el) {
     el.onchange = function (e) {
@@ -266,7 +371,7 @@ function attachBuilderListeners() {
 
   document.querySelectorAll('[data-act="additem"]').forEach(function (el) {
     el.onclick = function (e) {
-      sow.sections[e.currentTarget.dataset.s].items.push({ text: "", labor: null, material: null, optional: false });
+      sow.sections[e.currentTarget.dataset.s].items.push({ text: "", labor: null, material: null, optional: false, contractor: "" });
       renderBuilder();
     };
   });
@@ -286,12 +391,27 @@ function attachBuilderListeners() {
 }
 
 document.getElementById("addRoomBtn").onclick = function () {
-  sow.sections.push({ room: "New Room", items: [{ text: "", labor: null, material: null, optional: false }] });
+  sow.sections.push({ room: "New Room", items: [{ text: "", labor: null, material: null, optional: false, contractor: "" }] });
   renderBuilder();
 };
 document.getElementById("addQuestionBtn").onclick = function () {
   sow.questions.push({ text: "", answer: "" });
   renderBuilder();
+};
+
+function addContractorFromInput() {
+  var input = document.getElementById("newContractorInput");
+  var name = input.value.trim();
+  if (!name) return;
+  if (!sow.contractors) sow.contractors = [];
+  if (sow.contractors.indexOf(name) !== -1) { input.value = ""; return; }
+  sow.contractors.push(name);
+  input.value = "";
+  renderBuilder();
+}
+document.getElementById("addContractorBtn").onclick = addContractorFromInput;
+document.getElementById("newContractorInput").onkeydown = function (e) {
+  if (e.key === "Enter") { e.preventDefault(); addContractorFromInput(); }
 };
 
 // ---- Save / load SOWs from the database ----
@@ -418,11 +538,13 @@ document.getElementById("uploadSowInput").onchange = function (e) {
       typeOfWork: parsed.typeOfWork || "Pre-inspection list",
       mediaLink: parsed.mediaLink || "",
       bufferPct: parsed.bufferPct != null ? parsed.bufferPct : 20,
+      contractors: Array.isArray(parsed.contractors) ? parsed.contractors.slice() : [],
+      contractorTotalOverride: parsed.contractorTotalOverride != null ? Number(parsed.contractorTotalOverride) : null,
       sections: parsed.sections.map(function (s) {
         return {
           room: s.room || "",
           items: s.items.map(function (it) {
-            return { text: it.text || "", labor: it.labor != null ? it.labor : null, material: it.material != null ? it.material : null, optional: !!it.optional };
+            return { text: it.text || "", labor: it.labor != null ? it.labor : null, material: it.material != null ? it.material : null, optional: !!it.optional, contractor: it.contractor || "" };
           })
         };
       }),
@@ -446,8 +568,10 @@ document.getElementById("uploadSowInput").onchange = function (e) {
 // ---- Print views (static, built fresh each time) ----
 // buildPrintHtml lives in sow-shared.js - see the note there.
 function downloadCopy(mode) {
-  document.getElementById("printView").innerHTML = buildPrintHtml(sow, mode);
-  document.title = (mode === "contractor" ? "Contractor Copy - " : "Owner Copy - ") + (sow.address || "SOW");
+  var contractorFilter = mode === "contractor" ? (document.getElementById("contractorFilterSelect").value || "") : "";
+  document.getElementById("printView").innerHTML = buildPrintHtml(sow, mode, contractorFilter);
+  var titleSuffix = contractorFilter ? " (" + contractorFilter + ")" : "";
+  document.title = (mode === "contractor" ? "Contractor Copy" + titleSuffix + " - " : "Owner Copy - ") + (sow.address || "SOW");
   document.body.dataset.printing = mode;
   window.print();
   setTimeout(function () { delete document.body.dataset.printing; }, 300);

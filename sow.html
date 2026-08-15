@@ -71,6 +71,7 @@
     text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #999;}
   .sow-colheader .c-room{flex:0 0 26%;padding:9px 10px;}
   .sow-colheader .c-desc{flex:1;padding:9px 10px;border-left:1px solid #999;}
+  .sow-colheader .c-contractor{flex:0 0 130px;padding:9px 8px;border-left:1px solid #999;}
   .sow-colheader .c-labor,.sow-colheader .c-material{flex:0 0 90px;padding:9px 8px;border-left:1px solid #999;text-align:right;}
   .sow-colheader .c-opt{flex:0 0 60px;padding:9px 6px;border-left:1px solid #999;text-align:center;}
   .sow-colheader .c-del{flex:0 0 34px;border-left:1px solid #999;}
@@ -80,6 +81,8 @@
   .room-row input.room-name{border:none;background:transparent;font-weight:700;font-size:14.5px;width:100%;font-family:var(--sans);}
   .room-row .room-rest{flex:1;border-left:1px solid #999;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:4px 6px;}
   .room-row .room-subtotal{color:var(--gold-ink);font-weight:700;font-size:13.5px;white-space:nowrap;}
+  .room-row select.room-contractor-assign{font-family:var(--sans);font-size:12.5px;font-weight:400;padding:5px 6px;
+    border:1px solid var(--ink);border-radius:0;background:#fff;color:var(--ink);max-width:150px;}
 
   .item-row{display:flex;border-top:1px solid #ddd;align-items:stretch;}
   .item-row.optional{background:var(--grey-opt);}
@@ -87,11 +90,21 @@
   .item-row .c-desc{flex:1;border-left:1px solid #ddd;padding:6px 10px;display:flex;align-items:center;}
   .item-row textarea{flex:1;border:none;background:transparent;font-size:14px;resize:none;
     font-family:var(--sans);padding:4px 0;min-height:20px;overflow:hidden;line-height:1.4;}
+  .item-row .c-contractor{flex:0 0 130px;border-left:1px solid #ddd;padding:6px;display:flex;align-items:center;}
+  .item-row select.contractor-select{width:100%;border:1px solid #ccc;padding:5px 6px;font-size:12.5px;font-family:var(--sans);background:#fff;}
   .item-row .c-labor,.item-row .c-material{flex:0 0 90px;border-left:1px solid #ddd;padding:6px;display:flex;align-items:center;}
   .item-row input.price{width:100%;border:1px solid #ccc;padding:5px 6px;font-size:13px;text-align:right;font-family:var(--sans);}
   .item-row .c-opt{flex:0 0 60px;border-left:1px solid #ddd;display:flex;align-items:center;justify-content:center;}
   .item-row .c-del{flex:0 0 34px;border-left:1px solid #ddd;display:flex;align-items:center;justify-content:center;}
   .item-row .c-del button{border:none;background:none;color:#a02222;font-size:16px;cursor:pointer;}
+
+  /* ---------- Contractor management (jobcard) ---------- */
+  .contractor-chips{display:flex;flex-wrap:wrap;gap:0;}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--ink);
+    padding:4px 6px 4px 10px;font-size:13px;margin:0 6px 6px 0;}
+  .chip button{border:none;background:none;color:#a02222;cursor:pointer;font-size:14px;padding:0 2px;line-height:1;}
+  .contractor-add-row{display:flex;gap:8px;margin-top:2px;}
+  .contractor-add-row input{flex:1;padding:8px 9px;border:1px solid var(--ink);border-radius:0;font-family:var(--sans);font-size:13.5px;}
 
   .qitem-row{display:flex;border-top:1px solid #ddd;align-items:stretch;}
   .qitem-row .c-room-blank{flex:0 0 26%;}
@@ -112,6 +125,11 @@
   .totals-band{background:#2b2b2b;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;
     flex-wrap:wrap;gap:8px;font-weight:700;font-size:14.5px;}
   .totals-band span.n{color:var(--gold);}
+  .totals-band.editable{flex-direction:column;align-items:stretch;gap:2px;}
+  .totals-band .totals-band-row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+  .totals-band input.totals-override-input{font-family:var(--sans);font-size:14.5px;font-weight:700;color:var(--ink);
+    background:#fff;border:1px solid var(--gold);padding:5px 8px;width:120px;text-align:right;border-radius:0;}
+  .totals-variance{font-size:12px;font-weight:400;color:#cfcfcf;}
 
   .roomadd{padding:10px;}
   .scroll-hint{display:none;font-size:12px;color:var(--muted);margin:6px 2px 0;}
@@ -172,6 +190,7 @@
     .wrap{padding:24px 18px 72px;}
     h1{font-size:28px;}
     .sow-colheader .c-labor,.sow-colheader .c-material,.item-row .c-labor,.item-row .c-material{flex-basis:66px;}
+    .sow-colheader .c-contractor,.item-row .c-contractor{flex-basis:96px;}
     .sow-colheader .c-room,.room-row .room-name-wrap,.item-row .c-room-blank,.qitem-row .c-room-blank,.footer-row .c-room-blank{flex-basis:22%;}
   }
 </style>
@@ -188,6 +207,7 @@
         <button class="btn" id="uploadSowBtn">Upload SOW file</button>
         <input type="file" id="uploadSowInput" accept="application/json,.json" style="display:none;">
         <button class="btn" id="addRoomBtn">+ Add room</button>
+        <select id="contractorFilterSelect"><option value="">All contractors</option></select>
         <button class="btn primary" id="downloadContractorBtn">Download Contractor Copy</button>
         <button class="btn primary" id="downloadOwnerBtn">Download Owner Copy</button>
         <button class="btn" id="sendCCBtn">Send to CompanyCam Files</button>
@@ -235,6 +255,16 @@
             <input type="text" id="mediaInput" placeholder="https://app.companycam.com/projects/123456">
           </div>
         </div>
+        <div class="toprow">
+          <div class="fld" style="flex:1 1 100%;">
+            <label>Contractors</label>
+            <div class="contractor-chips" id="contractorChips"></div>
+            <div class="contractor-add-row">
+              <input type="text" id="newContractorInput" placeholder="Contractor name">
+              <button class="btn small" id="addContractorBtn">+ Add contractor</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="sow-table-scroll">
@@ -242,6 +272,7 @@
           <div class="sow-colheader">
             <div class="c-room">Room</div>
             <div class="c-desc">Description</div>
+            <div class="c-contractor">Contractor</div>
             <div class="c-labor">Labor $</div>
             <div class="c-material">Material $</div>
             <div class="c-opt">Optional</div>
@@ -263,9 +294,12 @@
           <div class="c-room-blank">Pictures / Videos</div>
           <div class="c-rest" id="mediaDisplay"></div>
         </div>
-        <div class="totals-band">
-          <span>Contractor Total (labor only)</span>
-          <span class="n" id="contractorTotalDisplay">$0</span>
+        <div class="totals-band editable">
+          <div class="totals-band-row">
+            <span>Contractor Total (labor only)</span>
+            <input type="number" class="totals-override-input" id="contractorTotalOverrideInput" placeholder="0">
+          </div>
+          <div class="totals-variance" id="contractorTotalVariance"></div>
         </div>
         <div class="totals-band" style="background:#1a1a1a;">
           <span>Owner Total (labor + material, incl. buffer)</span>
