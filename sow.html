@@ -100,11 +100,15 @@
 
   /* ---------- Contractor management (jobcard) ---------- */
   .contractor-chips{display:flex;flex-wrap:wrap;gap:0;}
-  .chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--ink);
-    padding:4px 6px 4px 10px;font-size:13px;margin:0 6px 6px 0;}
-  .chip button{border:none;background:none;color:#a02222;cursor:pointer;font-size:14px;padding:0 2px;line-height:1;}
+  .chip{display:inline-flex;align-items:center;background:#fff;border:1px solid var(--ink);
+    padding:4px 10px;font-size:13px;margin:0 6px 6px 0;}
   .contractor-add-row{display:flex;gap:8px;margin-top:2px;}
   .contractor-add-row input{flex:1;padding:8px 9px;border:1px solid var(--ink);border-radius:0;font-family:var(--sans);font-size:13.5px;}
+
+  /* ---------- Key location (jobcard) ---------- */
+  .key-location-toggle{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:13px;font-weight:700;
+    color:var(--ink);cursor:pointer;}
+  .key-location-toggle input{width:15px;height:15px;cursor:pointer;}
 
   .qitem-row{display:flex;border-top:1px solid #ddd;align-items:stretch;}
   .qitem-row .c-room-blank{flex:0 0 26%;}
@@ -263,6 +267,18 @@
               <input type="text" id="newContractorInput" placeholder="Contractor name">
               <button class="btn small" id="addContractorBtn">+ Add contractor</button>
             </div>
+            <p class="jobcard-hint" style="margin-top:6px;">This list is shared across every SOW &mdash; add a contractor once and they show up everywhere.</p>
+          </div>
+        </div>
+        <div class="toprow">
+          <div class="fld" style="flex:1 1 100%;">
+            <label>Key Location</label>
+            <input type="text" id="keyLocationInput" placeholder="e.g. lockbox on the back door, code 4821">
+            <label class="key-location-toggle">
+              <input type="checkbox" id="showKeyLocationInput" checked>
+              Show on Contractor Copy
+            </label>
+            <p class="jobcard-hint" style="margin-top:4px;">Only ever appears on the Contractor Copy, never the Owner Copy &mdash; and only when checked.</p>
           </div>
         </div>
       </div>

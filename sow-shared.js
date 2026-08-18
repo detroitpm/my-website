@@ -128,6 +128,13 @@ function buildPrintHtml(sow, mode, contractorFilter) {
     });
   }
 
+  // Key location is contractor-facing only (never the Owner copy,
+  // regardless of the toggle) and only prints when both the toggle is on
+  // and there's actually a value to show.
+  if (mode === "contractor" && sow.showKeyLocation !== false && (sow.keyLocation || "").trim() !== "") {
+    html += '<tr class="pv-footer-row"><td class="pv-c-room">Key Location</td><td class="pv-c-desc">' + escapeHtml(sow.keyLocation) + "</td></tr>";
+  }
+
   html += '<tr class="pv-footer-row"><td class="pv-c-room">Pictures / Videos</td><td class="pv-c-desc">' + escapeHtml(sow.mediaLink || "none") + "</td></tr>";
   html += "</tbody></table>";
 

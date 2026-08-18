@@ -14,13 +14,14 @@ var DEFAULT_SOW = {
   bufferPct: 20,
   sections: [],
   questions: [],
-  // Managed contractor list, scoped to this one SOW (not shared globally
-  // like the rate cache) - add/remove happens inline in the builder.
-  contractors: [],
   // Manual override for the Contractor Total (labor only). null = use the
   // computed line-item sum; a number means "the real total is this,
   // regardless of what the lines add up to."
-  contractorTotalOverride: null
+  contractorTotalOverride: null,
+  // Shown on the Contractor Copy only (never the Owner Copy), and only
+  // when showKeyLocation is true.
+  keyLocation: "",
+  showKeyLocation: true
 };
 
 // A failed function call's JSON body isn't always shaped the way our own
@@ -111,6 +112,19 @@ function autofillAllFromRates() {
   return changed;
 }
 
+// ---- Global contractor list (shared across every SOW, like the rate cache) ----
+// Fetched once on load into a plain array of names. Adding a contractor
+// writes through to the contractors table via contractor-save, so it shows
+// up in every SOW's dropdowns from then on - not just this one.
+var contractorsCache = [];
+
+function loadContractorsCache() {
+  return fetch("/.netlify/functions/contractors-list")
+    .then(function (r) { return r.json(); })
+    .then(function (data) { contractorsCache = data.contractors || []; })
+    .catch(function () { /* no contractor data yet, or offline - dropdowns just stay empty */ });
+}
+
 // ---- Builder (editable) view ----
 function autoGrow(el) {
   el.style.height = "auto";
@@ -118,10 +132,11 @@ function autoGrow(el) {
 }
 
 // <option> markup for a contractor <select>: a blank/"unassigned" option
-// plus one per name in sow.contractors, with `selected` on the current value.
+// plus one per name in the global contractor list, with `selected` on the
+// current value.
 function contractorOptionsHtml(selectedValue) {
   var html = '<option value=""' + (!selectedValue ? " selected" : "") + '>&mdash;</option>';
-  (sow.contractors || []).forEach(function (name) {
+  contractorsCache.forEach(function (name) {
     html += '<option value="' + escapeHtml(name) + '"' + (selectedValue === name ? " selected" : "") + '>' + escapeHtml(name) + "</option>";
   });
   return html;
@@ -132,6 +147,8 @@ function renderBuilder() {
   document.getElementById("typeInput").value = sow.typeOfWork || "";
   document.getElementById("bufferInput").value = sow.bufferPct;
   document.getElementById("mediaInput").value = sow.mediaLink || "";
+  document.getElementById("keyLocationInput").value = sow.keyLocation || "";
+  document.getElementById("showKeyLocationInput").checked = sow.showKeyLocation !== false;
 
   renderContractorChips();
   renderContractorFilterSelect();
@@ -147,7 +164,7 @@ function renderBuilder() {
       escapeHtml(section.room) + '" data-s="' + sIdx + '"></div>' +
       '<div class="room-rest">' +
       '<select class="room-contractor-assign" data-s="' + sIdx + '"><option value="">Assign all to&hellip;</option>' +
-      (sow.contractors || []).map(function (name) { return '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + "</option>"; }).join("") +
+      contractorsCache.map(function (name) { return '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + "</option>"; }).join("") +
       '</select>' +
       '<span class="room-subtotal" data-s="' + sIdx + '">' + currency(computeRoomSubtotal(section)) + '</span><button class="btn small no-print" data-s="' + sIdx + '" data-act="delroom">Delete room</button></div>';
     container.appendChild(roomRow);
@@ -207,29 +224,17 @@ function updateContractorVariance(computedTotal) {
   el.textContent = "Override is " + currency(Math.abs(diff)) + " " + word + " the computed total of " + currency(computedTotal) + ".";
 }
 
+// Read-only display of the global contractor list - no per-SOW delete here
+// (that list is shared across every SOW, so removing one is a bigger call
+// than this panel is meant to make).
 function renderContractorChips() {
   var wrap = document.getElementById("contractorChips");
   wrap.innerHTML = "";
-  (sow.contractors || []).forEach(function (name, idx) {
+  contractorsCache.forEach(function (name) {
     var chip = document.createElement("span");
     chip.className = "chip";
-    chip.innerHTML = escapeHtml(name) + ' <button type="button" data-c="' + idx + '" data-act="delcontractor">&times;</button>';
+    chip.textContent = name;
     wrap.appendChild(chip);
-  });
-  wrap.querySelectorAll('[data-act="delcontractor"]').forEach(function (btn) {
-    btn.onclick = function (e) {
-      var idx = Number(e.currentTarget.dataset.c);
-      var removed = sow.contractors[idx];
-      sow.contractors.splice(idx, 1);
-      // Unassign anyone who had this contractor set, rather than leaving
-      // items pointing at a name that no longer exists in the list.
-      sow.sections.forEach(function (section) {
-        section.items.forEach(function (item) {
-          if (item.contractor === removed) item.contractor = "";
-        });
-      });
-      renderBuilder();
-    };
   });
 }
 
@@ -237,13 +242,13 @@ function renderContractorFilterSelect() {
   var sel = document.getElementById("contractorFilterSelect");
   var current = sel.value;
   sel.innerHTML = '<option value="">All contractors</option>';
-  (sow.contractors || []).forEach(function (name) {
+  contractorsCache.forEach(function (name) {
     var opt = document.createElement("option");
     opt.value = name;
     opt.textContent = name;
     sel.appendChild(opt);
   });
-  if ((sow.contractors || []).indexOf(current) !== -1) sel.value = current;
+  if (contractorsCache.indexOf(current) !== -1) sel.value = current;
 }
 
 function renderQuestions() {
@@ -268,6 +273,8 @@ function attachBuilderListeners() {
   document.getElementById("typeInput").oninput = function (e) { sow.typeOfWork = e.target.value; pushStateToUrl(); };
   document.getElementById("bufferInput").oninput = function (e) { sow.bufferPct = e.target.value === "" ? 0 : Number(e.target.value); renderBuilder(); };
   document.getElementById("mediaInput").oninput = function (e) { sow.mediaLink = e.target.value; renderBuilder(); };
+  document.getElementById("keyLocationInput").oninput = function (e) { sow.keyLocation = e.target.value; pushStateToUrl(); };
+  document.getElementById("showKeyLocationInput").onchange = function (e) { sow.showKeyLocation = e.target.checked; pushStateToUrl(); };
 
   document.querySelectorAll(".room-name").forEach(function (el) {
     el.oninput = function (e) { sow.sections[e.target.dataset.s].room = e.target.value; pushStateToUrl(); };
@@ -403,11 +410,18 @@ function addContractorFromInput() {
   var input = document.getElementById("newContractorInput");
   var name = input.value.trim();
   if (!name) return;
-  if (!sow.contractors) sow.contractors = [];
-  if (sow.contractors.indexOf(name) !== -1) { input.value = ""; return; }
-  sow.contractors.push(name);
+  if (contractorsCache.indexOf(name) !== -1) { input.value = ""; return; }
+  // Optimistic: add locally right away so the dropdowns update instantly,
+  // then write through to the global list for every other SOW to pick up.
+  contractorsCache.push(name);
+  contractorsCache.sort();
   input.value = "";
   renderBuilder();
+  fetch("/.netlify/functions/contractor-save", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: name })
+  }).catch(function () { /* background save - the name is still usable this session even if this fails */ });
 }
 document.getElementById("addContractorBtn").onclick = addContractorFromInput;
 document.getElementById("newContractorInput").onkeydown = function (e) {
@@ -538,8 +552,9 @@ document.getElementById("uploadSowInput").onchange = function (e) {
       typeOfWork: parsed.typeOfWork || "Pre-inspection list",
       mediaLink: parsed.mediaLink || "",
       bufferPct: parsed.bufferPct != null ? parsed.bufferPct : 20,
-      contractors: Array.isArray(parsed.contractors) ? parsed.contractors.slice() : [],
       contractorTotalOverride: parsed.contractorTotalOverride != null ? Number(parsed.contractorTotalOverride) : null,
+      keyLocation: parsed.keyLocation || "",
+      showKeyLocation: parsed.showKeyLocation !== false,
       sections: parsed.sections.map(function (s) {
         return {
           room: s.room || "",
@@ -647,3 +662,4 @@ refreshSowList();
 loadRatesCache().then(function () {
   if (autofillAllFromRates()) renderBuilder();
 });
+loadContractorsCache().then(function () { renderBuilder(); });
