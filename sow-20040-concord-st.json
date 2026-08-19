@@ -1,0 +1,67 @@
+{
+  "address": "20040 Concord St, Detroit, MI 48234",
+  "typeOfWork": "Turn / maintenance scope of work",
+  "mediaLink": "https://app.companycam.com/projects/93542229",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Basement",
+      "items": [
+        {
+          "text": "Repair the ongoing water leak on the left side of the basement — same issue as before. Check the exterior wall drain (pressure-relief point) and the gutters on that side as the likely source, and repair from the outside first if possible.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3466100976"
+        }
+      ]
+    },
+    {
+      "room": "Garage",
+      "items": [
+        {
+          "text": "Repair the garage door — the left side keeps coming off the track, making the door hard to raise.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/93542229"
+        }
+      ]
+    },
+    {
+      "room": "Side Door",
+      "items": [
+        {
+          "text": "Adjust the side door so it latches properly.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3466159477"
+        },
+        {
+          "text": "Drill a hole and install a strike plate for the lower lock on the side door — the hole for it is completely missing.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3466159821"
+        }
+      ]
+    },
+    {
+      "room": "Exterior",
+      "items": [
+        {
+          "text": "Remove the downspout that drains into the ground and install a regular downspout in its place.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3466173992"
+        }
+      ]
+    }
+  ],
+  "questions": [
+    { "text": "Is the job 100% done?", "answer": "" },
+    { "text": "Did I put the keys back?", "answer": "" }
+  ]
+}
