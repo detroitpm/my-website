@@ -172,9 +172,12 @@ function renderBuilder() {
     section.items.forEach(function (item, iIdx) {
       var row = document.createElement("div");
       row.className = "item-row" + (item.optional ? " optional" : "");
+      var photoLinkHtml = item.photoUrl
+        ? '<a class="photo-link" href="' + escapeHtml(item.photoUrl) + '" target="_blank" rel="noopener" title="View photo/video">&#128247;</a>'
+        : '';
       row.innerHTML =
         '<div class="c-room-blank"></div>' +
-        '<div class="c-desc"><textarea rows="1" class="item-text" data-s="' + sIdx + '" data-i="' + iIdx + '">' + escapeHtml(item.text) + '</textarea></div>' +
+        '<div class="c-desc"><textarea rows="1" class="item-text" data-s="' + sIdx + '" data-i="' + iIdx + '">' + escapeHtml(item.text) + '</textarea>' + photoLinkHtml + '</div>' +
         '<div class="c-contractor"><select class="contractor-select" data-s="' + sIdx + '" data-i="' + iIdx + '">' + contractorOptionsHtml(item.contractor || "") + '</select></div>' +
         '<div class="c-labor"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="labor" value="' + (item.labor != null ? item.labor : "") + '" placeholder="0"></div>' +
         '<div class="c-material"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="material" value="' + (item.material != null ? item.material : "") + '" placeholder="0"></div>' +
@@ -378,7 +381,7 @@ function attachBuilderListeners() {
 
   document.querySelectorAll('[data-act="additem"]').forEach(function (el) {
     el.onclick = function (e) {
-      sow.sections[e.currentTarget.dataset.s].items.push({ text: "", labor: null, material: null, optional: false, contractor: "" });
+      sow.sections[e.currentTarget.dataset.s].items.push({ text: "", labor: null, material: null, optional: false, contractor: "", photoUrl: null });
       renderBuilder();
     };
   });
@@ -559,7 +562,7 @@ document.getElementById("uploadSowInput").onchange = function (e) {
         return {
           room: s.room || "",
           items: s.items.map(function (it) {
-            return { text: it.text || "", labor: it.labor != null ? it.labor : null, material: it.material != null ? it.material : null, optional: !!it.optional, contractor: it.contractor || "" };
+            return { text: it.text || "", labor: it.labor != null ? it.labor : null, material: it.material != null ? it.material : null, optional: !!it.optional, contractor: it.contractor || "", photoUrl: it.photoUrl || null };
           })
         };
       }),

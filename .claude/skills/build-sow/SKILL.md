@@ -169,7 +169,7 @@ Once you know the final state, build a JSON file matching this exact schema — 
     {
       "room": "Kitchen",
       "items": [
-        { "text": "Replace cracked window glass", "labor": null, "material": null, "optional": false }
+        { "text": "Replace cracked window glass", "labor": null, "material": null, "optional": false, "photoUrl": "https://app.companycam.com/assets/Image/3466100976" }
       ]
     }
   ],
@@ -186,6 +186,7 @@ Rules for this file:
 - `optional` is a real boolean (`true`/`false`), taken from whichever items were marked optional/greyed-out in the artifact.
 - `bufferPct` defaults to `20` unless the user says otherwise.
 - `mediaLink` is the primary CompanyCam project's URL (`https://app.companycam.com/projects/{project_id}`) from step 1.
+- `photoUrl` makes the line item clickable on the website and in the PDF, linking straight to the source in CompanyCam. Set it whenever a photo backs the item — use that photo's own `photo_url` field (a stable permalink, from `get_photo` or already present on `list_project_photos` results), not the thumbnail/web/original image URIs. For a video-derived item (step 3a) with no matching photo, there is no confirmed stable permalink to one specific video, so fall back to the project's `mediaLink` instead of guessing a URL — that at least gets the reader to the right project's media. If an item has no source photo at all (write it from memory/inference with nothing to point to), omit `photoUrl` entirely rather than guessing one.
 - Room order and line-item text should match the final (possibly user-edited) state of the artifact, not the original draft.
 
 Save it as `sow-<address-slugified>.json` (e.g. `sow-123-example-st.json`) **in the current working directory** (the user's project folder), not just a scratch/temp directory — this is a deliverable file they'll want to find again locally, not a throwaway.

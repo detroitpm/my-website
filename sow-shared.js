@@ -111,9 +111,14 @@ function buildPrintHtml(sow, mode, contractorFilter) {
       // Owner copy - a filtered single-contractor copy already only shows
       // their own lines, so repeating the name on every row is redundant.
       var contractorTag = (mode === "contractor" && !isFiltered && item.contractor) ? ' <span class="tag">' + escapeHtml(item.contractor) + "</span>" : "";
+      // When a photo/video exists for this line, the description itself
+      // becomes the click target (a real PDF link annotation) - no added
+      // label or icon, just the same text wrapped in <a>.
+      var descText = escapeHtml(item.text);
+      var desc = item.photoUrl ? '<a href="' + escapeHtml(item.photoUrl) + '">' + descText + "</a>" : descText;
       html += '<tr class="pv-item-row' + (item.optional ? " optional" : "") + '">' +
         '<td class="pv-c-room"></td>' +
-        '<td class="pv-c-desc">&#9744; ' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + escapeHtml(item.text) + contractorTag + "</td></tr>";
+        '<td class="pv-c-desc">&#9744; ' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + desc + contractorTag + "</td></tr>";
     });
   });
 
@@ -181,6 +186,7 @@ var PRINT_CSS = [
   '.pv-table tr.pv-item-row.optional{background:var(--grey-opt);}',
   '.pv-table tr.pv-item-row td.pv-c-desc{border-left:1.5px solid var(--line-soft);padding:6px 10px;}',
   '.pv-table tr.pv-item-row td.pv-c-desc .tag{font-size:10px;font-weight:800;background:var(--gold);color:var(--ink);padding:1px 6px;margin:0 6px;}',
+  '.pv-table tr.pv-item-row td.pv-c-desc a{color:inherit;text-decoration:underline dotted;text-decoration-color:var(--line-soft);}',
   '.pv-table tr.pv-footer-row{border-top:2px solid #000;}',
   '.pv-table tr.pv-footer-row td.pv-c-room{padding:9px 10px;font-weight:800;background:var(--ink);color:#fff;}',
   '.pv-table tr.pv-footer-row td.pv-c-desc{border-left:1.5px solid #000;padding:9px 10px;word-break:break-all;}',
