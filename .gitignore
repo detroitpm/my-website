@@ -3,5 +3,11 @@ Thumbs.db
 *.log
 node_modules/
 .netlify/
-.claude/
+.claude/*
+# Except the team-shared skill(s) - these should travel with the repo so
+# anyone with access to this repo gets them automatically, no separate
+# file-sharing step. (Excluding "dir/*" instead of "dir/" above is required
+# for this negation to actually take effect - git won't descend into an
+# ignored directory to apply "!" rules to its contents otherwise.)
+!.claude/skills/
 .npm-cache-local
