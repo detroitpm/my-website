@@ -73,7 +73,14 @@ Every line item gets exactly one flag. When unsure between red and yellow, defau
 
 ### `photoUrl`
 
-Set it to the source photo's own `photo_url` permalink (from `list_project_photos` / `get_photo`) whenever a photo backs the line — it becomes a clickable link on the printed report. For a video-derived line with no matching photo, use the project URL (`https://app.companycam.com/projects/{id}`). If nothing backs it, omit `photoUrl`.
+Set it **only when one specific photo clearly shows that exact issue** — then use that photo's own `photo_url` permalink (from `list_project_photos` / `get_photo`), which becomes a clickable link on the printed report.
+
+**Omit it** for everything else:
+- a video-derived line with no matching photo → omit (do **not** fall back to the project URL)
+- a generic turn item ("touch up the paint", "tighten the cover plate") where a photo adds nothing → omit
+- when you'd be reusing a photo you already attached to another line, or attaching a loosely-related shot just to have one → omit
+
+A line with no `photoUrl` is normal and fine. Better no link than a link to the project or a repeated/irrelevant picture.
 
 ## Context photos (Section 3)
 
@@ -131,12 +138,15 @@ Build a Claude artifact the same spirit as `build-sow`'s: load `artifact-design`
 
 - Centered header band, property address + "Pre-Purchase Underwriting Report".
 - Red-theme palette consistent with the SOW artifacts (`#E1432A` header, `#B23A2E` room bands), black borders, white rows.
-- One editable row per line item: an editable **flag pill** (red / yellow / optional — color-coded), the editable line-item text, and a thumbnail (the source photo, or the video frame for a video-derived line).
+- One editable row per line item: an editable **flag pill** (red / yellow / optional — color-coded) and the editable line-item text.
+- **Thumbnails: only where a photo actually shows the issue.** Attach one to the red flags and to any line where the photo is genuinely useful to verify (a distinctive deficiency — a separating door, a corroded pipe, an open panel). **Leave the thumbnail off** generic turn items (paint touch-ups, tightening a cover plate, plugging in an appliance) and any video-derived line with no matching photo. **Never** repeat the same photo down several rows or drop in a loosely-related shot just to fill the cell — an empty cell is correct. In practice most lines have no thumbnail.
+- Keep the images small: pull thumbnails at roughly `d=320x320` and context photos at roughly `d=700x700`, and inline them as base64. Dozens of large data-URI images make the artifact's editable fields lag.
 - Room/unit section headings.
 - A **context-photos** block per room showing the ≤3 chosen shots with captions.
 - Show the cover fields (address, inspection date, prepared-by) and the media-links list as editable text.
 - A short estimate note: "Prices are filled in on the website, not here."
 - All text editable; flag pills cycle red → yellow → optional on click. No pricing.
+- **Editable fields must not re-render on every keystroke.** If a field's `input` handler rebuilds a container's markup, it destroys the input mid-type and the box accepts one letter at a time. Update the model and any small status text only; do a full re-render on blur or on structural actions (add / delete / reorder), not on input.
 
 In the chat reply alongside the artifact, give a room-by-room summary, call out which items you flagged **red** and why, which are **optional**, anything uncertain, and which lines came from a video vs a caption.
 
@@ -178,7 +188,8 @@ Rules:
 - `flag` is exactly one of `"red"`, `"yellow"`, `"optional"` — never missing, never anything else.
 - `labor` and `material` are always `null` — a human prices it on the website.
 - `bufferPct` defaults to `20` unless the user says otherwise.
-- Keep `contextPhotos` to ≤3 per room/unit. `url` is an image URI; `photoUrl` on line items is the `photo_url` permalink.
+- Keep `contextPhotos` to ≤3 per room/unit. `url` is an image URI.
+- `photoUrl` on a line item: include it only when one specific photo shows that exact issue (its `photo_url` permalink). Omit it otherwise — no project-URL fallback, no reused or loosely-related photo. Most lines will have no `photoUrl`.
 - Room/unit order and text match the final (possibly user-edited) artifact state.
 
 Save it as `ppr-<address-slugified>.json` (e.g. `ppr-8210-decatur-st.json`) **in the current working directory**. If a file with that name already exists, compare: same address/structure from an earlier pass → overwrite; clearly a different report → tell the user and ask.
