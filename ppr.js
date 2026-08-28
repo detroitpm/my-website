@@ -1,0 +1,739 @@
+// Pre-Purchase Underwriting Report Builder — vanilla JS, no build step.
+// Sibling of sow.js but deliberately its own file: the SOW builder and this
+// report builder are different products. Shared pure helpers live in
+// ppr-shared.js (loaded first), NOT sow-shared.js.
+//
+// Persistence: primary store is Supabase (Save report / Load previous
+// report, via the ppr-* Netlify functions). The URL also carries a
+// lightweight copy of the state for "Copy link" — but with embedded image
+// data stripped back to source URLs so the link stays short.
+
+var DEFAULT_DISCLOSURES =
+  "1. Who we are. Detroit Section 8 Property Management is a property management company. We are not licensed home inspectors, builders, engineers, architects, or construction contractors, and nothing in this report should be treated as a professional inspection, an engineering assessment, or a contractor's bid. Our observations are those of a property manager walking the property, based on what was visible and accessible on the date of inspection.\n\n" +
+  "2. Not investment advice. This report is not investment, financial, legal, or tax advice, and is not a recommendation to buy, not buy, or pay any particular price for this property. Decisions about whether and how to proceed with a purchase are yours alone. You should retain your own licensed inspectors, contractors, and advisors before closing.\n\n" +
+  "3. Informational purposes only. This report is provided for informational purposes only. It is not a warranty or guarantee of the property's condition, its compliance with any code or Section 8 / HQS standard, its rental income potential, or its future performance. Conditions not noted in this report may still exist, including latent or concealed defects.\n\n" +
+  "4. Estimates are approximate. Any repair scopes, quantities, and cost figures in this report are rough estimates prepared for planning purposes. Actual costs may be materially higher or lower depending on contractor pricing, material costs, hidden conditions discovered during work, permit and inspection requirements, and the scope you ultimately choose. No figure in this report should be relied on as a firm quote.\n\n" +
+  "5. No duty to you. Preparing this report does not create a fiduciary relationship, agency relationship, or any duty for us to advise, represent, or protect the interests of the buyer or any other reader. We are not obligated to manage this property, to perform any of the work described, or to take any action on your behalf.\n\n" +
+  "6. Limitation. To the fullest extent permitted by law, Detroit Section 8 Property Management's liability arising out of this report is limited to the fee paid for the walkthrough, and we are not liable for any indirect, incidental, or consequential damages.";
+
+var DEFAULT_COMPANY = "Detroit Section 8 Property Management";
+var MAX_PHOTOS_PER_GROUP = 3;
+
+var DEFAULT_REPORT = {
+  address: "",
+  preparedFor: "",
+  inspectionDate: "",
+  companyName: DEFAULT_COMPANY,
+  companyCamProjectId: "",
+  mediaLink: "",
+  frontExteriorPhoto: "",
+  frontExteriorPhotoSrc: "",
+  bufferPct: 20,
+  legalDisclosures: DEFAULT_DISCLOSURES,
+  contextPhotos: [],
+  sections: [],
+  mediaListLinks: [],
+  pmNotes: ""
+};
+
+function extractErrorMessage(result) {
+  var data = result.data;
+  if (data) {
+    if (data.error) return data.error;
+    if (data.errorMessage) return data.errorMessage;
+  }
+  return "HTTP " + (result.status || "?");
+}
+
+// ---- URL state ----
+function encodeState(obj) {
+  var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+  return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function decodeState(str) {
+  try {
+    var b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (b64.length % 4) b64 += "=";
+    return JSON.parse(decodeURIComponent(escape(atob(b64))));
+  } catch (e) { return null; }
+}
+
+function loadInitialState() {
+  var params = new URLSearchParams(location.search);
+  if (params.has("d")) {
+    var decoded = decodeState(params.get("d"));
+    if (decoded) return normalizeReport(decoded);
+  }
+  return JSON.parse(JSON.stringify(DEFAULT_REPORT));
+}
+
+// Fills in any missing fields / coerces shapes so a report from an older
+// link, an uploaded file, or a DB row all end up uniform.
+function normalizeReport(r) {
+  r = r || {};
+  return {
+    address: r.address || "",
+    preparedFor: r.preparedFor || "",
+    inspectionDate: r.inspectionDate || "",
+    companyName: r.companyName || DEFAULT_COMPANY,
+    companyCamProjectId: r.companyCamProjectId || "",
+    mediaLink: r.mediaLink || "",
+    frontExteriorPhoto: r.frontExteriorPhoto || "",
+    frontExteriorPhotoSrc: r.frontExteriorPhotoSrc || (isDataUri(r.frontExteriorPhoto) ? "" : (r.frontExteriorPhoto || "")),
+    bufferPct: r.bufferPct != null ? Number(r.bufferPct) : 20,
+    legalDisclosures: r.legalDisclosures != null ? r.legalDisclosures : DEFAULT_DISCLOSURES,
+    contextPhotos: (Array.isArray(r.contextPhotos) ? r.contextPhotos : []).map(function (p) {
+      p = p || {};
+      var url = p.url || p.srcUrl || "";
+      return { room: p.room || "", unit: p.unit || "", url: url, srcUrl: p.srcUrl || (isDataUri(url) ? "" : url) };
+    }),
+    sections: (Array.isArray(r.sections) ? r.sections : []).map(function (s) {
+      s = s || {};
+      return {
+        room: s.room || "",
+        items: (Array.isArray(s.items) ? s.items : []).map(function (it) {
+          it = it || {};
+          return {
+            text: it.text || "",
+            flag: (it.flag === "red" || it.flag === "optional") ? it.flag : "yellow",
+            labor: it.labor != null ? Number(it.labor) : null,
+            material: it.material != null ? Number(it.material) : null,
+            photoUrl: it.photoUrl || null
+          };
+        })
+      };
+    }),
+    mediaListLinks: (Array.isArray(r.mediaListLinks) ? r.mediaListLinks : []).map(function (l) {
+      l = l || {};
+      return { label: l.label || "", url: l.url || "" };
+    }),
+    pmNotes: r.pmNotes || ""
+  };
+}
+
+function isDataUri(s) { return typeof s === "string" && /^data:/i.test(s); }
+
+var report = loadInitialState();
+
+// The URL copy drops base64 image blobs (context photos + front photo) back
+// to their source URLs — a report with a dozen embedded JPEGs would blow
+// past any sane URL length otherwise.
+function shareableClone() {
+  var c = JSON.parse(JSON.stringify(report));
+  c.frontExteriorPhoto = c.frontExteriorPhotoSrc || (isDataUri(c.frontExteriorPhoto) ? "" : c.frontExteriorPhoto);
+  c.contextPhotos = (c.contextPhotos || []).map(function (p) {
+    return { room: p.room, unit: p.unit, url: p.srcUrl || (isDataUri(p.url) ? "" : p.url), srcUrl: p.srcUrl || "" };
+  });
+  return c;
+}
+function currentUrlWithState() {
+  return location.origin + location.pathname + "?d=" + encodeState(shareableClone());
+}
+function pushStateToUrl() {
+  try { history.replaceState(null, "", currentUrlWithState()); } catch (e) { /* URL too long — Save is the real store */ }
+}
+
+// ---- CompanyCam project id ----
+function parseCompanyCamProjectId(url) {
+  if (!url) return null;
+  var m = String(url).match(/companycam\.com\/projects\/(\d+)/);
+  return m ? m[1] : null;
+}
+function activeProjectId() {
+  return parseCompanyCamProjectId(report.mediaLink) || (report.companyCamProjectId || null);
+}
+
+// ---- Rendering ----
+function autoGrow(el) { el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; }
+function esc(s) { return pprEscapeHtml(s); }
+
+function groupKey(p) { return pprNormalizeKey((p.room || "") + "|" + (p.unit || "")); }
+
+function overCapGroups() {
+  var counts = {};
+  report.contextPhotos.forEach(function (p) {
+    var k = groupKey(p);
+    counts[k] = (counts[k] || 0) + 1;
+  });
+  var over = [];
+  report.contextPhotos.forEach(function (p) {
+    var k = groupKey(p);
+    if (counts[k] > MAX_PHOTOS_PER_GROUP && over.indexOf(k) === -1) {
+      over.push(k);
+    }
+  });
+  return over.map(function (k) {
+    var sample = report.contextPhotos.find(function (p) { return groupKey(p) === k; });
+    var name = (sample.room || "(no room)") + (sample.unit ? " — " + sample.unit : "");
+    return name + " (" + counts[k] + ")";
+  });
+}
+
+function renderBuilder() {
+  document.getElementById("addressInput").value = report.address;
+  document.getElementById("preparedForInput").value = report.preparedFor;
+  document.getElementById("inspectionDateInput").value = report.inspectionDate;
+  document.getElementById("companyNameInput").value = report.companyName;
+  document.getElementById("bufferInput").value = report.bufferPct;
+  document.getElementById("mediaInput").value = report.mediaLink;
+  document.getElementById("frontPhotoInput").value = report.frontExteriorPhotoSrc || (isDataUri(report.frontExteriorPhoto) ? "" : report.frontExteriorPhoto);
+  document.getElementById("disclosuresInput").value = report.legalDisclosures;
+  document.getElementById("pmNotesInput").value = report.pmNotes;
+
+  var fp = document.getElementById("frontPhotoPreview");
+  fp.innerHTML = report.frontExteriorPhoto
+    ? '<img src="' + esc(report.frontExteriorPhoto) + '" alt="Front exterior preview">'
+    : "";
+
+  renderContextPhotos();
+  renderSections();
+  renderLinks();
+  computeAndShowTotals();
+  pushStateToUrl();
+}
+
+function renderContextPhotos() {
+  var c = document.getElementById("ctxPhotosContainer");
+  c.innerHTML = "";
+  report.contextPhotos.forEach(function (p, idx) {
+    var row = document.createElement("div");
+    row.className = "ctx-row";
+    var thumb = p.url
+      ? '<div class="ctx-thumb"><img src="' + esc(p.url) + '" alt=""></div>'
+      : '<div class="ctx-thumb"><div class="noimg">no image</div></div>';
+    row.innerHTML = thumb +
+      '<div class="ctx-fields">' +
+      '<div class="fld"><label>Room</label><input type="text" class="ctx-room" data-i="' + idx + '" value="' + esc(p.room) + '" placeholder="Kitchen"></div>' +
+      '<div class="fld"><label>Unit</label><input type="text" class="ctx-unit" data-i="' + idx + '" value="' + esc(p.unit) + '" placeholder="Lower Unit"></div>' +
+      '</div>' +
+      '<div class="ctx-actions">' +
+      '<button type="button" data-act="ctx-up" data-i="' + idx + '">&uarr;</button>' +
+      '<button type="button" data-act="ctx-down" data-i="' + idx + '">&darr;</button>' +
+      '<button type="button" data-act="ctx-del" data-i="' + idx + '">&times;</button>' +
+      '</div>';
+    c.appendChild(row);
+  });
+
+  var warn = document.getElementById("ctxCapWarn");
+  var over = overCapGroups();
+  if (over.length) {
+    warn.style.display = "block";
+    warn.textContent = "Over the 3-per-room limit: " + over.join(", ") + ". Trim before printing.";
+  } else {
+    warn.style.display = "none";
+  }
+
+  c.querySelectorAll(".ctx-room").forEach(function (el) {
+    el.oninput = function (e) { report.contextPhotos[e.target.dataset.i].room = e.target.value; pushStateToUrl(); renderContextPhotos(); };
+  });
+  c.querySelectorAll(".ctx-unit").forEach(function (el) {
+    el.oninput = function (e) { report.contextPhotos[e.target.dataset.i].unit = e.target.value; pushStateToUrl(); renderContextPhotos(); };
+  });
+  c.querySelectorAll("[data-act]").forEach(function (el) {
+    el.onclick = function (e) {
+      var i = Number(e.currentTarget.dataset.i);
+      var act = e.currentTarget.dataset.act;
+      if (act === "ctx-del") report.contextPhotos.splice(i, 1);
+      else if (act === "ctx-up" && i > 0) swap(report.contextPhotos, i, i - 1);
+      else if (act === "ctx-down" && i < report.contextPhotos.length - 1) swap(report.contextPhotos, i, i + 1);
+      renderBuilder();
+    };
+  });
+}
+
+function swap(arr, a, b) { var t = arr[a]; arr[a] = arr[b]; arr[b] = t; }
+
+function flagOptions(sel) {
+  return ["yellow", "red", "optional"].map(function (v) {
+    var label = v === "red" ? "Red flag" : v === "yellow" ? "Yellow flag" : "Optional";
+    return '<option value="' + v + '"' + (sel === v ? " selected" : "") + ">" + label + "</option>";
+  }).join("");
+}
+
+function renderSections() {
+  var container = document.getElementById("sectionsContainer");
+  container.innerHTML = "";
+  report.sections.forEach(function (section, sIdx) {
+    var roomRow = document.createElement("div");
+    roomRow.className = "room-row";
+    roomRow.innerHTML =
+      '<div class="room-name-wrap"><input type="text" class="room-name" value="' + esc(section.room) + '" data-s="' + sIdx + '"></div>' +
+      '<div class="room-rest">' +
+      '<span class="room-subtotal" data-s="' + sIdx + '">' + pprCurrency(roomBase(section)) + '</span>' +
+      '<button class="btn small no-print" data-s="' + sIdx + '" data-act="delroom">Delete room</button></div>';
+    container.appendChild(roomRow);
+
+    section.items.forEach(function (item, iIdx) {
+      var row = document.createElement("div");
+      row.className = "item-row flag-" + pprFlag(item);
+      var photoLinkHtml = item.photoUrl
+        ? '<a class="photo-link" href="' + esc(item.photoUrl) + '" target="_blank" rel="noopener" title="View photo/video in CompanyCam">&#128247;</a>'
+        : "";
+      row.innerHTML =
+        '<div class="c-room-blank"></div>' +
+        '<div class="c-desc"><textarea rows="1" class="item-text" data-s="' + sIdx + '" data-i="' + iIdx + '">' + esc(item.text) + "</textarea>" + photoLinkHtml + "</div>" +
+        '<div class="c-flag"><select class="flag-select" data-s="' + sIdx + '" data-i="' + iIdx + '">' + flagOptions(pprFlag(item)) + "</select></div>" +
+        '<div class="c-labor"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="labor" value="' + (item.labor != null ? item.labor : "") + '" placeholder="0"></div>' +
+        '<div class="c-material"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="material" value="' + (item.material != null ? item.material : "") + '" placeholder="0"></div>' +
+        '<div class="c-del"><button data-s="' + sIdx + '" data-i="' + iIdx + '" data-act="delitem">&#10005;</button></div>';
+      container.appendChild(row);
+    });
+
+    var addItemBtn = document.createElement("button");
+    addItemBtn.className = "btn small no-print addrow-btn";
+    addItemBtn.textContent = "+ Add line to " + (section.room || "room");
+    addItemBtn.dataset.s = sIdx;
+    addItemBtn.dataset.act = "additem";
+    container.appendChild(addItemBtn);
+  });
+
+  attachSectionListeners();
+  document.querySelectorAll(".item-text").forEach(autoGrow);
+}
+
+function roomBase(section) {
+  var t = 0;
+  section.items.forEach(function (it) {
+    if (!(it.text || "").trim()) return;
+    t += (Number(it.labor) || 0) + (Number(it.material) || 0);
+  });
+  return t;
+}
+
+function renderLinks() {
+  var c = document.getElementById("linksContainer");
+  c.innerHTML = "";
+  report.mediaListLinks.forEach(function (l, idx) {
+    var row = document.createElement("div");
+    row.className = "link-row";
+    row.innerHTML =
+      '<input type="text" class="link-label" data-i="' + idx + '" value="' + esc(l.label) + '" placeholder="Video of lower unit">' +
+      '<input type="text" class="link-url" data-i="' + idx + '" value="' + esc(l.url) + '" placeholder="https://app.companycam.com/&hellip;">' +
+      '<button type="button" data-act="link-up" data-i="' + idx + '">&uarr;</button>' +
+      '<button type="button" data-act="link-down" data-i="' + idx + '">&darr;</button>' +
+      '<button type="button" data-act="link-del" data-i="' + idx + '">&times;</button>';
+    c.appendChild(row);
+  });
+  c.querySelectorAll(".link-label").forEach(function (el) {
+    el.oninput = function (e) { report.mediaListLinks[e.target.dataset.i].label = e.target.value; pushStateToUrl(); };
+  });
+  c.querySelectorAll(".link-url").forEach(function (el) {
+    el.oninput = function (e) { report.mediaListLinks[e.target.dataset.i].url = e.target.value; pushStateToUrl(); };
+  });
+  c.querySelectorAll("[data-act]").forEach(function (el) {
+    el.onclick = function (e) {
+      var i = Number(e.currentTarget.dataset.i);
+      var act = e.currentTarget.dataset.act;
+      if (act === "link-del") report.mediaListLinks.splice(i, 1);
+      else if (act === "link-up" && i > 0) swap(report.mediaListLinks, i, i - 1);
+      else if (act === "link-down" && i < report.mediaListLinks.length - 1) swap(report.mediaListLinks, i, i + 1);
+      renderLinks();
+      pushStateToUrl();
+    };
+  });
+}
+
+function computeAndShowTotals() {
+  var t = pprComputeTotals(report);
+  document.getElementById("totRed").textContent = pprCurrency(t.red);
+  document.getElementById("totYellow").textContent = pprCurrency(t.yellow);
+  document.getElementById("totOptional").textContent = pprCurrency(t.optional);
+  document.getElementById("totGrand").textContent = pprCurrency(t.grand);
+}
+
+function attachSectionListeners() {
+  document.querySelectorAll(".room-name").forEach(function (el) {
+    el.oninput = function (e) { report.sections[e.target.dataset.s].room = e.target.value; pushStateToUrl(); };
+  });
+  document.querySelectorAll(".item-text").forEach(function (el) {
+    el.oninput = function (e) {
+      report.sections[e.target.dataset.s].items[e.target.dataset.i].text = e.target.value;
+      autoGrow(e.target);
+      pushStateToUrl();
+    };
+  });
+  document.querySelectorAll(".flag-select").forEach(function (el) {
+    el.onchange = function (e) {
+      report.sections[e.target.dataset.s].items[e.target.dataset.i].flag = e.target.value;
+      renderSections();
+      computeAndShowTotals();
+      pushStateToUrl();
+    };
+  });
+  document.querySelectorAll(".price").forEach(function (el) {
+    el.oninput = function (e) {
+      var s = e.target.dataset.s, i = e.target.dataset.i, f = e.target.dataset.field;
+      report.sections[s].items[i][f] = e.target.value === "" ? null : Number(e.target.value);
+      var sub = document.querySelector('.room-subtotal[data-s="' + s + '"]');
+      if (sub) sub.textContent = pprCurrency(roomBase(report.sections[s]));
+      computeAndShowTotals();
+      pushStateToUrl();
+    };
+  });
+  document.querySelectorAll('[data-act="delitem"]').forEach(function (el) {
+    el.onclick = function (e) {
+      var t = e.currentTarget;
+      report.sections[t.dataset.s].items.splice(t.dataset.i, 1);
+      renderSections(); computeAndShowTotals(); pushStateToUrl();
+    };
+  });
+  document.querySelectorAll('[data-act="delroom"]').forEach(function (el) {
+    el.onclick = function (e) {
+      if (!confirm("Delete this whole room and its lines?")) return;
+      report.sections.splice(e.currentTarget.dataset.s, 1);
+      renderSections(); computeAndShowTotals(); pushStateToUrl();
+    };
+  });
+  document.querySelectorAll('[data-act="additem"]').forEach(function (el) {
+    el.onclick = function (e) {
+      report.sections[e.currentTarget.dataset.s].items.push({ text: "", flag: "yellow", labor: null, material: null, photoUrl: null });
+      renderSections(); pushStateToUrl();
+    };
+  });
+}
+
+// ---- Top-level field listeners ----
+document.getElementById("addressInput").oninput = function (e) { report.address = e.target.value; pushStateToUrl(); };
+document.getElementById("preparedForInput").oninput = function (e) { report.preparedFor = e.target.value; pushStateToUrl(); };
+document.getElementById("inspectionDateInput").oninput = function (e) { report.inspectionDate = e.target.value; pushStateToUrl(); };
+document.getElementById("companyNameInput").oninput = function (e) { report.companyName = e.target.value; pushStateToUrl(); };
+document.getElementById("bufferInput").oninput = function (e) { report.bufferPct = e.target.value === "" ? 0 : Number(e.target.value); computeAndShowTotals(); pushStateToUrl(); };
+document.getElementById("mediaInput").oninput = function (e) {
+  report.mediaLink = e.target.value;
+  var pid = parseCompanyCamProjectId(e.target.value);
+  if (pid) report.companyCamProjectId = pid;
+  pushStateToUrl();
+};
+document.getElementById("frontPhotoInput").oninput = function (e) {
+  report.frontExteriorPhotoSrc = e.target.value;
+  report.frontExteriorPhoto = e.target.value;
+  var fp = document.getElementById("frontPhotoPreview");
+  fp.innerHTML = e.target.value ? '<img src="' + esc(e.target.value) + '" alt="Front exterior preview">' : "";
+  pushStateToUrl();
+};
+document.getElementById("disclosuresInput").oninput = function (e) { report.legalDisclosures = e.target.value; pushStateToUrl(); };
+document.getElementById("pmNotesInput").oninput = function (e) { report.pmNotes = e.target.value; pushStateToUrl(); };
+
+document.getElementById("addRoomBtn").onclick = function () {
+  report.sections.push({ room: "New Room", items: [{ text: "", flag: "yellow", labor: null, material: null, photoUrl: null }] });
+  renderSections(); pushStateToUrl();
+};
+document.getElementById("addLinkBtn").onclick = function () {
+  report.mediaListLinks.push({ label: "", url: "" });
+  renderLinks(); pushStateToUrl();
+};
+document.getElementById("addCtxManualBtn").onclick = function () {
+  var url = prompt("Image URL for this context photo:");
+  if (url == null) return;
+  url = url.trim();
+  report.contextPhotos.push({ room: "", unit: "", url: url, srcUrl: isDataUri(url) ? "" : url });
+  renderBuilder();
+};
+
+// ---- CompanyCam photo picker ----
+var pickState = { mode: null, photos: [], selected: [] };
+
+function openPicker(mode) {
+  var pid = activeProjectId();
+  var status = document.getElementById("pickStatus");
+  var grid = document.getElementById("pickGrid");
+  if (!pid) {
+    alert("Paste the CompanyCam project link up top first.");
+    return;
+  }
+  pickState = { mode: mode, photos: [], selected: [] };
+  document.getElementById("pickTitle").textContent = mode === "front" ? "Pick the front exterior photo" : "Pick room context photos";
+  document.getElementById("pickConfirmBtn").textContent = mode === "front" ? "Use this photo" : "Add selected";
+  grid.innerHTML = "";
+  status.textContent = "Loading photos from CompanyCam…";
+  status.className = "sendstatus";
+  document.getElementById("pickModal").classList.add("open");
+
+  fetch("/.netlify/functions/ppr-companycam-photos?projectId=" + encodeURIComponent(pid))
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, status: r.status, data: d }; }); })
+    .then(function (res) {
+      if (!res.ok) { status.textContent = "Failed: " + extractErrorMessage(res); status.className = "sendstatus err"; return; }
+      pickState.photos = res.data.photos || [];
+      status.textContent = pickState.photos.length + " photos. " + (pickState.mode === "front" ? "Click one." : "Click to select multiple.");
+      status.className = "sendstatus";
+      renderPickGrid();
+    })
+    .catch(function (err) { status.textContent = "Failed: " + err.message; status.className = "sendstatus err"; });
+}
+
+function renderPickGrid() {
+  var grid = document.getElementById("pickGrid");
+  grid.innerHTML = "";
+  pickState.photos.forEach(function (p, idx) {
+    var cell = document.createElement("button");
+    cell.type = "button";
+    cell.className = "pick-cell" + (pickState.selected.indexOf(idx) !== -1 ? " sel" : "");
+    cell.innerHTML = '<img src="' + esc(p.thumbUrl || p.displayUrl) + '" alt="">' +
+      '<div class="pick-cap">' + esc((p.description || "").slice(0, 90)) + "</div>";
+    cell.onclick = function () {
+      if (pickState.mode === "front") {
+        pickState.selected = [idx];
+      } else {
+        var at = pickState.selected.indexOf(idx);
+        if (at === -1) pickState.selected.push(idx); else pickState.selected.splice(at, 1);
+      }
+      renderPickGrid();
+    };
+    grid.appendChild(cell);
+  });
+}
+
+document.getElementById("pickCloseBtn").onclick = function () { document.getElementById("pickModal").classList.remove("open"); };
+document.getElementById("pickFrontBtn").onclick = function () { openPicker("front"); };
+document.getElementById("pickCtxBtn").onclick = function () { openPicker("context"); };
+
+document.getElementById("pickConfirmBtn").onclick = function () {
+  var picks = pickState.selected.map(function (i) { return pickState.photos[i]; }).filter(Boolean);
+  if (!picks.length) { document.getElementById("pickModal").classList.remove("open"); return; }
+  if (pickState.mode === "front") {
+    var u = picks[0].displayUrl || picks[0].thumbUrl;
+    report.frontExteriorPhoto = u;
+    report.frontExteriorPhotoSrc = u;
+  } else {
+    picks.forEach(function (p) {
+      var u = p.displayUrl || p.thumbUrl;
+      report.contextPhotos.push({ room: "", unit: "", url: u, srcUrl: u });
+    });
+  }
+  document.getElementById("pickModal").classList.remove("open");
+  renderBuilder();
+};
+
+// ---- Embed photos as base64 ----
+document.getElementById("embedImagesBtn").onclick = function () { embedImages(true); };
+
+function embedImages(loud) {
+  var status = document.getElementById("embedStatus");
+  var jobs = [];
+  if (report.frontExteriorPhotoSrc && !isDataUri(report.frontExteriorPhoto)) jobs.push(report.frontExteriorPhotoSrc);
+  report.contextPhotos.forEach(function (p) {
+    if (p.srcUrl && !isDataUri(p.url)) jobs.push(p.srcUrl);
+  });
+  jobs = jobs.filter(function (v, i, a) { return v && a.indexOf(v) === i; });
+  if (!jobs.length) {
+    if (loud) { status.textContent = "Nothing to embed — all photos are already inlined."; status.className = "sendstatus ok"; }
+    return Promise.resolve();
+  }
+  var btn = document.getElementById("embedImagesBtn");
+  btn.disabled = true;
+  status.textContent = "Embedding " + jobs.length + " photo(s)…";
+  status.className = "sendstatus";
+  return fetch("/.netlify/functions/ppr-fetch-images", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ urls: jobs })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var map = {};
+      (data.images || []).forEach(function (im) { if (im.dataUri) map[im.url] = im.dataUri; });
+      var done = 0, failed = 0;
+      if (report.frontExteriorPhotoSrc && map[report.frontExteriorPhotoSrc]) { report.frontExteriorPhoto = map[report.frontExteriorPhotoSrc]; done++; }
+      report.contextPhotos.forEach(function (p) {
+        if (p.srcUrl && map[p.srcUrl]) { p.url = map[p.srcUrl]; done++; }
+        else if (p.srcUrl && !isDataUri(p.url)) failed++;
+      });
+      btn.disabled = false;
+      status.textContent = "Embedded " + done + " photo(s)." + (failed ? " " + failed + " couldn't be fetched — left as links." : "");
+      status.className = failed ? "sendstatus err" : "sendstatus ok";
+      renderBuilder();
+    })
+    .catch(function (err) {
+      btn.disabled = false;
+      status.textContent = "Embed failed: " + err.message;
+      status.className = "sendstatus err";
+    });
+}
+
+// ---- Save / load ----
+function refreshReportList() {
+  var select = document.getElementById("loadReportSelect");
+  return fetch("/.netlify/functions/ppr-list")
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var current = select.value;
+      select.innerHTML = '<option value="">Load previous report&hellip;</option>';
+      (data.reports || []).forEach(function (row) {
+        var opt = document.createElement("option");
+        opt.value = row.id;
+        var d = new Date(row.updated_at);
+        opt.textContent = row.address + " (" + (d.toString() !== "Invalid Date" ? d.toLocaleDateString() : "") + ")";
+        select.appendChild(opt);
+      });
+      select.value = current;
+    })
+    .catch(function () { /* dropdown just stays empty */ });
+}
+
+document.getElementById("saveReportBtn").onclick = function () {
+  var status = document.getElementById("saveStatus");
+  if (!report.address || !report.address.trim()) {
+    status.textContent = "Enter a property address before saving.";
+    status.className = "sendstatus err";
+    return;
+  }
+  var btn = document.getElementById("saveReportBtn");
+  btn.disabled = true;
+  status.textContent = "Saving…";
+  status.className = "sendstatus";
+  fetch("/.netlify/functions/ppr-save", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ report: report })
+  })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, status: r.status, data: d }; }); })
+    .then(function (result) {
+      btn.disabled = false;
+      if (result.ok) {
+        status.textContent = "Saved. It'll show up in “Load previous report”.";
+        status.className = "sendstatus ok";
+        refreshReportList();
+      } else {
+        status.textContent = "Failed: " + extractErrorMessage(result);
+        status.className = "sendstatus err";
+      }
+    })
+    .catch(function (err) {
+      btn.disabled = false;
+      status.textContent = "Failed: " + err.message;
+      status.className = "sendstatus err";
+    });
+};
+
+document.getElementById("loadReportSelect").onchange = function (e) {
+  var id = e.target.value;
+  if (!id) return;
+  if ((report.sections.length || report.contextPhotos.length) && !confirm("This will replace everything currently in the editor. Continue?")) {
+    e.target.value = "";
+    return;
+  }
+  fetch("/.netlify/functions/ppr-load?id=" + encodeURIComponent(id))
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data.report) throw new Error(data.error || "Not found");
+      report = normalizeReport(data.report);
+      renderBuilder();
+      e.target.value = "";
+    })
+    .catch(function (err) {
+      alert("Couldn't load that report: " + err.message);
+      e.target.value = "";
+    });
+};
+
+// ---- Upload a report file (produced by the /build-underwriting-report skill) ----
+function isValidReportShape(obj) {
+  if (!obj || typeof obj !== "object") return false;
+  if (!Array.isArray(obj.sections)) return false;
+  for (var i = 0; i < obj.sections.length; i++) {
+    if (typeof obj.sections[i].room !== "string" || !Array.isArray(obj.sections[i].items)) return false;
+  }
+  return true;
+}
+
+document.getElementById("uploadReportBtn").onclick = function () { document.getElementById("uploadReportInput").click(); };
+document.getElementById("uploadReportInput").onchange = function (e) {
+  var file = e.target.files[0];
+  var status = document.getElementById("uploadStatus");
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function () {
+    var parsed;
+    try { parsed = JSON.parse(reader.result); }
+    catch (err) {
+      status.textContent = "That file isn't valid JSON — was it exported by the report skill?";
+      status.className = "sendstatus err";
+      return;
+    }
+    if (!isValidReportShape(parsed)) {
+      status.textContent = "That file doesn't look like a report export (missing sections/items). Nothing was loaded.";
+      status.className = "sendstatus err";
+      return;
+    }
+    if ((report.sections.length || report.contextPhotos.length) && !confirm("This will replace everything currently in the editor with the uploaded file. Continue?")) return;
+    report = normalizeReport(parsed);
+    if (!report.legalDisclosures) report.legalDisclosures = DEFAULT_DISCLOSURES;
+    status.textContent = "Loaded “" + (report.address || "report") + "” — " + report.sections.length + " rooms, " + report.contextPhotos.length + " context photos. Embedding photos…";
+    status.className = "sendstatus ok";
+    renderBuilder();
+    embedImages(false).then(function () {
+      status.textContent = "Loaded “" + (report.address || "report") + "” — fill in prices, then download or send.";
+    });
+  };
+  reader.onerror = function () { status.textContent = "Couldn't read that file."; status.className = "sendstatus err"; };
+  reader.readAsText(file);
+  e.target.value = "";
+};
+
+// ---- Print / PDF ----
+var printStyleEl = document.createElement("style");
+printStyleEl.media = "print";
+printStyleEl.textContent = PPR_REPORT_CSS +
+  "\n@media print{ body[data-printing] #builderView{display:none !important;} body[data-printing] #printView{display:block !important;} }";
+document.head.appendChild(printStyleEl);
+
+document.getElementById("downloadPdfBtn").onclick = function () {
+  document.getElementById("printView").innerHTML = pprBuildReportHtml(report);
+  document.title = "Pre-Purchase Report - " + (report.address || "report");
+  document.body.dataset.printing = "1";
+  window.print();
+  setTimeout(function () { delete document.body.dataset.printing; }, 400);
+};
+
+// ---- Copy link ----
+document.getElementById("copyLinkBtn").onclick = function () {
+  var url = currentUrlWithState();
+  var wrap = document.getElementById("linkwrap");
+  var out = document.getElementById("linkOut");
+  out.value = url;
+  wrap.style.display = "block";
+  document.getElementById("linkHint").textContent = url.length > 6000
+    ? "Link is long — use Save report for anything you need to reliably reopen."
+    : "Link copied. Embedded photos aren't in the link; re-embed after opening.";
+  out.focus(); out.select();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function () {
+      var btn = document.getElementById("copyLinkBtn");
+      var t = btn.textContent;
+      btn.textContent = "Copied!";
+      setTimeout(function () { btn.textContent = t; }, 1600);
+    }, function () {});
+  }
+};
+
+// ---- Send to CompanyCam ----
+document.getElementById("sendCCBtn").onclick = function () {
+  var status = document.getElementById("sendStatus");
+  var projectId = activeProjectId();
+  if (!projectId) {
+    status.textContent = "Couldn't find a CompanyCam project ID in the project link above. Paste a link like https://app.companycam.com/projects/123456 first.";
+    status.className = "sendstatus err";
+    return;
+  }
+  var btn = document.getElementById("sendCCBtn");
+  btn.disabled = true;
+  status.textContent = "Rendering and sending… (this can take ~20s)";
+  status.className = "sendstatus";
+  fetch("/.netlify/functions/ppr-send-to-companycam", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ projectId: projectId, report: report })
+  })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, status: r.status, data: d }; }); })
+    .then(function (result) {
+      btn.disabled = false;
+      if (result.ok) { status.textContent = "Sent to CompanyCam Files."; status.className = "sendstatus ok"; }
+      else { status.textContent = "Failed: " + extractErrorMessage(result); status.className = "sendstatus err"; }
+    })
+    .catch(function (err) {
+      btn.disabled = false;
+      status.textContent = "Failed: " + err.message;
+      status.className = "sendstatus err";
+    });
+};
+
+// ---- Boot ----
+renderBuilder();
+refreshReportList();

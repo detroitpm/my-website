@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Pre-Purchase Report Builder</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --gold:#d4af37; --gold-ink:#8a6d16;
+    --muted:#6b6b6b; --line:#e5e4e1; --line-soft:#d3d3d3; --panel:#f5f4f1; --paper:#ffffff;
+    --red:#b3261e; --red-bg:#fbeae8; --yellow:#9a7400; --yellow-bg:#fbf3dd; --opt:#5f5f5f; --opt-bg:#ececec;
+    --maxw:900px;
+    --display:"Arial Black","Arial Bold",Arial,sans-serif;
+    --sans:Arial,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+
+  /* ---------- Builder toolbar ---------- */
+  .builder{background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;}
+  .builder-inner{max-width:var(--maxw);margin:0 auto;padding:16px 28px;}
+  .bbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .btn{font-family:var(--sans);font-size:13.5px;padding:10px 15px;border-radius:0;
+    border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;line-height:1;font-weight:700;}
+  .btn:hover{background:#faf9f7;}
+  .btn.primary{background:var(--gold);border-color:var(--gold);color:#1a1a1a;}
+  .btn.primary:hover{background:#c39f2c;}
+  .btn.small{padding:6px 10px;font-size:12.5px;}
+  .btn:disabled{opacity:.5;cursor:default;}
+  .bbtns select{font-family:var(--sans);font-size:13.5px;padding:10px 15px;border-radius:0;
+    border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;line-height:1;font-weight:700;max-width:240px;}
+  .linkwrap{display:none;margin-top:13px;padding-top:13px;border-top:1px solid var(--line);}
+  .linkhint{font-size:12px;color:var(--gold-ink);font-weight:700;margin:0 0 7px;}
+  .linkout{width:100%;padding:9px 11px;border:1px solid var(--ink);border-radius:0;font-family:var(--sans);font-size:13px;background:#fff;color:var(--ink);}
+  .sendstatus{font-size:12.5px;margin-top:8px;color:var(--muted);}
+  .sendstatus.ok{color:#1e7e34;font-weight:700;}
+  .sendstatus.err{color:#b3261e;font-weight:700;}
+
+  /* ---------- Masthead ---------- */
+  .masthead{background:var(--ink);}
+  .mast-inner{max-width:var(--maxw);margin:0 auto;padding:40px 28px 34px;}
+  .kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;}
+  h1{font-family:var(--display);font-size:34px;line-height:1.08;font-weight:700;margin:0;letter-spacing:-.01em;color:#fff;text-transform:uppercase;}
+  .goldbar{display:block;width:56px;height:4px;background:var(--gold);margin-top:18px;}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:30px 28px 96px;}
+
+  /* ---------- Cards / sections ---------- */
+  .card{background:var(--panel);border:1px solid var(--line);padding:18px 20px;margin-bottom:22px;}
+  .card > h2{font-family:var(--display);font-size:14px;letter-spacing:.07em;text-transform:uppercase;
+    margin:0 0 4px;padding-bottom:6px;border-bottom:3px solid var(--gold);display:inline-block;}
+  .card-hint{margin:8px 0 14px;font-size:12.5px;color:var(--muted);}
+
+  .grid{display:flex;flex-wrap:wrap;gap:14px;}
+  .fld{display:flex;flex-direction:column;gap:4px;flex:1 1 240px;}
+  .fld.small{flex:0 0 120px;}
+  .fld.full{flex:1 1 100%;}
+  .fld label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .fld input, .fld textarea{padding:8px 9px;border:1px solid var(--ink);border-radius:0;font-family:var(--sans);font-size:13.5px;}
+  textarea.big{width:100%;min-height:220px;line-height:1.5;resize:vertical;}
+  textarea.notes{width:100%;min-height:130px;line-height:1.5;resize:vertical;}
+
+  .front-photo-preview img, .ctx-thumb img{display:block;border:1px solid var(--ink);}
+  .front-photo-preview img{max-width:260px;height:auto;margin-top:8px;}
+
+  /* ---------- Context photo rows ---------- */
+  .ctx-row{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);}
+  .ctx-row:first-child{border-top:none;}
+  .ctx-thumb{flex:0 0 120px;}
+  .ctx-thumb img{width:120px;height:90px;object-fit:cover;}
+  .ctx-thumb .noimg{width:120px;height:90px;background:#e4e2dd;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px;text-align:center;padding:4px;}
+  .ctx-fields{flex:1;display:flex;flex-wrap:wrap;gap:10px;}
+  .ctx-fields .fld{flex:1 1 150px;}
+  .ctx-actions{display:flex;flex-direction:column;gap:5px;}
+  .ctx-actions button{border:1px solid var(--ink);background:#fff;font-size:12px;padding:4px 8px;cursor:pointer;font-family:var(--sans);}
+  .cap-warn{color:var(--red);font-weight:700;font-size:12px;margin:6px 0 0;}
+
+  /* ---------- SOW table ---------- */
+  .sow-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .sow-table-wrap{border:2.5px solid var(--ink);background:#fff;min-width:640px;}
+  .sow-colheader{display:flex;background:var(--panel);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid #999;}
+  .sow-colheader .c-room{flex:0 0 24%;padding:9px 10px;}
+  .sow-colheader .c-desc{flex:1;padding:9px 10px;border-left:1px solid #999;}
+  .sow-colheader .c-flag{flex:0 0 110px;padding:9px 8px;border-left:1px solid #999;}
+  .sow-colheader .c-labor,.sow-colheader .c-material{flex:0 0 84px;padding:9px 8px;border-left:1px solid #999;text-align:right;}
+  .sow-colheader .c-del{flex:0 0 34px;border-left:1px solid #999;}
+
+  .room-row{display:flex;background:#F2F2F2;border-top:1px solid #999;font-weight:700;}
+  .room-row .room-name-wrap{flex:0 0 24%;padding:6px 10px;display:flex;align-items:center;gap:6px;}
+  .room-row input.room-name{border:none;background:transparent;font-weight:700;font-size:14.5px;width:100%;font-family:var(--sans);}
+  .room-row .room-rest{flex:1;border-left:1px solid #999;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:4px 6px;}
+  .room-row .room-subtotal{color:var(--gold-ink);font-weight:700;font-size:13px;white-space:nowrap;}
+
+  .item-row{display:flex;border-top:1px solid #ddd;align-items:stretch;}
+  .item-row.flag-optional{background:var(--opt-bg);}
+  .item-row .c-room-blank{flex:0 0 24%;}
+  .item-row .c-desc{flex:1;border-left:1px solid #ddd;padding:6px 10px;display:flex;align-items:center;}
+  .item-row textarea{flex:1;border:none;background:transparent;font-size:14px;resize:none;font-family:var(--sans);padding:4px 0;min-height:20px;overflow:hidden;line-height:1.4;}
+  .item-row .photo-link{flex:0 0 auto;margin-left:6px;font-size:15px;text-decoration:none;opacity:.7;}
+  .item-row .photo-link:hover{opacity:1;}
+  .item-row .c-flag{flex:0 0 110px;border-left:1px solid #ddd;padding:6px;display:flex;align-items:center;}
+  .item-row select.flag-select{width:100%;border:1px solid #ccc;padding:5px 6px;font-size:12.5px;font-family:var(--sans);background:#fff;}
+  .item-row .c-labor,.item-row .c-material{flex:0 0 84px;border-left:1px solid #ddd;padding:6px;display:flex;align-items:center;}
+  .item-row input.price{width:100%;border:1px solid #ccc;padding:5px 6px;font-size:13px;text-align:right;font-family:var(--sans);}
+  .item-row .c-del{flex:0 0 34px;border-left:1px solid #ddd;display:flex;align-items:center;justify-content:center;}
+  .item-row .c-del button{border:none;background:none;color:#a02222;font-size:16px;cursor:pointer;}
+  .addrow-btn{margin:8px 10px;}
+  .scroll-hint{display:none;font-size:12px;color:var(--muted);margin:6px 2px 0;}
+  @media (max-width:680px){.scroll-hint{display:block;}}
+
+  /* ---------- Media link rows ---------- */
+  .link-row{display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line);}
+  .link-row:first-child{border-top:none;}
+  .link-row input.link-label{flex:0 0 220px;padding:8px 9px;border:1px solid var(--ink);font-family:var(--sans);font-size:13.5px;}
+  .link-row input.link-url{flex:1;padding:8px 9px;border:1px solid var(--ink);font-family:var(--sans);font-size:13.5px;}
+  .link-row button{border:1px solid var(--ink);background:#fff;font-size:12px;padding:6px 9px;cursor:pointer;font-family:var(--sans);}
+
+  /* ---------- Totals ---------- */
+  .totals-band{background:#2b2b2b;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-weight:700;font-size:14px;}
+  .totals-band span.n{color:var(--gold);}
+  .totals-band.grand{background:var(--ink);font-size:15.5px;}
+
+  /* ---------- CompanyCam photo picker modal ---------- */
+  .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;padding:24px;overflow:auto;}
+  .modal-backdrop.open{display:block;}
+  .modal{background:#fff;max-width:900px;margin:0 auto;border:3px solid var(--ink);}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);}
+  .modal-head h3{margin:0;font-size:15px;}
+  .modal-body{padding:16px 18px;}
+  .pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+  .pick-cell{border:2px solid transparent;cursor:pointer;background:none;padding:0;}
+  .pick-cell img{width:100%;height:110px;object-fit:cover;display:block;border:1px solid var(--ink);}
+  .pick-cell.sel{border-color:var(--gold);}
+  .pick-cap{font-size:10.5px;color:var(--muted);padding:2px 3px;line-height:1.3;max-height:2.7em;overflow:hidden;}
+
+  .section-heading{font-family:var(--display);font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin:26px 0 10px;padding-bottom:6px;border-bottom:3px solid var(--gold);display:inline-block;}
+
+  #printView{display:none;}
+  @media print{
+    .builder,.no-print,.masthead{display:none !important;}
+    body{background:#fff;}
+    .wrap{max-width:100%;margin:0;padding:0;}
+    body[data-printing] #builderView{display:none !important;}
+    body[data-printing] #printView{display:block !important;}
+  }
+
+  @media (max-width:640px){
+    .mast-inner{padding:32px 20px 28px;}
+    .builder-inner{padding:14px 18px;}
+    .wrap{padding:22px 18px 72px;}
+    h1{font-size:26px;}
+  }
+</style>
+</head>
+<body data-mode="build">
+
+  <div class="builder no-print" id="builder">
+    <div class="builder-inner">
+      <div class="bbtns">
+        <select id="loadReportSelect"><option value="">Load previous report&hellip;</option></select>
+        <button class="btn" id="saveReportBtn">Save report</button>
+        <button class="btn" id="uploadReportBtn">Upload report file</button>
+        <input type="file" id="uploadReportInput" accept="application/json,.json" style="display:none;">
+        <button class="btn" id="embedImagesBtn">Embed photos</button>
+        <button class="btn primary" id="downloadPdfBtn">Download Report PDF</button>
+        <button class="btn" id="sendCCBtn">Send to CompanyCam Files</button>
+        <button class="btn" id="copyLinkBtn">Copy link</button>
+      </div>
+      <div class="linkwrap" id="linkwrap">
+        <p class="linkhint" id="linkHint">Link copied.</p>
+        <input class="linkout" id="linkOut" type="text" readonly onclick="this.select()">
+      </div>
+      <div class="sendstatus" id="saveStatus"></div>
+      <div class="sendstatus" id="sendStatus"></div>
+      <div class="sendstatus" id="uploadStatus"></div>
+      <div class="sendstatus" id="embedStatus"></div>
+    </div>
+  </div>
+
+  <header class="masthead">
+    <div class="mast-inner">
+      <p class="kicker">Detroit Section 8 &middot; Property Management</p>
+      <h1>Pre-Purchase Report Builder</h1>
+      <span class="goldbar"></span>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div id="builderView">
+
+      <div class="card no-print">
+        <h2>Cover &amp; Setup</h2>
+        <p class="card-hint">Labor and Material prices are internal &mdash; they never print. Only the flag subtotals and grand total appear on the report.</p>
+        <div class="grid">
+          <div class="fld"><label>Property Address (full)</label><input type="text" id="addressInput" placeholder="8210 Decatur St, Detroit, MI 48228"></div>
+          <div class="fld"><label>Prepared For</label><input type="text" id="preparedForInput" placeholder="Buyer / client name"></div>
+        </div>
+        <div class="grid" style="margin-top:12px;">
+          <div class="fld"><label>Date of Inspection</label><input type="text" id="inspectionDateInput" placeholder="August 27, 2026"></div>
+          <div class="fld"><label>Prepared By (company)</label><input type="text" id="companyNameInput" placeholder="Detroit Section 8 Property Management"></div>
+          <div class="fld small"><label>Buffer %</label><input type="number" id="bufferInput" min="0" step="1" value="20"></div>
+        </div>
+        <div class="grid" style="margin-top:12px;">
+          <div class="fld full"><label>CompanyCam Project Link</label><input type="text" id="mediaInput" placeholder="https://app.companycam.com/projects/123456"></div>
+        </div>
+        <div class="grid" style="margin-top:12px;">
+          <div class="fld full">
+            <label>Front Exterior Photo (cover)</label>
+            <input type="text" id="frontPhotoInput" placeholder="Image URL, or use Pick from CompanyCam">
+            <div style="margin-top:6px;"><button class="btn small" id="pickFrontBtn" type="button">Pick from CompanyCam</button></div>
+            <div class="front-photo-preview" id="frontPhotoPreview"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card no-print">
+        <h2>Important Disclosures</h2>
+        <p class="card-hint">Prints as Section 2. Edit freely &mdash; this is the text buyers see.</p>
+        <textarea class="big" id="disclosuresInput"></textarea>
+      </div>
+
+      <div class="card no-print">
+        <h2>Room Context Photos</h2>
+        <p class="card-hint">Prints as Section 3 &mdash; clean room shots, not repair callouts. Max 3 per room/unit. Caption is room + unit.</p>
+        <div id="ctxPhotosContainer"></div>
+        <p class="cap-warn" id="ctxCapWarn" style="display:none;"></p>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn small" id="pickCtxBtn" type="button">Pick from CompanyCam</button>
+          <button class="btn small" id="addCtxManualBtn" type="button">+ Add photo by URL</button>
+        </div>
+      </div>
+
+      <div class="section-heading no-print">Scope of Work &amp; Estimate</div>
+      <p class="card-hint no-print">Prints as Section 4. Every line is Red flag (important concern), Yellow flag (minor repair), or Optional (future / cosmetic).</p>
+      <div class="sow-table-scroll no-print">
+        <div class="sow-table-wrap">
+          <div class="sow-colheader">
+            <div class="c-room">Room</div>
+            <div class="c-desc">Item</div>
+            <div class="c-flag">Flag</div>
+            <div class="c-labor">Labor $</div>
+            <div class="c-material">Material $</div>
+            <div class="c-del"></div>
+          </div>
+          <div id="sectionsContainer"></div>
+        </div>
+      </div>
+      <p class="scroll-hint no-print">Swipe sideways to see Flag / Labor / Material on a small screen.</p>
+      <div class="no-print" style="margin:10px 0 24px;">
+        <button class="btn small" id="addRoomBtn">+ Add room</button>
+      </div>
+
+      <div class="sow-table-wrap no-print" style="margin-bottom:24px;">
+        <div class="totals-band"><span>Red flag items (incl. buffer)</span><span class="n" id="totRed">$0</span></div>
+        <div class="totals-band"><span>Yellow flag items (incl. buffer)</span><span class="n" id="totYellow">$0</span></div>
+        <div class="totals-band"><span>Optional items (incl. buffer)</span><span class="n" id="totOptional">$0</span></div>
+        <div class="totals-band grand"><span>Grand total</span><span class="n" id="totGrand">$0</span></div>
+      </div>
+
+      <div class="card no-print">
+        <h2>Photo &amp; Video Links</h2>
+        <p class="card-hint">Prints as Section 5 &mdash; a plain list of named links (e.g. &ldquo;Video of lower unit&rdquo;).</p>
+        <div id="linksContainer"></div>
+        <div style="margin-top:12px;"><button class="btn small" id="addLinkBtn" type="button">+ Add link</button></div>
+      </div>
+
+      <div class="card no-print">
+        <h2>Property Management Notes</h2>
+        <p class="card-hint">Prints as Section 6.</p>
+        <textarea class="notes" id="pmNotesInput" placeholder="Anything the buyer should know that isn't a line item&hellip;"></textarea>
+      </div>
+
+    </div>
+
+    <div id="printView"></div>
+  </div>
+
+  <div class="modal-backdrop no-print" id="pickModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="pickTitle">Pick photos from CompanyCam</h3>
+        <button class="btn small" id="pickCloseBtn" type="button">Close</button>
+      </div>
+      <div class="modal-body">
+        <p class="sendstatus" id="pickStatus"></p>
+        <div class="pick-grid" id="pickGrid"></div>
+        <div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end;">
+          <button class="btn" id="pickConfirmBtn" type="button">Add selected</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="ppr-shared.js"></script>
+<script src="ppr.js"></script>
+</body>
+</html>
