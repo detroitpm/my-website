@@ -131,19 +131,26 @@ function pprBuildReportHtml(report) {
   // -- Section 4: Scope of Work & Estimate --
   html += '<section class="ppr-page">';
   html += '<h2 class="ppr-h2">Scope of Work &amp; Estimate</h2>';
-  html += '<table class="ppr-table"><colgroup><col class="ppr-col-flag"><col class="ppr-col-room"><col></colgroup>';
-  html += '<thead><tr><th>Flag</th><th>Room</th><th>Item</th></tr></thead><tbody>';
+  html += '<ul class="ppr-legend">' +
+    '<li><span class="ppr-flag ppr-flag-red">&#9873;</span> <strong>Red flag</strong> &mdash; major deficiencies, which may be expensive</li>' +
+    '<li><span class="ppr-flag ppr-flag-yellow">&#9873;</span> <strong>Yellow flag</strong> &mdash; minor deficiencies</li>' +
+    '<li><span class="ppr-flag-opt-key">OPT</span> <strong>Optional</strong> &mdash; not deficient; preventative, aesthetic, or work for later once a tenant vacates</li>' +
+    "</ul>";
+  html += '<table class="ppr-table"><colgroup><col class="ppr-col-room"><col></colgroup>';
+  html += '<thead><tr><th>Room</th><th>Item</th></tr></thead><tbody>';
   (report.sections || []).forEach(function (section) {
     var items = (section.items || []).filter(function (it) { return (it.text || "").trim() !== ""; });
     if (!items.length) return;
-    html += '<tr class="ppr-room-row"><td></td><td class="ppr-c-room">' + pprEscapeHtml(section.room || "") + "</td><td></td></tr>";
+    html += '<tr class="ppr-room-row"><td class="ppr-c-room">' + pprEscapeHtml(section.room || "") + '</td><td></td></tr>';
     items.forEach(function (item) {
       var flag = pprFlag(item);
       var descText = pprEscapeHtml(item.text);
       var desc = item.photoUrl ? '<a href="' + pprEscapeHtml(item.photoUrl) + '">' + descText + "</a>" : descText;
+      var mark = flag === "red" ? '<span class="ppr-flag ppr-flag-red">&#9873;</span>'
+        : flag === "yellow" ? '<span class="ppr-flag ppr-flag-yellow">&#9873;</span>'
+        : '<span class="ppr-flag-opt">Optional</span>';
       html += '<tr class="ppr-item-row ppr-flag-' + flag + '">' +
-        '<td class="ppr-c-flag"><span class="ppr-badge ppr-badge-' + flag + '">' + PPR_FLAG_LABELS[flag] + "</span></td>" +
-        '<td class="ppr-c-room"></td>' +
+        '<td class="ppr-c-room ppr-c-flagcell">' + mark + "</td>" +
         '<td class="ppr-c-item">&#9744; ' + desc + "</td></tr>";
     });
   });
@@ -155,7 +162,7 @@ function pprBuildReportHtml(report) {
   html += pprEstimateRow("Optional items", totals.optional);
   html += '<tr class="ppr-estimate-grand"><th>Grand total</th><td>' + pprCurrency(totals.grand) + "</td></tr>";
   html += "</tbody></table>";
-  html += '<p class="ppr-sub">Estimates include a ' + (Number(report.bufferPct) || 0) + '% buffer. See the disclosures regarding accuracy.</p>';
+  html += '<p class="ppr-sub">These are rough planning estimates &mdash; actual costs may be higher or lower. See the disclosures regarding accuracy.</p>';
   html += "</section>";
 
   // -- Section 5: Media links --
@@ -227,21 +234,27 @@ var PPR_REPORT_CSS = [
   '.ppr-photo{margin:0;}',
   '.ppr-photo img{width:100%;height:210px;object-fit:cover;border:1px solid var(--ink);display:block;}',
   '.ppr-photo figcaption{font-size:12px;font-weight:700;margin-top:5px;text-transform:uppercase;letter-spacing:.03em;}',
+  /* Flag legend */
+  '.ppr-legend{list-style:none;padding:12px 14px;margin:0 0 18px;border:1px solid var(--line);background:var(--panel);font-size:12.5px;line-height:1.5;}',
+  '.ppr-legend li{margin:3px 0;}',
+  '.ppr-legend .ppr-flag{margin-right:5px;}',
+  '.ppr-flag{font-size:16px;line-height:1;font-weight:700;}',
+  '.ppr-flag-red{color:#e11900;}',
+  '.ppr-flag-yellow{color:#f5b301;}',
+  '.ppr-flag-opt{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--opt);border:1px solid var(--opt);padding:1px 4px;}',
+  '.ppr-flag-opt-key{display:inline-block;font-size:9px;font-weight:800;color:var(--opt);border:1px solid var(--opt);padding:1px 4px;margin-right:5px;letter-spacing:.04em;}',
   /* SOW table */
   '.ppr-table{width:100%;border-collapse:collapse;table-layout:fixed;margin-bottom:26px;border:2.5px solid var(--ink);}',
   '.ppr-table th,.ppr-table td{text-align:left;vertical-align:top;}',
-  '.ppr-table col.ppr-col-flag{width:104px;} .ppr-table col.ppr-col-room{width:24%;}',
+  '.ppr-table col.ppr-col-room{width:26%;}',
   '.ppr-table thead th{background:var(--ink);color:#fff;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.03em;padding:8px 10px;}',
   '.ppr-table tr.ppr-room-row td{background:var(--panel);font-weight:800;border-top:2px solid var(--ink);}',
   '.ppr-table tr.ppr-room-row td.ppr-c-room{padding:7px 10px 7px 12px;border-left:5px solid var(--gold);}',
   '.ppr-table tr.ppr-item-row{border-top:1px solid var(--line);}',
   '.ppr-table tr.ppr-item-row td{padding:7px 10px;}',
+  '.ppr-table td.ppr-c-flagcell{text-align:center;border-left:5px solid transparent;}',
   '.ppr-table tr.ppr-flag-optional{background:var(--opt-bg);}',
   '.ppr-table td.ppr-c-item a{color:inherit;text-decoration:underline dotted;text-decoration-color:var(--line);}',
-  '.ppr-badge{display:inline-block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 6px;border:1px solid currentColor;white-space:nowrap;}',
-  '.ppr-badge-red{color:var(--red);background:var(--red-bg);}',
-  '.ppr-badge-yellow{color:var(--yellow);background:var(--yellow-bg);}',
-  '.ppr-badge-optional{color:var(--opt);background:var(--opt-bg);}',
   /* Estimate summary */
   '.ppr-estimate{border-collapse:collapse;width:100%;max-width:420px;border:2.5px solid var(--ink);}',
   '.ppr-estimate th,.ppr-estimate td{padding:8px 12px;font-size:14px;}',
