@@ -31,6 +31,21 @@ Follow `build-sow` steps 1–3a for pulling and reading the source — they appl
 5. **Caption wins on conflict** with a photo; use the photo to fill in detail and catch captions that are clearly about something else.
 6. **Dedupe** transcript-derived items against caption-derived ones — one clean line per real-world issue, not one per source.
 
+### The basement is mandatory — open every basement photo at full resolution
+
+The narrated video almost always stops before the basement, and basement photos are almost always uncaptioned. So the basement usually has **zero human-written signal** — no caption, no narration telling you where to look. That does not make it low-priority; it makes it *entirely your job to read the photos*. This is where the expensive surprises for a buyer hide, and it is exactly what got missed on a past report.
+
+Rules:
+- **View every basement photo at `web` resolution, not thumbnail.** Basements are dark; at thumbnail size, water on the floor, an open panel, and bare wire splices are all invisible. Do not skim the basement cluster — open each one.
+- Basement photos are the darker, concrete-floor / concrete-block / joist-and-pipe shots, usually clustered near the end of the walkthrough. If the user tells you which photos are the basement, trust that.
+- **Look specifically for, and write a line for each you find:**
+  - **Water** — pooling or wet patches on the slab, efflorescence (white crust) on walls or floor, rust/tide lines on walls, a running or dry sump, active drips. Unexplained water on a basement floor is **red** — the buyer is underwriting the cost of finding and fixing it.
+  - **Electrical safety** — a panel with its cover (deadfront) off, an open junction box, exposed/loose conductors or wire nuts, knob-and-tube, a Federal Pacific / Zinsco / Pushmatic panel, aluminum branch wiring. Exposed live electrical is **red**.
+  - **Foundation** — horizontal or stair-step cracks, bowing or leaning walls, crumbling mortar joints, spalling block/brick. Structural movement is **red**.
+  - **Piping** — heavy corrosion on the cast-iron waste stack, galvanized supply lines, lead bends, failed patches, active drips.
+  - **Housekeeping / safety** — debris and trash, combustible storage stacked against a gas water heater or furnace, missing basement CO detector.
+- **Never state a system's age or "end of life" from how it looks.** An old-*looking* boiler or water heater in a dark basement is not evidence of age. Read the manufacture date off the data plate / rating label / serial number if the photo shows it. If you cannot read it, write the line from **condition** ("the water heater's tank base is corroded", "the water heater sits on stacked concrete blocks instead of a stand") and add "install date not verified — recommend confirming it" — do **not** write "old" or "near end of life". If the user or PM tells you the equipment's age, use that and drop any age-based concern.
+
 ## Writing the scope of work (Section 4)
 
 ### Line items
@@ -52,7 +67,7 @@ Same rules as `build-sow` step 4:
 
 Every line item gets exactly one flag. When unsure between red and yellow, default to yellow and note it in the summary for the user to bump.
 
-- **`red`** — *important concern to recognize.* Something that materially affects the underwrite: active or likely water intrusion, structural movement, roof at/near failure, major system at end of life (furnace, roof, siding, service panel), a safety hazard (missing smoke/CO detectors, trip hazard a city inspector would cite), anything expensive or anything that could get worse fast.
+- **`red`** — *important concern to recognize.* Something that materially affects the underwrite: active or likely water intrusion, structural movement, roof at/near failure, a *verified* major system at end of life (furnace, boiler, roof, siding, service panel — verified by a data plate, an inspection note, or the PM telling you, **not** by how it looks in a photo), exposed live electrical, a safety hazard (missing smoke/CO detectors, trip hazard a city inspector would cite), anything expensive or anything that could get worse fast.
 - **`yellow`** — *minor repair.* Normal turn/make-ready work: a loose fixture, chipped paint, a missing knob, re-caulk, a sticky floor tile, a cover plate. Individually cheap, non-urgent.
 - **`optional`** — *not a repair.* Something that could be done in the future but isn't a defect: repaint for aesthetics, cosmetic upgrades, "nice to have" items, anything the source framed as optional / "consider" / "could." Optional items still get an estimate (the builder totals them separately) — they're just not part of "what's wrong."
 
