@@ -115,6 +115,19 @@ function isDataUri(s) { return typeof s === "string" && /^data:/i.test(s); }
 
 var report = loadInitialState();
 
+// Nothing autosaves to the database while you type - the URL copy below is
+// only a best-effort convenience for "Copy link" and gives up silently if
+// it can't keep up (see pushStateToUrl). "Save report" is the only thing
+// that actually writes to Supabase, so we track whether there are edits
+// since the last real save/load and warn before the tab can be closed or
+// navigated away from with unsaved work sitting only in memory.
+var isDirty = false;
+window.addEventListener("beforeunload", function (e) {
+  if (!isDirty) return;
+  e.preventDefault();
+  e.returnValue = "";
+});
+
 // The URL copy is built field-by-field (no deep JSON clone of `report`) and
 // deliberately excludes every base64 image blob — a report with a dozen
 // embedded JPEGs is hundreds of KB, and cloning + serializing + base64ing
@@ -148,10 +161,14 @@ function currentUrlWithState() {
 // the address bar is fine.
 var _urlSyncTimer = null;
 function pushStateToUrl() {
+  // Marked synchronously (not inside the debounce below) so the
+  // beforeunload warning is armed immediately on the first keystroke,
+  // not half a second later.
+  isDirty = true;
   if (_urlSyncTimer) clearTimeout(_urlSyncTimer);
   _urlSyncTimer = setTimeout(function () {
     _urlSyncTimer = null;
-    try { history.replaceState(null, "", currentUrlWithState()); } catch (e) { /* URL too long — Save is the real store */ }
+    try { history.replaceState(null, "", currentUrlWithState()); } catch (e) { /* URL too long — Save report is what actually persists this, so this failing silently is fine on its own; it just means "Copy link" won't reflect the very latest edits until a save. */ }
   }, 500);
 }
 
@@ -622,6 +639,7 @@ document.getElementById("saveReportBtn").onclick = function () {
       if (result.ok) {
         status.textContent = "Saved. It'll show up in “Load previous report”.";
         status.className = "sendstatus ok";
+        isDirty = false;
         refreshReportList();
       } else {
         status.textContent = "Failed: " + extractErrorMessage(result);
@@ -648,6 +666,10 @@ document.getElementById("loadReportSelect").onchange = function (e) {
       if (!data.report) throw new Error(data.error || "Not found");
       report = normalizeReport(data.report);
       renderBuilder();
+      // Fresh from the database - matches what's persisted, nothing
+      // pending. renderBuilder()'s own pushStateToUrl() call just set
+      // isDirty back to true, so this has to come after it, not before.
+      isDirty = false;
       e.target.value = "";
     })
     .catch(function (err) {
@@ -768,4 +790,9 @@ document.getElementById("sendCCBtn").onclick = function () {
 
 // ---- Boot ----
 renderBuilder();
+// The initial render's own pushStateToUrl() call just marked this dirty,
+// but nothing has actually been edited yet - a fresh page load (or one
+// opened from a shared link) shouldn't warn on close until you've typed
+// something.
+isDirty = false;
 refreshReportList();
