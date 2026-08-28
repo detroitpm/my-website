@@ -236,20 +236,17 @@ function renderContextPhotos() {
     c.appendChild(row);
   });
 
-  var warn = document.getElementById("ctxCapWarn");
-  var over = overCapGroups();
-  if (over.length) {
-    warn.style.display = "block";
-    warn.textContent = "Over the 3-per-room limit: " + over.join(", ") + ". Trim before printing.";
-  } else {
-    warn.style.display = "none";
-  }
+  updateCtxCapWarn();
 
+  // Update the model + the cap warning only. Do NOT re-render the container
+  // here — rebuilding its innerHTML on every keystroke destroys the very
+  // input being typed in, which is what made these boxes accept one letter
+  // at a time.
   c.querySelectorAll(".ctx-room").forEach(function (el) {
-    el.oninput = function (e) { report.contextPhotos[e.target.dataset.i].room = e.target.value; pushStateToUrl(); renderContextPhotos(); };
+    el.oninput = function (e) { report.contextPhotos[e.target.dataset.i].room = e.target.value; updateCtxCapWarn(); pushStateToUrl(); };
   });
   c.querySelectorAll(".ctx-unit").forEach(function (el) {
-    el.oninput = function (e) { report.contextPhotos[e.target.dataset.i].unit = e.target.value; pushStateToUrl(); renderContextPhotos(); };
+    el.oninput = function (e) { report.contextPhotos[e.target.dataset.i].unit = e.target.value; updateCtxCapWarn(); pushStateToUrl(); };
   });
   c.querySelectorAll("[data-act]").forEach(function (el) {
     el.onclick = function (e) {
@@ -264,6 +261,20 @@ function renderContextPhotos() {
 }
 
 function swap(arr, a, b) { var t = arr[a]; arr[a] = arr[b]; arr[b] = t; }
+
+// Lightweight: recomputes the over-cap groups and updates just the warning
+// line. Safe to call on every keystroke — touches one element, no rebuild.
+function updateCtxCapWarn() {
+  var warn = document.getElementById("ctxCapWarn");
+  if (!warn) return;
+  var over = overCapGroups();
+  if (over.length) {
+    warn.style.display = "block";
+    warn.textContent = "Over the 3-per-room limit: " + over.join(", ") + ". Trim before printing.";
+  } else {
+    warn.style.display = "none";
+  }
+}
 
 function flagOptions(sel) {
   return ["yellow", "red", "optional"].map(function (v) {
