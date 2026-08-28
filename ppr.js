@@ -854,6 +854,60 @@ document.getElementById("loadReportSelect").onchange = function (e) {
     });
 };
 
+// ---- Load from Claude (skill drop box) ----
+// The build-underwriting-report skill POSTs its finished report to
+// /ppr-stash instead of handing over a file. These are the recent ones.
+function refreshStashList() {
+  var select = document.getElementById("loadStashSelect");
+  return fetch("/.netlify/functions/ppr-stash-list")
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var current = select.value;
+      select.innerHTML = '<option value="">Load from Claude&hellip;</option>';
+      (data.stash || []).forEach(function (row) {
+        var opt = document.createElement("option");
+        opt.value = row.id;
+        var d = new Date(row.created_at);
+        opt.textContent = row.address + " (" + (d.toString() !== "Invalid Date" ? d.toLocaleString() : "") + ")";
+        select.appendChild(opt);
+      });
+      select.value = current;
+    })
+    .catch(function () { /* dropdown just stays empty */ });
+}
+
+document.getElementById("loadStashSelect").onchange = function (e) {
+  var id = e.target.value;
+  if (!id) return;
+  if ((report.sections.length || report.contextPhotos.length) && !confirm("This will replace everything currently in the editor with the Claude build. Continue?")) {
+    e.target.value = "";
+    return;
+  }
+  var status = document.getElementById("uploadStatus");
+  status.textContent = "Loading from Claude…";
+  status.className = "sendstatus";
+  fetch("/.netlify/functions/ppr-stash-load?id=" + encodeURIComponent(id))
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data.report) throw new Error(data.error || "Not found");
+      report = normalizeReport(data.report);
+      if (!report.legalDisclosures) report.legalDisclosures = DEFAULT_DISCLOSURES;
+      renderBuilder();
+      isDirty = false;
+      status.textContent = "Loaded “" + (report.address || "report") + "” from Claude — " + report.sections.length +
+        " rooms, " + report.contextPhotos.length + " context photos. Embedding photos…";
+      status.className = "sendstatus ok";
+      embedImages(false).then(function () {
+        status.textContent = "Loaded “" + (report.address || "report") + "” from Claude. Fill in prices, then download or send.";
+      });
+      e.target.value = "";
+    })
+    .catch(function (err) {
+      alert("Couldn't load that Claude build: " + err.message);
+      e.target.value = "";
+    });
+};
+
 // ---- Upload a report file (produced by the /build-underwriting-report skill) ----
 function isValidReportShape(obj) {
   if (!obj || typeof obj !== "object") return false;
@@ -1006,4 +1060,5 @@ renderBuilder();
 isDirty = false;
 offerDraftRestore();
 refreshReportList();
+refreshStashList();
 loadCcProjects().then(function () { updateMediaField(); });
