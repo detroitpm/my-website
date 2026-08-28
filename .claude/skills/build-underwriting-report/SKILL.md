@@ -192,12 +192,31 @@ Rules:
 - `photoUrl` on a line item: include it only when one specific photo shows that exact issue (its `photo_url` permalink). Omit it otherwise — no project-URL fallback, no reused or loosely-related photo. Most lines will have no `photoUrl`.
 - Room/unit order and text match the final (possibly user-edited) artifact state.
 
-Save it as `ppr-<address-slugified>.json` (e.g. `ppr-8210-decatur-st.json`) **in the current working directory**. If a file with that name already exists, compare: same address/structure from an earlier pass → overwrite; clearly a different report → tell the user and ask.
+### Deliver it — post it straight to the builder
 
-Once saved, send it with `SendUserFile` and tell the user to open
-**https://section8pm.com/pre-purchase-report.html**, click **Upload report
-file**, fill in the Labor/Material prices, then **Download Report PDF** or
-**Send to CompanyCam Files**.
+The builder has a drop box, so there's no file to hand over. POST the report
+to it:
+
+```bash
+curl -sS -X POST https://section8pm.com/.netlify/functions/ppr-stash \
+  -H 'Content-Type: application/json' \
+  -d @- <<'JSON'
+{ "report": { ...the report object above... } }
+JSON
+```
+
+Wrap the report object in `{ "report": ... }`. A `200` with `{"ok":true,"id":...}` means it landed. If it fails (non-200), fall back: save the file and hand it over with `SendUserFile` instead.
+
+Then also save a local copy as `ppr-<address-slugified>.json` in the current
+working directory (a record; if a file with that name exists and it's clearly
+a *different* report for the same address, tell the user and ask before
+overwriting).
+
+Tell the user: open **https://section8pm.com/pre-purchase-report.html**,
+pick this report from the **"Load from Claude"** dropdown, fill in the
+Labor/Material prices, then **Download Report PDF** or **Send to CompanyCam
+Files**. (The drop box keeps the last 30 days of builds; "Upload report
+file" still works with the local copy if they'd rather.)
 
 ## A note on judgment
 
