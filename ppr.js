@@ -155,6 +155,42 @@ function shareableClone() {
 function currentUrlWithState() {
   return location.origin + location.pathname + "?d=" + encodeState(shareableClone());
 }
+
+// ---- Local draft autosave ----
+// The database only gets written on an explicit "Save report". So that a
+// half-finished report survives a tab getting discarded, an accidental
+// close, or a reload, every debounced edit also writes a draft to this
+// browser's localStorage (text/flags/prices/room-unit/cover fields only —
+// same base64-stripped shape as the URL copy, so it stays small). On the
+// next load, if the editor is empty and a draft is sitting there, we offer
+// to restore it.
+var DRAFT_KEY = "pprBuilderDraft.v1";
+function saveDraft() {
+  // Never overwrite a real draft with an empty editor - matters on boot,
+  // where renderBuilder()'s debounced push would otherwise fire ~500ms
+  // later and clobber the draft before the user clicks "Restore".
+  if (reportIsEmpty(report)) return;
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({ savedAt: Date.now(), report: shareableClone() }));
+  } catch (e) { /* quota exceeded or storage disabled - the beforeunload warning still covers this */ }
+}
+function readDraft() {
+  try {
+    var raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return null;
+    var d = JSON.parse(raw);
+    if (!d || !d.report) return null;
+    return d;
+  } catch (e) { return null; }
+}
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+}
+function reportIsEmpty(r) {
+  return !(r.address || "").trim() && !(r.sections || []).length && !(r.contextPhotos || []).length &&
+    !(r.preparedFor || "").trim() && !(r.mediaListLinks || []).length && !(r.pmNotes || "").trim();
+}
+
 // Debounced: typing fires this constantly, and history.replaceState with a
 // multi-KB URL on every keystroke stutters. The URL is only a convenience
 // (Copy link) — Save report is the real store — so a ~half-second lag on
@@ -168,6 +204,7 @@ function pushStateToUrl() {
   if (_urlSyncTimer) clearTimeout(_urlSyncTimer);
   _urlSyncTimer = setTimeout(function () {
     _urlSyncTimer = null;
+    saveDraft();
     try { history.replaceState(null, "", currentUrlWithState()); } catch (e) { /* URL too long — Save report is what actually persists this, so this failing silently is fine on its own; it just means "Copy link" won't reflect the very latest edits until a save. */ }
   }, 500);
 }
@@ -640,6 +677,7 @@ document.getElementById("saveReportBtn").onclick = function () {
         status.textContent = "Saved. It'll show up in “Load previous report”.";
         status.className = "sendstatus ok";
         isDirty = false;
+        clearDraft();
         refreshReportList();
       } else {
         status.textContent = "Failed: " + extractErrorMessage(result);
@@ -670,6 +708,7 @@ document.getElementById("loadReportSelect").onchange = function (e) {
       // pending. renderBuilder()'s own pushStateToUrl() call just set
       // isDirty back to true, so this has to come after it, not before.
       isDirty = false;
+      clearDraft();
       e.target.value = "";
     })
     .catch(function (err) {
@@ -788,6 +827,39 @@ document.getElementById("sendCCBtn").onclick = function () {
     });
 };
 
+// ---- Draft restore ----
+// Only offer it when this is a blank editor (no ?d= link, nothing typed)
+// and a draft is actually sitting in localStorage.
+function offerDraftRestore() {
+  if (!reportIsEmpty(report)) return;
+  var d = readDraft();
+  if (!d || reportIsEmpty(normalizeReport(d.report))) return;
+
+  var when = "";
+  try { when = new Date(d.savedAt).toLocaleString(); } catch (e) {}
+  var bar = document.createElement("div");
+  bar.className = "sendstatus";
+  bar.style.cssText = "background:#fff8e6;border:1px solid var(--gold);padding:12px 14px;margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;";
+  bar.innerHTML = '<span style="flex:1;min-width:200px;color:var(--ink);">Unsaved draft found' +
+    (when ? ' from ' + esc(when) : '') + '. Restore it?</span>' +
+    '<button class="btn small" id="draftRestoreBtn" type="button">Restore draft</button>' +
+    '<button class="btn small" id="draftDiscardBtn" type="button">Discard</button>';
+  var view = document.getElementById("builderView");
+  view.insertBefore(bar, view.firstChild);
+
+  document.getElementById("draftRestoreBtn").onclick = function () {
+    report = normalizeReport(d.report);
+    renderBuilder();
+    isDirty = false;
+    bar.remove();
+    embedImages(false);
+  };
+  document.getElementById("draftDiscardBtn").onclick = function () {
+    clearDraft();
+    bar.remove();
+  };
+}
+
 // ---- Boot ----
 renderBuilder();
 // The initial render's own pushStateToUrl() call just marked this dirty,
@@ -795,4 +867,5 @@ renderBuilder();
 // opened from a shared link) shouldn't warn on close until you've typed
 // something.
 isDirty = false;
+offerDraftRestore();
 refreshReportList();
