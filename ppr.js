@@ -115,22 +115,44 @@ function isDataUri(s) { return typeof s === "string" && /^data:/i.test(s); }
 
 var report = loadInitialState();
 
-// The URL copy drops base64 image blobs (context photos + front photo) back
-// to their source URLs — a report with a dozen embedded JPEGs would blow
-// past any sane URL length otherwise.
+// The URL copy is built field-by-field (no deep JSON clone of `report`) and
+// deliberately excludes every base64 image blob — a report with a dozen
+// embedded JPEGs is hundreds of KB, and cloning + serializing + base64ing
+// that on every keystroke is what used to make the line-item boxes crawl.
 function shareableClone() {
-  var c = JSON.parse(JSON.stringify(report));
-  c.frontExteriorPhoto = c.frontExteriorPhotoSrc || (isDataUri(c.frontExteriorPhoto) ? "" : c.frontExteriorPhoto);
-  c.contextPhotos = (c.contextPhotos || []).map(function (p) {
-    return { room: p.room, unit: p.unit, url: p.srcUrl || (isDataUri(p.url) ? "" : p.url), srcUrl: p.srcUrl || "" };
-  });
-  return c;
+  return {
+    address: report.address, preparedFor: report.preparedFor, inspectionDate: report.inspectionDate,
+    companyName: report.companyName, companyCamProjectId: report.companyCamProjectId, mediaLink: report.mediaLink,
+    frontExteriorPhoto: report.frontExteriorPhotoSrc || (isDataUri(report.frontExteriorPhoto) ? "" : report.frontExteriorPhoto),
+    frontExteriorPhotoSrc: report.frontExteriorPhotoSrc || "",
+    bufferPct: report.bufferPct,
+    legalDisclosures: report.legalDisclosures,
+    contextPhotos: (report.contextPhotos || []).map(function (p) {
+      return { room: p.room, unit: p.unit, url: p.srcUrl || (isDataUri(p.url) ? "" : p.url), srcUrl: p.srcUrl || "" };
+    }),
+    sections: (report.sections || []).map(function (s) {
+      return { room: s.room, items: (s.items || []).map(function (it) {
+        return { text: it.text, flag: it.flag, labor: it.labor, material: it.material, photoUrl: it.photoUrl };
+      }) };
+    }),
+    mediaListLinks: (report.mediaListLinks || []).map(function (l) { return { label: l.label, url: l.url }; }),
+    pmNotes: report.pmNotes
+  };
 }
 function currentUrlWithState() {
   return location.origin + location.pathname + "?d=" + encodeState(shareableClone());
 }
+// Debounced: typing fires this constantly, and history.replaceState with a
+// multi-KB URL on every keystroke stutters. The URL is only a convenience
+// (Copy link) — Save report is the real store — so a ~half-second lag on
+// the address bar is fine.
+var _urlSyncTimer = null;
 function pushStateToUrl() {
-  try { history.replaceState(null, "", currentUrlWithState()); } catch (e) { /* URL too long — Save is the real store */ }
+  if (_urlSyncTimer) clearTimeout(_urlSyncTimer);
+  _urlSyncTimer = setTimeout(function () {
+    _urlSyncTimer = null;
+    try { history.replaceState(null, "", currentUrlWithState()); } catch (e) { /* URL too long — Save is the real store */ }
+  }, 500);
 }
 
 // ---- CompanyCam project id ----
@@ -270,9 +292,8 @@ function renderSections() {
         ? '<a class="photo-link" href="' + esc(item.photoUrl) + '" target="_blank" rel="noopener" title="View photo/video in CompanyCam">&#128247;</a>'
         : "";
       row.innerHTML =
-        '<div class="c-room-blank"></div>' +
+        '<div class="c-flagcell"><span class="flagmark">&#9873;</span><select class="flag-select" data-s="' + sIdx + '" data-i="' + iIdx + '">' + flagOptions(pprFlag(item)) + "</select></div>" +
         '<div class="c-desc"><textarea rows="1" class="item-text" data-s="' + sIdx + '" data-i="' + iIdx + '">' + esc(item.text) + "</textarea>" + photoLinkHtml + "</div>" +
-        '<div class="c-flag"><select class="flag-select" data-s="' + sIdx + '" data-i="' + iIdx + '">' + flagOptions(pprFlag(item)) + "</select></div>" +
         '<div class="c-labor"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="labor" value="' + (item.labor != null ? item.labor : "") + '" placeholder="0"></div>' +
         '<div class="c-material"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="material" value="' + (item.material != null ? item.material : "") + '" placeholder="0"></div>' +
         '<div class="c-del"><button data-s="' + sIdx + '" data-i="' + iIdx + '" data-act="delitem">&#10005;</button></div>';

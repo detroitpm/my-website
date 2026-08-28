@@ -83,7 +83,6 @@
   .sow-colheader{display:flex;background:var(--panel);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid #999;}
   .sow-colheader .c-room{flex:0 0 24%;padding:9px 10px;}
   .sow-colheader .c-desc{flex:1;padding:9px 10px;border-left:1px solid #999;}
-  .sow-colheader .c-flag{flex:0 0 110px;padding:9px 8px;border-left:1px solid #999;}
   .sow-colheader .c-labor,.sow-colheader .c-material{flex:0 0 84px;padding:9px 8px;border-left:1px solid #999;text-align:right;}
   .sow-colheader .c-del{flex:0 0 34px;border-left:1px solid #999;}
 
@@ -95,19 +94,29 @@
 
   .item-row{display:flex;border-top:1px solid #ddd;align-items:stretch;}
   .item-row.flag-optional{background:var(--opt-bg);}
-  .item-row .c-room-blank{flex:0 0 24%;}
+  .item-row .c-flagcell{flex:0 0 24%;padding:6px 10px;display:flex;align-items:center;gap:7px;}
+  .item-row .c-flagcell .flagmark{font-size:16px;line-height:1;font-weight:700;flex:0 0 auto;}
+  .item-row.flag-red .c-flagcell .flagmark{color:#e11900;}
+  .item-row.flag-yellow .c-flagcell .flagmark{color:#f5b301;}
+  .item-row.flag-optional .c-flagcell .flagmark{color:var(--opt);font-weight:400;}
+  .item-row select.flag-select{flex:1 1 auto;min-width:0;border:1px solid #ccc;padding:4px 5px;font-size:12px;font-family:var(--sans);background:#fff;}
   .item-row .c-desc{flex:1;border-left:1px solid #ddd;padding:6px 10px;display:flex;align-items:center;}
   .item-row textarea{flex:1;border:none;background:transparent;font-size:14px;resize:none;font-family:var(--sans);padding:4px 0;min-height:20px;overflow:hidden;line-height:1.4;}
   .item-row .photo-link{flex:0 0 auto;margin-left:6px;font-size:15px;text-decoration:none;opacity:.7;}
   .item-row .photo-link:hover{opacity:1;}
-  .item-row .c-flag{flex:0 0 110px;border-left:1px solid #ddd;padding:6px;display:flex;align-items:center;}
-  .item-row select.flag-select{width:100%;border:1px solid #ccc;padding:5px 6px;font-size:12.5px;font-family:var(--sans);background:#fff;}
   .item-row .c-labor,.item-row .c-material{flex:0 0 84px;border-left:1px solid #ddd;padding:6px;display:flex;align-items:center;}
   .item-row input.price{width:100%;border:1px solid #ccc;padding:5px 6px;font-size:13px;text-align:right;font-family:var(--sans);}
   .item-row .c-del{flex:0 0 34px;border-left:1px solid #ddd;display:flex;align-items:center;justify-content:center;}
   .item-row .c-del button{border:none;background:none;color:#a02222;font-size:16px;cursor:pointer;}
   .addrow-btn{margin:8px 10px;}
   .scroll-hint{display:none;font-size:12px;color:var(--muted);margin:6px 2px 0;}
+
+  .flag-legend{display:flex;flex-wrap:wrap;gap:8px 24px;background:var(--panel);border:1px solid var(--line);padding:12px 14px;margin:0 0 16px;font-size:12.5px;line-height:1.4;}
+  .flag-legend span{display:inline-flex;align-items:center;gap:6px;}
+  .flag-legend .fl{font-style:normal;font-weight:700;}
+  .flag-legend .fl-red{color:#e11900;font-size:16px;}
+  .flag-legend .fl-yellow{color:#f5b301;font-size:16px;}
+  .flag-legend .fl-opt{font-size:9px;font-weight:800;color:var(--opt);border:1px solid var(--opt);padding:1px 4px;letter-spacing:.04em;}
   @media (max-width:680px){.scroll-hint{display:block;}}
 
   /* ---------- Media link rows ---------- */
@@ -233,13 +242,17 @@
       </div>
 
       <div class="section-heading no-print">Scope of Work &amp; Estimate</div>
-      <p class="card-hint no-print">Prints as Section 4. Every line is Red flag (important concern), Yellow flag (minor repair), or Optional (future / cosmetic).</p>
+      <p class="card-hint no-print">Prints as Section 4. Set a flag on every line. The flag shows as a coloured mark in the Room column on the printed report.</p>
+      <div class="flag-legend no-print">
+        <span><i class="fl fl-red">&#9873;</i><b>Red flag</b> &mdash; major deficiencies, may be expensive</span>
+        <span><i class="fl fl-yellow">&#9873;</i><b>Yellow flag</b> &mdash; minor deficiencies</span>
+        <span><i class="fl fl-opt">OPT</i><b>Optional</b> &mdash; not deficient; prevention, aesthetics, or after a tenant vacates</span>
+      </div>
       <div class="sow-table-scroll no-print">
         <div class="sow-table-wrap">
           <div class="sow-colheader">
-            <div class="c-room">Room</div>
+            <div class="c-room">Room / Flag</div>
             <div class="c-desc">Item</div>
-            <div class="c-flag">Flag</div>
             <div class="c-labor">Labor $</div>
             <div class="c-material">Material $</div>
             <div class="c-del"></div>
@@ -247,15 +260,15 @@
           <div id="sectionsContainer"></div>
         </div>
       </div>
-      <p class="scroll-hint no-print">Swipe sideways to see Flag / Labor / Material on a small screen.</p>
+      <p class="scroll-hint no-print">Swipe sideways to see Labor / Material on a small screen.</p>
       <div class="no-print" style="margin:10px 0 24px;">
         <button class="btn small" id="addRoomBtn">+ Add room</button>
       </div>
 
       <div class="sow-table-wrap no-print" style="margin-bottom:24px;">
-        <div class="totals-band"><span>Red flag items (incl. buffer)</span><span class="n" id="totRed">$0</span></div>
-        <div class="totals-band"><span>Yellow flag items (incl. buffer)</span><span class="n" id="totYellow">$0</span></div>
-        <div class="totals-band"><span>Optional items (incl. buffer)</span><span class="n" id="totOptional">$0</span></div>
+        <div class="totals-band"><span>Red flag items</span><span class="n" id="totRed">$0</span></div>
+        <div class="totals-band"><span>Yellow flag items</span><span class="n" id="totYellow">$0</span></div>
+        <div class="totals-band"><span>Optional items</span><span class="n" id="totOptional">$0</span></div>
         <div class="totals-band grand"><span>Grand total</span><span class="n" id="totGrand">$0</span></div>
       </div>
 
