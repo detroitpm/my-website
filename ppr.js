@@ -219,6 +219,95 @@ function activeProjectId() {
   return parseCompanyCamProjectId(report.mediaLink) || (report.companyCamProjectId || null);
 }
 
+// ---- CompanyCam project search ----
+// The whole account's project list is pulled once (server-side function,
+// browser-cached 5 min) and the search box filters it locally — no API
+// call per keystroke, and it matches on address as well as name.
+var ccProjectsCache = null;
+var ccProjectsLoad = null;
+function loadCcProjects() {
+  if (ccProjectsLoad) return ccProjectsLoad;
+  ccProjectsLoad = fetch("/.netlify/functions/ppr-companycam-projects")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { ccProjectsCache = (d.projects || []); return ccProjectsCache; })
+    .catch(function () { ccProjectsCache = ccProjectsCache || []; return ccProjectsCache; });
+  return ccProjectsLoad;
+}
+function ccLabel(p) {
+  if (!p) return "";
+  if (p.name && p.address) return p.name + " — " + p.address;
+  return p.name || p.address || p.url || "";
+}
+function findCcById(id) {
+  if (!id || !ccProjectsCache) return null;
+  for (var i = 0; i < ccProjectsCache.length; i++) {
+    if (String(ccProjectsCache[i].id) === String(id)) return ccProjectsCache[i];
+  }
+  return null;
+}
+var _ccActiveIdx = -1;
+function renderCcResults(q) {
+  var box = document.getElementById("mediaResults");
+  if (!box) return;
+  q = (q || "").trim().toLowerCase();
+  if (q.length < 2 || !ccProjectsCache) { box.classList.remove("open"); box.innerHTML = ""; return; }
+  var terms = q.split(/\s+/);
+  var matches = ccProjectsCache.filter(function (p) {
+    var hay = ((p.name || "") + " " + (p.address || "")).toLowerCase();
+    return terms.every(function (t) { return hay.indexOf(t) !== -1; });
+  }).slice(0, 10);
+  _ccActiveIdx = -1;
+  if (!matches.length) {
+    box.innerHTML = '<div class="cc-empty">No matching CompanyCam projects.</div>';
+    box.classList.add("open");
+    return;
+  }
+  box.innerHTML = matches.map(function (p, i) {
+    return '<div class="cc-row" data-id="' + esc(String(p.id)) + '" data-i="' + i + '">' +
+      '<div class="n">' + esc(p.name || "(unnamed project)") + "</div>" +
+      (p.address ? '<div class="a">' + esc(p.address) + "</div>" : "") + "</div>";
+  }).join("");
+  box.classList.add("open");
+  box.querySelectorAll(".cc-row").forEach(function (row) {
+    // mousedown, not click — fires before the input's blur so the pick lands
+    row.addEventListener("mousedown", function (e) {
+      e.preventDefault();
+      pickCcProject(findCcById(row.dataset.id));
+    });
+  });
+}
+function pickCcProject(p) {
+  if (!p) return;
+  report.mediaLink = p.url;
+  report.companyCamProjectId = String(p.id);
+  var box = document.getElementById("mediaResults");
+  box.classList.remove("open"); box.innerHTML = "";
+  document.getElementById("mediaInput").value = ccLabel(p);
+  updateMediaHint();
+  pushStateToUrl();
+}
+function updateMediaHint() {
+  var hint = document.getElementById("mediaHint");
+  if (!hint) return;
+  if (!report.mediaLink) { hint.style.display = "none"; hint.textContent = ""; return; }
+  var p = findCcById(report.companyCamProjectId || parseCompanyCamProjectId(report.mediaLink));
+  hint.style.display = "block";
+  hint.textContent = "Linked: " + (p ? ccLabel(p) : report.mediaLink);
+}
+// Fills the search box + hint from the current report. Skips the box while
+// the user is typing in it.
+function updateMediaField() {
+  var input = document.getElementById("mediaInput");
+  if (!input) return;
+  var box = document.getElementById("mediaResults");
+  var searching = document.activeElement === input && box && box.classList.contains("open");
+  if (!searching) {
+    var p = findCcById(report.companyCamProjectId || parseCompanyCamProjectId(report.mediaLink));
+    input.value = p ? ccLabel(p) : (report.mediaLink || "");
+  }
+  updateMediaHint();
+}
+
 // ---- Rendering ----
 function autoGrow(el) { el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; }
 function esc(s) { return pprEscapeHtml(s); }
@@ -251,7 +340,7 @@ function renderBuilder() {
   document.getElementById("inspectionDateInput").value = report.inspectionDate;
   document.getElementById("companyNameInput").value = report.companyName;
   document.getElementById("bufferInput").value = report.bufferPct;
-  document.getElementById("mediaInput").value = report.mediaLink;
+  updateMediaField();
   document.getElementById("frontPhotoInput").value = report.frontExteriorPhotoSrc || (isDataUri(report.frontExteriorPhoto) ? "" : report.frontExteriorPhoto);
   document.getElementById("disclosuresInput").value = report.legalDisclosures;
   document.getElementById("pmNotesInput").value = report.pmNotes;
@@ -484,12 +573,60 @@ document.getElementById("preparedForInput").oninput = function (e) { report.prep
 document.getElementById("inspectionDateInput").oninput = function (e) { report.inspectionDate = e.target.value; pushStateToUrl(); };
 document.getElementById("companyNameInput").oninput = function (e) { report.companyName = e.target.value; pushStateToUrl(); };
 document.getElementById("bufferInput").oninput = function (e) { report.bufferPct = e.target.value === "" ? 0 : Number(e.target.value); computeAndShowTotals(); pushStateToUrl(); };
-document.getElementById("mediaInput").oninput = function (e) {
-  report.mediaLink = e.target.value;
-  var pid = parseCompanyCamProjectId(e.target.value);
-  if (pid) report.companyCamProjectId = pid;
-  pushStateToUrl();
-};
+(function () {
+  var input = document.getElementById("mediaInput");
+  var box = document.getElementById("mediaResults");
+
+  input.oninput = function (e) {
+    var v = e.target.value;
+    var pid = parseCompanyCamProjectId(v);
+    if (pid) {
+      // A pasted link still works exactly as before.
+      report.mediaLink = v;
+      report.companyCamProjectId = pid;
+      box.classList.remove("open"); box.innerHTML = "";
+      updateMediaHint();
+      pushStateToUrl();
+      return;
+    }
+    // Otherwise treat it as a search. Clearing the box unlinks the project.
+    if (!v.trim()) {
+      report.mediaLink = ""; report.companyCamProjectId = "";
+      updateMediaHint();
+      pushStateToUrl();
+    }
+    if (ccProjectsCache) renderCcResults(v);
+    else loadCcProjects().then(function () { renderCcResults(input.value); });
+  };
+
+  input.onfocus = function () {
+    loadCcProjects().then(function () {
+      if (input.value && !parseCompanyCamProjectId(input.value)) renderCcResults(input.value);
+    });
+  };
+  input.onblur = function () {
+    // Delay so a result's mousedown-driven pick isn't cut off. (mousedown
+    // already beats blur, but keep the box visible a beat regardless.)
+    setTimeout(function () { box.classList.remove("open"); }, 150);
+  };
+  input.onkeydown = function (e) {
+    if (!box.classList.contains("open")) return;
+    var rows = box.querySelectorAll(".cc-row");
+    if (!rows.length) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      _ccActiveIdx += (e.key === "ArrowDown" ? 1 : -1);
+      if (_ccActiveIdx < 0) _ccActiveIdx = rows.length - 1;
+      if (_ccActiveIdx >= rows.length) _ccActiveIdx = 0;
+      rows.forEach(function (r, i) { r.classList.toggle("active", i === _ccActiveIdx); });
+    } else if (e.key === "Enter" && _ccActiveIdx >= 0) {
+      e.preventDefault();
+      pickCcProject(findCcById(rows[_ccActiveIdx].dataset.id));
+    } else if (e.key === "Escape") {
+      box.classList.remove("open");
+    }
+  };
+})();
 document.getElementById("frontPhotoInput").oninput = function (e) {
   report.frontExteriorPhotoSrc = e.target.value;
   report.frontExteriorPhoto = e.target.value;
@@ -869,3 +1006,4 @@ renderBuilder();
 isDirty = false;
 offerDraftRestore();
 refreshReportList();
+loadCcProjects().then(function () { updateMediaField(); });

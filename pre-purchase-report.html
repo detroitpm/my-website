@@ -65,6 +65,17 @@
   .front-photo-preview img, .ctx-thumb img{display:block;border:1px solid var(--ink);}
   .front-photo-preview img{max-width:260px;height:auto;margin-top:8px;}
 
+  .cc-search-wrap{position:relative;}
+  .cc-results{display:none;position:absolute;left:0;right:0;top:100%;z-index:20;background:#fff;border:1px solid var(--ink);border-top:none;max-height:280px;overflow-y:auto;box-shadow:0 6px 18px rgba(0,0,0,.12);}
+  .cc-results.open{display:block;}
+  .cc-results .cc-row{padding:8px 10px;cursor:pointer;border-top:1px solid var(--line);font-size:13px;}
+  .cc-results .cc-row:first-child{border-top:none;}
+  .cc-results .cc-row:hover,.cc-results .cc-row.active{background:var(--panel);}
+  .cc-results .cc-row .n{font-weight:700;}
+  .cc-results .cc-row .a{color:var(--muted);font-size:12px;}
+  .cc-results .cc-empty{padding:10px;font-size:12.5px;color:var(--muted);}
+  .cc-hint{font-size:12px;color:var(--gold-ink);font-weight:700;margin-top:6px;display:none;}
+
   /* ---------- Context photo rows ---------- */
   .ctx-row{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);}
   .ctx-row:first-child{border-top:none;}
@@ -212,7 +223,12 @@
           <div class="fld small"><label>Buffer %</label><input type="number" id="bufferInput" min="0" step="1" value="20"></div>
         </div>
         <div class="grid" style="margin-top:12px;">
-          <div class="fld full"><label>CompanyCam Project Link</label><input type="text" id="mediaInput" placeholder="https://app.companycam.com/projects/123456"></div>
+          <div class="fld full cc-search-wrap">
+            <label>CompanyCam Project</label>
+            <input type="text" id="mediaInput" autocomplete="off" placeholder="Search a project name or address, or paste a link">
+            <div class="cc-results" id="mediaResults"></div>
+            <div class="cc-hint" id="mediaHint"></div>
+          </div>
         </div>
         <div class="grid" style="margin-top:12px;">
           <div class="fld full">
