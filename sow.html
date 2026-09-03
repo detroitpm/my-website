@@ -87,14 +87,23 @@
   .item-row{display:flex;border-top:1px solid #ddd;align-items:stretch;}
   .item-row.optional{background:var(--grey-opt);}
   .item-row .c-room-blank{flex:0 0 26%;}
-  .item-row .c-desc{flex:1;border-left:1px solid #ddd;padding:6px 10px;display:flex;align-items:center;}
+  /* Stacks as a column: the text + camera on one line, and the price-basis
+     note (when there is one) underneath. This used to be a single flex ROW,
+     which broke the moment the basis note was added - a flex:1 0 100% child
+     in a non-wrapping row takes the full width and squeezes its siblings to
+     zero, so every priced line rendered as a 0px-wide textarea thousands of
+     pixels tall. It looked like the text had vanished. */
+  .item-row .c-desc{flex:1;min-width:0;border-left:1px solid #ddd;padding:6px 10px;
+    display:flex;flex-direction:column;justify-content:center;gap:3px;}
+  .item-row .desc-main{display:flex;align-items:center;min-width:0;}
+  .item-row .desc-main textarea{flex:1;min-width:0;}
   .item-row textarea{flex:1;border:none;background:transparent;font-size:14px;resize:none;
     font-family:var(--sans);padding:4px 0;min-height:20px;overflow:hidden;line-height:1.4;}
   .item-row .photo-link{flex:0 0 auto;margin-left:6px;font-size:15px;text-decoration:none;opacity:0.7;cursor:zoom-in;}
   /* A price the builder guessed, waiting on a human. Greyed and dashed so it
      can't be mistaken for one that was typed in. */
   .item-row input.price.unconfirmed{color:var(--muted);border-style:dashed;background:var(--panel);font-style:italic;}
-  .item-row .price-basis{flex:1 0 100%;margin-top:3px;font-size:11px;line-height:1.4;color:var(--muted);}
+  .item-row .price-basis{font-size:11px;line-height:1.4;color:var(--muted);}
   .item-row .price-basis.confirmed{font-style:italic;}
   .item-row .price-basis .accept-price{font:inherit;font-size:11px;margin-left:6px;padding:1px 7px;
     border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;}

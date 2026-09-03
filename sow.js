@@ -39,13 +39,9 @@ function extractErrorMessage(result) {
   return "HTTP " + (result.status || "?");
 }
 
-// ---- URL state encoding ----
-function encodeState(sow) {
-  var json = JSON.stringify(sow);
-  var b64 = btoa(unescape(encodeURIComponent(json)));
-  // URL-safe
-  return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
+// ---- Legacy ?d= links ----
+// The builder no longer WRITES the SOW into the URL (see pushStateToUrl), but
+// it still reads one, so links handed out before that change still open.
 function decodeState(str) {
   try {
     var b64 = str.replace(/-/g, "+").replace(/_/g, "/");
@@ -57,25 +53,56 @@ function decodeState(str) {
   }
 }
 
+// The in-progress SOW is kept in localStorage, NOT in the URL.
+//
+// It used to live in the address bar as ?d=<base64 of the whole SOW>. A real
+// SOW doesn't fit: 8355 Wisconsin encodes to 26,000 characters, and Netlify
+// answers 414 above roughly 16,000 - so reloading, bookmarking or reopening
+// the builder on a full-size list simply failed to load. Small SOWs worked,
+// which is what made it look intermittent.
+//
+// ?d= is still READ, so links already sent out still open.
+var DRAFT_KEY = "sowDraft";
+
+function saveDraft() {
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(sow));
+  } catch (e) {
+    /* private window, or storage full - the draft just isn't kept */
+  }
+}
+
+function loadDraft() {
+  try {
+    var raw = localStorage.getItem(DRAFT_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 function loadInitialState() {
   var params = new URLSearchParams(location.search);
   if (params.has("d")) {
     var decoded = decodeState(params.get("d"));
     if (decoded) return decoded;
   }
+  var draft = loadDraft();
+  if (draft && draft.sections) return draft;
   return JSON.parse(JSON.stringify(DEFAULT_SOW));
 }
 
 var sow = loadInitialState();
 
-function currentUrlWithState() {
-  var encoded = encodeState(sow);
-  return location.origin + location.pathname + "?d=" + encoded;
-}
-
+// Kept the old name so every caller still reads as "persist what's on screen".
+// It writes to localStorage now; the URL is left alone. A ?d= link that was
+// used to open the builder is cleared, so a stale 26,000-character URL can't
+// be reloaded or bookmarked into a 414.
 function pushStateToUrl() {
-  var url = currentUrlWithState();
-  history.replaceState(null, "", url);
+  saveDraft();
+  if (location.search.indexOf("d=") !== -1) {
+    history.replaceState(null, "", location.pathname);
+  }
 }
 
 // ---- Rate cache (exact-match price auto-fill) ----
@@ -235,7 +262,7 @@ function renderBuilder() {
         : '';
       row.innerHTML =
         '<div class="c-room-blank"></div>' +
-        '<div class="c-desc"><textarea rows="1" class="item-text" data-s="' + sIdx + '" data-i="' + iIdx + '">' + escapeHtml(item.text) + '</textarea>' + photoLinkHtml + basisHtml + '</div>' +
+        '<div class="c-desc"><div class="desc-main"><textarea rows="1" class="item-text" data-s="' + sIdx + '" data-i="' + iIdx + '">' + escapeHtml(item.text) + '</textarea>' + photoLinkHtml + '</div>' + basisHtml + '</div>' +
         '<div class="c-contractor"><select class="contractor-select" data-s="' + sIdx + '" data-i="' + iIdx + '">' + contractorOptionsHtml(item.contractor || "") + '</select></div>' +
         '<div class="c-labor"><input type="number" class="price' + unconfirmedCls + '" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="labor" value="' + (item.labor != null ? item.labor : "") + '" placeholder="0"></div>' +
         '<div class="c-material"><input type="number" class="price' + unconfirmedCls + '" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="material" value="' + (item.material != null ? item.material : "") + '" placeholder="0"></div>' +
