@@ -170,7 +170,7 @@ Once you know the final state, build a JSON file matching this exact schema — 
     {
       "room": "Kitchen",
       "items": [
-        { "text": "Replace cracked window glass", "labor": null, "material": null, "optional": false, "photoUrl": "https://app.companycam.com/assets/Image/3466100976" }
+        { "text": "Replace cracked window glass", "labor": 50, "material": 250, "priceSource": "suggested", "priceBasis": "Closest past job: \"Replace glass in upper and lower panes - cracked\" at $50/$250", "optional": false, "photoUrl": "https://app.companycam.com/assets/Image/3466100976" }
       ]
     }
   ],
@@ -183,12 +183,65 @@ Once you know the final state, build a JSON file matching this exact schema — 
 
 Rules for this file:
 - **Only include items that were left checked.** Unchecked items (including any still-unchecked AI-added items) are dropped entirely — they don't appear in the JSON at all.
-- `labor` and `material` are always `null` — pricing is filled in by a human later on the website; never guess or set a dollar amount here.
+- `labor` and `material` carry a **suggested** price, or `null` — see "Suggesting prices" below. Never set a price without also setting `priceSource` and `priceBasis`; an unmarked price is indistinguishable from one the user typed, and the website will treat it as confirmed and learn from it.
 - `optional` is a real boolean (`true`/`false`), taken from whichever items were marked optional/greyed-out in the artifact.
 - `bufferPct` defaults to `20` unless the user says otherwise.
 - `mediaLink` is the primary CompanyCam project's URL (`https://app.companycam.com/projects/{project_id}`) from step 1.
 - `photoUrl` makes the line item clickable on the website and in the PDF, linking straight to the source in CompanyCam. Set it whenever a photo backs the item — use that photo's own `photo_url` field (a stable permalink, from `get_photo` or already present on `list_project_photos` results), not the thumbnail/web/original image URIs. For a video-derived item (step 3a) with no matching photo, there is no confirmed stable permalink to one specific video, so fall back to the project's `mediaLink` instead of guessing a URL — that at least gets the reader to the right project's media. If an item has no source photo at all (write it from memory/inference with nothing to point to), omit `photoUrl` entirely rather than guessing one.
 - Room order and line-item text should match the final (possibly user-edited) state of the artifact, not the original draft.
+
+### Suggesting prices
+
+Run the price checker before writing the JSON. It splits the line items into the
+ones the website can price on its own and the ones needing a judgement call:
+
+```bash
+node tools/sow-price-check.js sow-files/sow-<address>.json
+```
+
+(Write the file with `labor` and `material` as `null` first, run this, then fill
+them in. The tool only reads the item text.)
+
+It returns three things: `covered` (lines the site's own matcher will fill from
+the rate table), `needsSuggestion` (lines it can't, each with `anchors` — the
+closest past jobs and what they cost), and `priceLandscape` (what their pricing
+generally looks like).
+
+**Leave every `covered` line at `null`.** The website fills those in itself from
+the real price the user charged before, and a price they actually charged beats
+an estimate every time. Do not restate them — doing so overrides the match with
+a guess.
+
+For each `needsSuggestion` line, set `labor` and `material`, plus:
+- `priceSource`: `"suggested"` — always, without exception. This is what makes
+  the price show greyed out and keeps it out of the rate table until a human
+  accepts it. A price without it silently becomes their standard rate.
+- `priceBasis`: one short sentence naming the anchor you reasoned from, e.g.
+  `Closest past job: "Tighten the loose tub spout" at $25/$25`. The user reads
+  this to check your reasoning, so name the actual job, not "similar work".
+
+How to suggest well:
+- **Anchor to their own numbers.** Every suggestion should trace to one or more
+  `anchors`. Their pricing clusters hard on round figures — labor is $25 on 30
+  of 80 rows, material $25 on 33 of 82 — so a $37 suggestion is almost certainly
+  wrong even when the arithmetic says otherwise. Land on the numbers they use.
+- **Use the photo for quantity, never for size.** Counting is reliable: six
+  windows, four bulbs, three outlets. Measuring is not — do not estimate square
+  footage or linear feet from a photo with nothing in frame for scale. If the
+  price depends on a dimension you can't count, say so in `priceBasis` and
+  suggest for a single unit.
+- **Scale by count where the anchor was for a different quantity.** "Install
+  missing screens on both windows" pricing a single window should come down, and
+  say so in the basis.
+- **When there is genuinely nothing comparable, leave it `null`.** A blank the
+  user fills in costs them thirty seconds. A wrong number they don't catch ends
+  up in a contract. Blank is the better failure.
+- **Never put a price in the artifact.** The review artifact stays price-free —
+  suggestions belong only in the exported JSON.
+
+Tell the user in your chat reply how many lines the site will price from history,
+how many you suggested, and how many you left blank because nothing was
+comparable.
 
 Save it as `sow-files/sow-<address-slugified>.json` (e.g. `sow-files/sow-123-example-st.json`) **in the project folder**, creating `sow-files/` if it does not exist yet — job files live there, separate from the website code, not loose in the repo root and not just in a scratch/temp directory — this is a deliverable file they'll want to find again locally, not a throwaway.
 

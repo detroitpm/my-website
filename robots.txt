@@ -29,6 +29,7 @@ Allow: /
 User-agent: *
 Disallow: /sow-files/
 Disallow: /supabase/
+Disallow: /tools/
 Disallow: /netlify/
 
 Sitemap: https://section8pm.com/sitemap.xml

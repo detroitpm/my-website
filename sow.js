@@ -219,7 +219,14 @@ function renderBuilder() {
       if (item.priceBasis) {
         basisHtml = '<div class="price-basis' + (isUnconfirmed(item) ? "" : " confirmed") + '">' +
           (isUnconfirmed(item)
-            ? 'Guessed from: &ldquo;' + escapeHtml(item.priceBasis) + '&rdquo; <button class="accept-price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-act="accept">Accept</button>'
+            // A "matched" basis is the past job's own text, so it belongs in
+            // quotes. A "suggested" basis is a sentence Claude wrote naming
+            // what it reasoned from, so quoting it reads like a mis-nested
+            // quotation. Same field, two shapes - label them differently.
+            ? (item.priceSource === "suggested"
+                ? 'Suggested &mdash; ' + escapeHtml(item.priceBasis)
+                : 'From a past job: &ldquo;' + escapeHtml(item.priceBasis) + '&rdquo;') +
+              ' <button class="accept-price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-act="accept">Accept</button>'
             : 'You&rsquo;ve done this before: &ldquo;' + escapeHtml(item.priceBasis) + '&rdquo; &mdash; no price was saved for it') +
           "</div>";
       }
