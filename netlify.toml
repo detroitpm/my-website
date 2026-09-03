@@ -4,3 +4,57 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# The published website IS the repo root (publish = "." above), so every file
+# committed here is a public URL by default. That's fine for the pages, the
+# scripts the browser loads and the images - and wrong for everything else.
+# The rules below 404 the parts that were never meant to be on the web.
+#
+# Nothing secret was ever exposed - the CompanyCam key and the database
+# connection string live in Netlify's environment variables, not in any file -
+# but client job data and the server-side source have no business being
+# fetchable by anyone who guesses the path.
+#
+# Careful when editing: sow*.js / sow*.html / ppr*.js MUST stay public, the
+# browser loads them. And "/netlify/*" below is the SOURCE folder, which is
+# not the same path as the live function endpoints at "/.netlify/functions/*".
+
+# Client property job files - addresses and repair scopes.
+[[redirects]]
+  from = "/sow-files/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Database structure.
+[[redirects]]
+  from = "/supabase/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Server-side function source. The live endpoints (/.netlify/functions/...)
+# are a different path and keep working.
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/db.js"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package-lock.json"
+  to = "/404.html"
+  status = 404
+  force = true
