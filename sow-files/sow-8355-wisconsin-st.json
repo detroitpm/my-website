@@ -1,0 +1,719 @@
+{
+  "address": "8355 Wisconsin St, Detroit, MI 48204",
+  "typeOfWork": "Pre-Inspection List of Repairs",
+  "mediaLink": "https://app.companycam.com/projects/111699273",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Exterior \u2014 Front",
+      "items": [
+        {
+          "text": "Repair the peeling paint on the fascia board.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463304006"
+        },
+        {
+          "text": "Repair the one section of soffit under the roofline that needs attention.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463306824"
+        },
+        {
+          "text": "Fill the cracks in the front steps with concrete crack filler or patching compound.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463316313"
+        },
+        {
+          "text": "Tuck point the front steps.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467545763"
+        },
+        {
+          "text": "Tuck point the cracks on the top of the porch.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467547028"
+        },
+        {
+          "text": "Tuck point the front porch under the far left window to prevent water penetration.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467551797"
+        },
+        {
+          "text": "Secure both the right and left front railings \u2014 they are very loose. Put a couple of two by fours on each side and tie the railing to the two by four so it does not move.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467542694"
+        },
+        {
+          "text": "Fill and level the front walkway with concrete to resolve the trip hazard.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467539303"
+        },
+        {
+          "text": "Fill in the broken concrete on the driveway with cement.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463318182"
+        },
+        {
+          "text": "Replace the front middle window screen \u2014 the frame is bent.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467549099"
+        },
+        {
+          "text": "Remove the little weed tree in the front lawn.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467573608"
+        }
+      ]
+    },
+    {
+      "room": "Exterior \u2014 Sides and Rear",
+      "items": [
+        {
+          "text": "Remove all the weeds touching the house on the left side.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467561375"
+        },
+        {
+          "text": "Remove all the weeds and the weed tree at the rear, remove anything that is touching the house, clean up along the fence lines, and cut the tree branches so they are at least 10 feet above our heads.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467564716"
+        },
+        {
+          "text": "Remove the cable wires and vines that are touching the house.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467581296"
+        },
+        {
+          "text": "Install a downspout at the rear of the house.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467583159"
+        },
+        {
+          "text": "Install a storm screen on the side window.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463365315"
+        },
+        {
+          "text": "Clear the trees and weeds along the alley at the rear.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Remove the basketball hoop, the bike, and the ball from the yard.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Patch up the little hole in the exterior wall at the rear.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Cut the tree down on the right side \u2014 it is going to cause roof damage.",
+          "labor": null,
+          "material": null,
+          "optional": true,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134302"
+        }
+      ]
+    },
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Replace all the blinds on the 1st floor and remove all the blinds on the 2nd floor.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134350"
+        },
+        {
+          "text": "Install a 10 year sealed smoke detector in each of the bedrooms and in the hallway on all levels, and install a CO detector on all three levels \u2014 in the hallway outside the bedrooms and at the bottom of the steps in the basement.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134386"
+        },
+        {
+          "text": "Paint the entire house.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Remove anything left behind \u2014 debris in the basement, in the bathroom, and a coat in the closet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        }
+      ]
+    },
+    {
+      "room": "Living Room",
+      "items": [
+        {
+          "text": "Replace the bulb in the living room light and in the light fixture at the bottom of the stairs \u2014 it blinks and flickers.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Replace the broken glass with plexiglass in the living room window at the bottom of the stairs.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470853683"
+        }
+      ]
+    },
+    {
+      "room": "Lower Hallway",
+      "items": [
+        {
+          "text": "Install a CO detector and a 10 year sealed smoke detector in the hallway outside the bedroom.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        }
+      ]
+    },
+    {
+      "room": "Lower Half Bathroom",
+      "items": [
+        {
+          "text": "Replace the tile to the left of the vanity and above the vanity \u2014 it is cracked in several places.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Fill in the cracks on the other tiles.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Install the tile holders, or remove the brackets and fill in the holes in the tiles.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467264497"
+        },
+        {
+          "text": "Repair the hole in the tile underneath the bathroom vanity.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467276615"
+        },
+        {
+          "text": "Install the missing door knob on the bathroom door.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467273206"
+        },
+        {
+          "text": "Tighten the toilet and replace the handle \u2014 it is very loose.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463139150"
+        },
+        {
+          "text": "Seal the gaps inside the vanity.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470660958"
+        }
+      ]
+    },
+    {
+      "room": "Kitchen",
+      "items": [
+        {
+          "text": "Tighten the loose hinges on the left door of the lower right base cabinet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Remove the regular outlet where the fridge goes and install a GFCI outlet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Cover the exposed wall underneath the kitchen sink with drywall or similar material.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Nail the loose toe kick back in underneath the cabinets and seal it so there are no gaps.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Install a CO detector and a 10 year sealed smoke detector in the kitchen outside the bedroom.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Install the missing mounting hardware on the extra smoke detector sitting on the kitchen counter.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463224879"
+        }
+      ]
+    },
+    {
+      "room": "Lower Rear Bedroom",
+      "items": [
+        {
+          "text": "Replace the bedroom door.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3469498920"
+        },
+        {
+          "text": "Install a 10 year sealed smoke detector.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134475"
+        },
+        {
+          "text": "Install a screen in the window facing the backyard \u2014 it is missing.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        }
+      ]
+    },
+    {
+      "room": "Lower Front Bedroom",
+      "items": [
+        {
+          "text": "Install a 10 year sealed smoke detector.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134501"
+        },
+        {
+          "text": "Make the bedroom door open and close smoothly \u2014 right now it scrapes against the carpet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134528"
+        },
+        {
+          "text": "Replace the broken screen in the right window.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134557"
+        }
+      ]
+    },
+    {
+      "room": "Basement",
+      "items": [
+        {
+          "text": "Install a CO detector and a 10 year sealed smoke detector in the basement.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470637413"
+        },
+        {
+          "text": "Replace the battery in the basement smoke detector, or replace the detector.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463224879"
+        },
+        {
+          "text": "Install a furnace filter.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470637682"
+        },
+        {
+          "text": "Install vertical spindles at the basement stair opening so a kid can't fall into the basement \u2014 this is a Section 8 inspection requirement.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470637886"
+        },
+        {
+          "text": "Install receptacle covers on the five open receptacles, or install pull chain light fixtures if they are live wires.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470638018"
+        },
+        {
+          "text": "Install a light bulb where it is missing, or replace the light fixture if needed.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470638180"
+        },
+        {
+          "text": "Install a total of four light bulbs in the pull chain light fixtures.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470638305"
+        },
+        {
+          "text": "Secure the basement sink to the floor so it is stable \u2014 right now it moves.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470638412"
+        },
+        {
+          "text": "Remove all the debris from the back room, paint the walls with special mold killing primer, paint the floor, and repair it so it does not leak from the outside.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470638539"
+        },
+        {
+          "text": "Open the back room so it can be inspected to make sure it is okay.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470638816"
+        },
+        {
+          "text": "After both rooms in the basement have been inspected by the property manager, board up both rooms and seal them so they are completely inaccessible.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470639345"
+        },
+        {
+          "text": "Seal the gaps around the furnace and hot water tank exhaust with mortar.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470639699"
+        },
+        {
+          "text": "Repair the aluminum so it is flush against the ceiling and there is no air leakage from the furnace.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470644822"
+        },
+        {
+          "text": "Put a cap or seal on the dryer exhaust temporarily to prevent rodent entry.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470645531"
+        },
+        {
+          "text": "Paint the bottom five feet of the basement wall with special mold killing primer, including the holes.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470648756"
+        },
+        {
+          "text": "Attach a round graspable handrail to the existing two by four handrail.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470654296"
+        },
+        {
+          "text": "Replace the regular outlet in the basement with a GFCI outlet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        }
+      ]
+    },
+    {
+      "room": "Stairway",
+      "items": [
+        {
+          "text": "Tighten the handrail on the stairs.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463391953"
+        }
+      ]
+    },
+    {
+      "room": "Upper Front Bedroom",
+      "items": [
+        {
+          "text": "Replace the screen in the right window \u2014 it has a hole in it.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134580"
+        },
+        {
+          "text": "Install a screen in the middle window where it is missing.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134647"
+        },
+        {
+          "text": "Touch up the paint in the bedroom and fill in the holes.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470134678"
+        },
+        {
+          "text": "Install a 10 year sealed smoke detector \u2014 the mount is there but the detector is missing.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463006569"
+        },
+        {
+          "text": "Install a bulb in the closet light fixture, or replace the fixture so it is functional.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        }
+      ]
+    },
+    {
+      "room": "Upper Bedroom (position unclear)",
+      "items": [
+        {
+          "text": "Patch the hole in the bedroom ceiling.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3462907958"
+        },
+        {
+          "text": "Fill the hole in the bedroom entry door.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3462908424"
+        },
+        {
+          "text": "Fill the hole in the bedroom wall.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3462909523"
+        },
+        {
+          "text": "Scrape, mud, sand and paint the peeling window sill.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3462908835"
+        }
+      ]
+    },
+    {
+      "room": "Upper Middle Bedroom",
+      "items": [
+        {
+          "text": "Replace the window hardware \u2014 install a lock on the window and the pieces on the sides that make the window stay in place.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3463064139"
+        }
+      ]
+    },
+    {
+      "room": "Upper Hallway",
+      "items": [
+        {
+          "text": "Install a door knob on the closet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470872543"
+        },
+        {
+          "text": "Install a 10 year sealed smoke detector and a CO detector.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        }
+      ]
+    },
+    {
+      "room": "Upper Full Bathroom",
+      "items": [
+        {
+          "text": "Repair the GFCI so it is functional.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Make the bathroom light work from the switch \u2014 right now the switch does not control it.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Install two working light bulbs in the bathroom light fixture.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470877426"
+        },
+        {
+          "text": "Caulk around the tub where the tub meets the floor and where the tub meets the wall.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        },
+        {
+          "text": "Make the shower head trim flush to the wall.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3470878453"
+        },
+        {
+          "text": "Install a curtain rod.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        }
+      ]
+    },
+    {
+      "room": "Upper Rear Bedroom",
+      "items": [
+        {
+          "text": "Remove the screws holding both the right and left windows shut, and make sure the windows stay open, close and lock, and slide smoothly.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467154755"
+        },
+        {
+          "text": "Replace the right window screen \u2014 it has a hole at the bottom.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467159672"
+        },
+        {
+          "text": "Install a new screen in the left window \u2014 it is missing.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467161353"
+        },
+        {
+          "text": "Install the missing light bulb in the closet light fixture.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467165455"
+        },
+        {
+          "text": "Replace the door and replace the door knob \u2014 the door is cracked and appears to be glued together.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3467174105"
+        },
+        {
+          "text": "Install a 10 year sealed smoke detector.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/projects/111699273"
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}
