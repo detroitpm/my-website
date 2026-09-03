@@ -28,6 +28,96 @@ function normalizeKey(s) {
   return (s || "").toLowerCase().trim().replace(/\s+/g, " ");
 }
 
+// ---- Price matching against the saved rate table ----
+// The rate table is keyed by normalizeKey() above, which is an EXACT match:
+// "Install a furnace filter." never found "Install furnace filter." because
+// of one word. Measured against a real 88-line SOW, exact matching filled 1
+// line. The scoring below fills 16.
+//
+// It is deliberately conservative, because a wrong price is worse than no
+// price. Two guards do the work:
+//   1. The verb has to agree. "Replace the bedroom door" must not match
+//      "Repair gap next to the bedroom doorknob" - plain text similarity
+//      rates those as near-identical, and would price a door replacement at
+//      $26.
+//   2. What's left has to overlap heavily (Jaccard >= PRICE_MATCH_THRESHOLD).
+//      "Tighten the handrail" vs "Tighten the loose tub spout" share a verb
+//      but nothing else, and score 0.
+// At 0.5 every match on the test SOW was a genuinely equivalent job. Lowering
+// it to 0.4 let in "install receptacle covers" matching "install bulbs in
+// five pull-chain fixtures" - same words, different work. Don't lower it
+// without re-checking the matches by hand.
+var PRICE_MATCH_THRESHOLD = 0.5;
+
+var MATCH_STOP = ("the a an and so it to on in of is at that this with for be are was its "
+  + "if or as all any there no not has have they them make sure currently please").split(" ");
+// Singular/plural and phrasing that means the same job on a work order.
+var MATCH_SYN = {
+  ten: "10", "1st": "first", "2nd": "second", co2: "co", carbon: "co", monoxide: "co",
+  pane: "glass", panes: "glass", railing: "handrail", rail: "handrail",
+  steps: "stair", stairs: "stair", repaint: "paint", painting: "paint"
+};
+// Different words, same action - so a line isn't held back over "fix" vs "repair".
+var MATCH_VERB = { fix: "repair", adjust: "repair", patch: "repair", seal: "repair",
+                   reconnect: "attach", put: "install", mount: "install", add: "install" };
+
+// A price of 0 (or negative) is not a price - it's a blank someone tabbed
+// past, or a job that got bundled into another line. Eleven rows in the rate
+// table have $0 labor, and they're common jobs (smoke detectors, screens,
+// spindles), so treating them as free would quietly under-price real work.
+function usablePrice(v) {
+  var n = Number(v);
+  return (v == null || isNaN(n) || n <= 0) ? null : n;
+}
+
+function matchTokens(s) {
+  var t = (s || "").toLowerCase();
+  t = t.replace(/\([^)]*\)/g, " ");        // drop "($1000)", "(5)", "(7x)"
+  t = t.replace(/\$[\d,]+/g, " ");
+  t = t.replace(/[-–—/]/g, " ");
+  t = t.replace(/[^a-z0-9 ]/g, " ");
+  var out = [];
+  t.split(/\s+/).forEach(function (w) {
+    if (!w || MATCH_STOP.indexOf(w) !== -1) return;
+    if (MATCH_SYN[w]) w = MATCH_SYN[w];
+    else if (w.length > 4 && w.charAt(w.length - 1) === "s" && w.slice(-2) !== "ss") w = w.slice(0, -1);
+    out.push(w);
+  });
+  return out;
+}
+
+function matchScore(a, b) {
+  var ta = matchTokens(a), tb = matchTokens(b);
+  if (!ta.length || !tb.length) return 0;
+  var va = MATCH_VERB[ta[0]] || ta[0], vb = MATCH_VERB[tb[0]] || tb[0];
+  if (va !== vb) return 0;
+  var sa = ta.slice(1), sb = tb.slice(1);
+  if (!sa.length || !sb.length) return 0;
+  var inter = 0, seen = {};
+  sa.forEach(function (w) { if (!seen[w]) { seen[w] = 1; if (sb.indexOf(w) !== -1) inter++; } });
+  var union = {};
+  sa.concat(sb).forEach(function (w) { union[w] = 1; });
+  return inter / Object.keys(union).length;
+}
+
+// rates: [{taskText, labor, material}]. Returns the single best equivalent
+// past job, or null. Rows whose prices are all unusable still come back - the
+// builder shows "you've done this before" even when there's no number to fill.
+function bestRateMatch(text, rates) {
+  var best = null, bestScore = 0;
+  (rates || []).forEach(function (r) {
+    var sc = matchScore(text, r.taskText);
+    if (sc > bestScore) { bestScore = sc; best = r; }
+  });
+  if (!best || bestScore < PRICE_MATCH_THRESHOLD) return null;
+  return {
+    rate: best,
+    score: bestScore,
+    labor: usablePrice(best.labor),
+    material: usablePrice(best.material)
+  };
+}
+
 function computeRoomSubtotal(section) {
   var subtotal = 0;
   section.items.forEach(function (item) {
@@ -209,6 +299,11 @@ if (typeof module !== "undefined" && module.exports) {
     computeTotals: computeTotals,
     computeContractorLaborTotal: computeContractorLaborTotal,
     normalizeKey: normalizeKey,
+    usablePrice: usablePrice,
+    matchTokens: matchTokens,
+    matchScore: matchScore,
+    bestRateMatch: bestRateMatch,
+    PRICE_MATCH_THRESHOLD: PRICE_MATCH_THRESHOLD,
     buildPrintHtml: buildPrintHtml,
     buildStandalonePrintPage: buildStandalonePrintPage,
     PRINT_CSS: PRINT_CSS

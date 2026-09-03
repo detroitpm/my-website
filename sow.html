@@ -91,6 +91,14 @@
   .item-row textarea{flex:1;border:none;background:transparent;font-size:14px;resize:none;
     font-family:var(--sans);padding:4px 0;min-height:20px;overflow:hidden;line-height:1.4;}
   .item-row .photo-link{flex:0 0 auto;margin-left:6px;font-size:15px;text-decoration:none;opacity:0.7;cursor:zoom-in;}
+  /* A price the builder guessed, waiting on a human. Greyed and dashed so it
+     can't be mistaken for one that was typed in. */
+  .item-row input.price.unconfirmed{color:var(--muted);border-style:dashed;background:var(--panel);font-style:italic;}
+  .item-row .price-basis{flex:1 0 100%;margin-top:3px;font-size:11px;line-height:1.4;color:var(--muted);}
+  .item-row .price-basis.confirmed{font-style:italic;}
+  .item-row .price-basis .accept-price{font:inherit;font-size:11px;margin-left:6px;padding:1px 7px;
+    border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;}
+  .item-row .price-basis .accept-price:hover{background:var(--gold);}
   .item-row .photo-link:hover{opacity:1;}
   .item-row .c-contractor{flex:0 0 130px;border-left:1px solid #ddd;padding:6px;display:flex;align-items:center;}
   .item-row select.contractor-select{width:100%;border:1px solid #ccc;padding:5px 6px;font-size:12.5px;font-family:var(--sans);background:#fff;}
