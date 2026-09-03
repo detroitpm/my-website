@@ -190,7 +190,7 @@ Rules for this file:
 - `photoUrl` makes the line item clickable on the website and in the PDF, linking straight to the source in CompanyCam. Set it whenever a photo backs the item — use that photo's own `photo_url` field (a stable permalink, from `get_photo` or already present on `list_project_photos` results), not the thumbnail/web/original image URIs. For a video-derived item (step 3a) with no matching photo, there is no confirmed stable permalink to one specific video, so fall back to the project's `mediaLink` instead of guessing a URL — that at least gets the reader to the right project's media. If an item has no source photo at all (write it from memory/inference with nothing to point to), omit `photoUrl` entirely rather than guessing one.
 - Room order and line-item text should match the final (possibly user-edited) state of the artifact, not the original draft.
 
-Save it as `sow-<address-slugified>.json` (e.g. `sow-123-example-st.json`) **in the current working directory** (the user's project folder), not just a scratch/temp directory — this is a deliverable file they'll want to find again locally, not a throwaway.
+Save it as `sow-files/sow-<address-slugified>.json` (e.g. `sow-files/sow-123-example-st.json`) **in the project folder**, creating `sow-files/` if it does not exist yet — job files live there, separate from the website code, not loose in the repo root and not just in a scratch/temp directory — this is a deliverable file they'll want to find again locally, not a throwaway.
 
 Before writing it, check whether a file with that exact name already exists there. If it does, read it and compare:
 - If it's clearly the same SOW (matching address, same rough structure) just from an earlier pass, overwriting is expected — go ahead.
