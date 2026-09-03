@@ -24,4 +24,11 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+# Not part of the website - these are blocked outright in netlify.toml, this
+# is belt-and-braces so nothing already indexed lingers.
+User-agent: *
+Disallow: /sow-files/
+Disallow: /supabase/
+Disallow: /netlify/
+
 Sitemap: https://section8pm.com/sitemap.xml
