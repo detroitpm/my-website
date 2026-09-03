@@ -26,6 +26,13 @@
   status = 404
   force = true
 
+# Developer tooling - not part of the site.
+[[redirects]]
+  from = "/tools/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
 # Database structure.
 [[redirects]]
   from = "/supabase/*"
