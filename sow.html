@@ -90,7 +90,7 @@
   .item-row .c-desc{flex:1;border-left:1px solid #ddd;padding:6px 10px;display:flex;align-items:center;}
   .item-row textarea{flex:1;border:none;background:transparent;font-size:14px;resize:none;
     font-family:var(--sans);padding:4px 0;min-height:20px;overflow:hidden;line-height:1.4;}
-  .item-row .photo-link{flex:0 0 auto;margin-left:6px;font-size:15px;text-decoration:none;opacity:0.7;}
+  .item-row .photo-link{flex:0 0 auto;margin-left:6px;font-size:15px;text-decoration:none;opacity:0.7;cursor:zoom-in;}
   .item-row .photo-link:hover{opacity:1;}
   .item-row .c-contractor{flex:0 0 130px;border-left:1px solid #ddd;padding:6px;display:flex;align-items:center;}
   .item-row select.contractor-select{width:100%;border:1px solid #ccc;padding:5px 6px;font-size:12.5px;font-family:var(--sans);background:#fff;}
@@ -217,7 +217,7 @@
         <button class="btn primary" id="downloadContractorBtn">Download Contractor Copy</button>
         <button class="btn primary" id="downloadOwnerBtn">Download Owner Copy</button>
         <button class="btn" id="sendCCBtn">Send to CompanyCam Files</button>
-        <button class="btn" id="copyLinkBtn">Copy link to this SOW</button>
+        <button class="btn" id="copyLinkBtn">Copy owner link</button>
       </div>
       <div class="linkwrap" id="linkwrap">
         <p class="linkhint" id="linkHint">Link copied.</p>
@@ -330,6 +330,7 @@
   </div>
 
 <script src="sow-shared.js"></script>
+<script src="sow-lightbox.js"></script>
 <script src="sow.js"></script>
 </body>
 </html>

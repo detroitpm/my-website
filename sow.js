@@ -173,7 +173,7 @@ function renderBuilder() {
       var row = document.createElement("div");
       row.className = "item-row" + (item.optional ? " optional" : "");
       var photoLinkHtml = item.photoUrl
-        ? '<a class="photo-link" href="' + escapeHtml(item.photoUrl) + '" target="_blank" rel="noopener" title="View photo/video">&#128247;</a>'
+        ? '<a class="photo-link" href="' + escapeHtml(item.photoUrl) + '" rel="noopener" title="Show the picture" data-caption="' + escapeHtml(item.text) + '">&#128247;</a>'
         : '';
       row.innerHTML =
         '<div class="c-room-blank"></div>' +
@@ -270,6 +270,11 @@ function renderQuestions() {
     qc.appendChild(row);
   });
 }
+
+// The camera icon on a line item shows its picture in place instead of
+// navigating to CompanyCam - see sow-lightbox.js. Bound once against the
+// container, so it survives every renderBuilder() re-render.
+SowLightbox.bind(document.getElementById("sectionsContainer"), "a.photo-link");
 
 function attachBuilderListeners() {
   document.getElementById("addressInput").oninput = function (e) { sow.address = e.target.value; pushStateToUrl(); };
@@ -598,23 +603,67 @@ function downloadCopy(mode) {
 document.getElementById("downloadContractorBtn").onclick = function () { downloadCopy("contractor"); };
 document.getElementById("downloadOwnerBtn").onclick = function () { downloadCopy("owner"); };
 
-// ---- Copy link ----
+// ---- Copy owner link ----
+// This used to be location.pathname + "?d=" + base64(whole SOW), which meant
+// the "link" was the builder itself with every field editable, and the SOW
+// was carried in the URL. Both were wrong: an owner should get a read-only
+// page, and a real SOW doesn't fit in a URL (8355 Wisconsin encodes to ~24k
+// characters, past what Netlify and most browsers will accept, so the link
+// simply failed). So: save the SOW, then link to sow-view.html by its id.
+function ownerLinkFor(id) {
+  var dir = location.pathname.replace(/[^/]*$/, "");
+  return location.origin + dir + "sow-view.html?id=" + encodeURIComponent(id);
+}
+
 document.getElementById("copyLinkBtn").onclick = function () {
-  var url = currentUrlWithState();
+  var btn = document.getElementById("copyLinkBtn");
   var wrap = document.getElementById("linkwrap");
+  var hint = document.getElementById("linkHint");
   var out = document.getElementById("linkOut");
-  out.value = url;
-  wrap.style.display = "block";
-  out.focus();
-  out.select();
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(function () {
-      var btn = document.getElementById("copyLinkBtn");
-      var t = btn.textContent;
-      btn.textContent = "Copied!";
-      setTimeout(function () { btn.textContent = t; }, 1600);
-    }, function () {});
+
+  if (!(sow.address || "").trim()) {
+    wrap.style.display = "block";
+    hint.textContent = "Add the property address first - the owner link is saved under it.";
+    out.value = "";
+    return;
   }
+
+  var label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Saving...";
+
+  fetch("/.netlify/functions/sow-save", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sow: sow })
+  })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+    .then(function (result) {
+      btn.disabled = false;
+      btn.textContent = label;
+      if (!result.ok || !result.data.id) throw new Error(extractErrorMessage(result));
+
+      var url = ownerLinkFor(result.data.id);
+      wrap.style.display = "block";
+      hint.textContent = "Owner link copied. It opens a read-only page - no prices to edit, no builder. Saving again updates what this link shows.";
+      out.value = url;
+      out.focus();
+      out.select();
+      refreshSowList();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () {
+          btn.textContent = "Copied!";
+          setTimeout(function () { btn.textContent = label; }, 1600);
+        }, function () {});
+      }
+    })
+    .catch(function (err) {
+      btn.disabled = false;
+      btn.textContent = label;
+      wrap.style.display = "block";
+      hint.textContent = "Couldn't make the link: " + err.message;
+      out.value = "";
+    });
 };
 
 // ---- Send to CompanyCam ----
