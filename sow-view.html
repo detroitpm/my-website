@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Scope of Work</title>
+
+<!-- Filled at runtime by sow-view.js with PRINT_CSS from sow-shared.js - the
+     exact stylesheet behind the Owner Copy PDF, so this page and that PDF
+     can't drift apart. It sits ABOVE the page-chrome styles below on purpose:
+     PRINT_CSS styles a standalone document (it sets `body` itself), and the
+     chrome rules that follow are what turn that into a hosted page. -->
+<style id="printCss"></style>
+
+<style>
+  /* Page chrome. Colour tokens (--ink, --gold, --muted, --line, --paper)
+     come from PRINT_CSS above, so there's one palette, not two. */
+  :root{ --maxw:860px; }
+  body{margin:0;background:#f5f4f1;color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;}
+  .shell{max-width:var(--maxw);margin:0 auto;padding:22px 16px 64px;}
+  .bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;
+    justify-content:space-between;margin-bottom:16px;}
+  .bar .who{font-size:12px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--muted);}
+  .btn{font:inherit;font-size:14px;padding:8px 14px;border:2px solid var(--ink);
+    background:var(--paper);color:var(--ink);cursor:pointer;}
+  .btn:hover{background:var(--gold);}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .state{background:var(--paper);border:2px solid var(--line);padding:28px 22px;
+    text-align:center;color:var(--muted);}
+  .state.err{border-color:var(--ink);color:var(--ink);}
+  .state[hidden]{display:none;}
+  .hint{margin:14px 2px 0;font-size:13px;color:var(--muted);}
+  .hint[hidden]{display:none;}
+  #doc{background:var(--paper);}
+
+  /* A line item that has a photo prints its description as a real link -
+     that's what makes it clickable in the PDF. On screen we mark it with a
+     camera so it reads as "there's a picture here"; sow-view.js opens it in
+     place rather than sending the reader off to CompanyCam. */
+  #doc .pv-c-desc a{cursor:zoom-in;}
+  #doc .pv-c-desc a::after{content:" \1F4F7";text-decoration:none;font-size:13px;}
+
+  @media print{
+    body{background:var(--paper);}
+    .shell{max-width:none;padding:0;}
+    .no-print{display:none !important;}
+    #doc .pv-c-desc a::after{content:"";}
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="bar no-print">
+      <span class="who">Scope of Work &mdash; Owner Copy</span>
+      <button class="btn" id="printBtn" hidden>Print / Save as PDF</button>
+    </div>
+    <div id="state" class="state">Loading&hellip;</div>
+    <div id="doc"></div>
+    <p class="hint no-print" id="hint" hidden>Tap any line with a &#128247; to see the picture.</p>
+  </div>
+
+<script src="sow-shared.js"></script>
+<script src="sow-lightbox.js"></script>
+<script src="sow-view.js"></script>
+</body>
+</html>
