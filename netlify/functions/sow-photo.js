@@ -10,11 +10,22 @@
 // (COMPANYCAM_API_KEY), same as the other companycam functions.
 const API = "https://api.companycam.com/v2";
 
-// The CompanyCam static image URL carries its size as a `?d=WxH` param, so a
-// bigger variant is a string swap rather than a second API call.
-function atSize(uri, size) {
-  if (!uri) return uri;
-  return uri.replace(/([?&]d=)\d+x\d+/, "$1" + size + "x" + size);
+// CompanyCam hands back two different URL shapes depending on the photo:
+//
+//   static.companycam.com/....jpeg?d=400x400          size is a query param
+//   img.companycam.com/<signature>/rs:fit:400:400/... size is in a SIGNED path
+//
+// The first can be bumped to a bigger variant with a string swap. The second
+// cannot: editing the path invalidates the signature and the CDN answers 403.
+// So rewrite only the query-param form, and otherwise fall back to the
+// `original` variant, which is already full size. Getting this wrong is
+// invisible in the API response - you just quietly serve a 400x400 image into
+// a full-screen lightbox and it looks blurry.
+function displayUri(uris) {
+  var pick = function (type) { return (uris.find(function (u) { return u.type === type; }) || {}).uri || ""; };
+  var web = pick("web");
+  if (/[?&]d=\d+x\d+/.test(web)) return web.replace(/([?&]d=)\d+x\d+/, "$11600x1600");
+  return pick("original") || web;
 }
 
 exports.handler = async function (event) {
@@ -43,8 +54,8 @@ exports.handler = async function (event) {
     const p = await resp.json();
     const uris = p.uris || [];
     const pick = function (type) { return (uris.find(function (u) { return u.type === type; }) || {}).uri || ""; };
-    const web = pick("web") || pick("original");
-    if (!web) {
+    const display = displayUri(uris);
+    if (!display) {
       return { statusCode: 404, body: JSON.stringify({ error: "That photo has no image to show yet" }) };
     }
     const desc = p.description && (p.description.plain_text_content || (typeof p.description === "string" ? p.description : ""));
@@ -56,8 +67,8 @@ exports.handler = async function (event) {
       body: JSON.stringify({
         photo: {
           id: String(p.id),
-          displayUrl: atSize(web, 1600),
-          thumbUrl: pick("thumbnail") || web,
+          displayUrl: display,
+          thumbUrl: pick("thumbnail") || display,
           description: desc || "",
           photoUrl: p.photo_url || ""
         }
