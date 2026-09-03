@@ -5,7 +5,7 @@
 // so blurring an empty Labor field doesn't wipe out a previously-recorded
 // Material price for the same task, or vice versa.
 const { getPool } = require("../../db.js");
-const { normalizeKey } = require("../../sow-shared.js");
+const { normalizeKey, usablePrice } = require("../../sow-shared.js");
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {
@@ -23,7 +23,14 @@ exports.handler = async function (event) {
   if (!text) {
     return { statusCode: 400, body: JSON.stringify({ error: "text is required" }) };
   }
-  if (payload.labor == null && payload.material == null) {
+  // A price of 0 is a blank someone tabbed past, not a rate. Storing it means
+  // the next SOW matches this job and fills in "free" - and eleven rows in the
+  // table already had $0 labor on common jobs (smoke detectors, screens,
+  // spindles) before this guard existed. COALESCE below leaves whatever is
+  // already recorded alone when we pass null.
+  const labor = usablePrice(payload.labor);
+  const material = usablePrice(payload.material);
+  if (labor == null && material == null) {
     return { statusCode: 200, body: JSON.stringify({ ok: true, skipped: true }) };
   }
 
@@ -39,7 +46,7 @@ exports.handler = async function (event) {
          labor = COALESCE(EXCLUDED.labor, rate_items.labor),
          material = COALESCE(EXCLUDED.material, rate_items.material),
          updated_at = NOW()`,
-      [taskKey, text, payload.labor, payload.material]
+      [taskKey, text, labor, material]
     );
     return { statusCode: 200, body: JSON.stringify({ ok: true }) };
   } catch (err) {

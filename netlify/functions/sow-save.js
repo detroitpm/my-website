@@ -3,7 +3,7 @@
 // blur-triggered save in rate-save.js should already cover most of this,
 // but this catches anything that didn't fire (e.g. tab closed before blur).
 const { getPool } = require("../../db.js");
-const { normalizeKey } = require("../../sow-shared.js");
+const { normalizeKey, usablePrice } = require("../../sow-shared.js");
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {
@@ -59,8 +59,14 @@ exports.handler = async function (event) {
       (section.items || []).forEach(function (item) {
         var text = (item.text || "").trim();
         if (!text) return;
-        if (item.labor == null && item.material == null) return;
-        rateRows.push({ taskKey: normalizeKey(text), taskText: text, labor: item.labor, material: item.material });
+        // priceSource marks a price the builder guessed and no human has
+        // accepted yet. Learning from those would make the rate table match
+        // future SOWs against its own guesses, so they never come in here.
+        if (item.priceSource) return;
+        var labor = usablePrice(item.labor);
+        var material = usablePrice(item.material);
+        if (labor == null && material == null) return;
+        rateRows.push({ taskKey: normalizeKey(text), taskText: text, labor: labor, material: material });
       });
     });
 

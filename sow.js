@@ -83,33 +83,72 @@ function pushStateToUrl() {
 // -> {labor, material}, so matching a line item's text is a local lookup,
 // not a network call per keystroke/blur.
 var ratesCache = {};
+var ratesList = [];
 
 function loadRatesCache() {
   return fetch("/.netlify/functions/rates-list")
     .then(function (r) { return r.json(); })
     .then(function (data) {
       ratesCache = {};
-      (data.rates || []).forEach(function (r) {
+      ratesList = data.rates || [];
+      ratesList.forEach(function (r) {
         ratesCache[r.taskKey] = { labor: r.labor, material: r.material };
       });
     })
     .catch(function () { /* no rate data yet, or offline - fine, just no auto-fill */ });
 }
 
-// Fills any item that has no price yet but whose text exactly matches a
-// cached rate. Mutates sow in place; caller is responsible for re-rendering.
+// Fills any item that has no price yet from the closest equivalent job in the
+// rate table (see bestRateMatch in sow-shared.js for how "equivalent" is
+// decided, and why it errs on the side of filling nothing).
+//
+// Anything filled here is marked priceSource:"matched" - an UNCONFIRMED
+// price. It shows greyed out, it is not written back to the rate table, and
+// it stops being unconfirmed the moment a human edits or accepts it. That
+// last part matters: without it, a guess gets saved as history and becomes
+// the thing the next SOW matches against, so one bad number quietly hardens
+// into the standard price.
+//
+// priceBasis is kept even when the matched job has no usable price, so the
+// builder can still say "you've done this before, here's what you called it".
 function autofillAllFromRates() {
   var changed = false;
   sow.sections.forEach(function (section) {
     section.items.forEach(function (item) {
       if (item.labor != null || item.material != null) return;
-      var match = ratesCache[normalizeKey(item.text)];
+      if (!(item.text || "").trim()) return;
+      var match = bestRateMatch(item.text, ratesList);
       if (!match) return;
-      if (match.labor != null) { item.labor = match.labor; changed = true; }
-      if (match.material != null) { item.material = match.material; changed = true; }
+      if (match.labor == null && match.material == null) {
+        if (item.priceBasis !== match.rate.taskText) { item.priceBasis = match.rate.taskText; changed = true; }
+        return;
+      }
+      if (match.labor != null) item.labor = match.labor;
+      if (match.material != null) item.material = match.material;
+      item.priceSource = "matched";
+      item.priceBasis = match.rate.taskText;
+      changed = true;
     });
   });
   return changed;
+}
+
+// A price the builder guessed, still waiting on a human. Anything else -
+// typed by hand, or accepted - counts as confirmed and behaves normally.
+function isUnconfirmed(item) {
+  return item.priceSource === "matched" || item.priceSource === "suggested";
+}
+
+function confirmPrice(item) {
+  delete item.priceSource;
+}
+
+function countUnconfirmed() {
+  var n = 0;
+  sow.sections.forEach(function (section) {
+    section.items.forEach(function (item) { if (isUnconfirmed(item)) n++; });
+  });
+  return n;
 }
 
 // ---- Global contractor list (shared across every SOW, like the rate cache) ----
@@ -172,15 +211,27 @@ function renderBuilder() {
     section.items.forEach(function (item, iIdx) {
       var row = document.createElement("div");
       row.className = "item-row" + (item.optional ? " optional" : "");
+      // An unconfirmed price shows greyed out with the past job it came from
+      // and an Accept button, so the number is never mistaken for one a human
+      // entered. A matched job with no usable price still gets the note.
+      var unconfirmedCls = isUnconfirmed(item) ? " unconfirmed" : "";
+      var basisHtml = "";
+      if (item.priceBasis) {
+        basisHtml = '<div class="price-basis' + (isUnconfirmed(item) ? "" : " confirmed") + '">' +
+          (isUnconfirmed(item)
+            ? 'Guessed from: &ldquo;' + escapeHtml(item.priceBasis) + '&rdquo; <button class="accept-price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-act="accept">Accept</button>'
+            : 'You&rsquo;ve done this before: &ldquo;' + escapeHtml(item.priceBasis) + '&rdquo; &mdash; no price was saved for it') +
+          "</div>";
+      }
       var photoLinkHtml = item.photoUrl
         ? '<a class="photo-link" href="' + escapeHtml(item.photoUrl) + '" rel="noopener" title="Show the picture" data-caption="' + escapeHtml(item.text) + '">&#128247;</a>'
         : '';
       row.innerHTML =
         '<div class="c-room-blank"></div>' +
-        '<div class="c-desc"><textarea rows="1" class="item-text" data-s="' + sIdx + '" data-i="' + iIdx + '">' + escapeHtml(item.text) + '</textarea>' + photoLinkHtml + '</div>' +
+        '<div class="c-desc"><textarea rows="1" class="item-text" data-s="' + sIdx + '" data-i="' + iIdx + '">' + escapeHtml(item.text) + '</textarea>' + photoLinkHtml + basisHtml + '</div>' +
         '<div class="c-contractor"><select class="contractor-select" data-s="' + sIdx + '" data-i="' + iIdx + '">' + contractorOptionsHtml(item.contractor || "") + '</select></div>' +
-        '<div class="c-labor"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="labor" value="' + (item.labor != null ? item.labor : "") + '" placeholder="0"></div>' +
-        '<div class="c-material"><input type="number" class="price" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="material" value="' + (item.material != null ? item.material : "") + '" placeholder="0"></div>' +
+        '<div class="c-labor"><input type="number" class="price' + unconfirmedCls + '" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="labor" value="' + (item.labor != null ? item.labor : "") + '" placeholder="0"></div>' +
+        '<div class="c-material"><input type="number" class="price' + unconfirmedCls + '" data-s="' + sIdx + '" data-i="' + iIdx + '" data-field="material" value="' + (item.material != null ? item.material : "") + '" placeholder="0"></div>' +
         '<div class="c-opt"><input type="checkbox" data-s="' + sIdx + '" data-i="' + iIdx + '" class="optcheck" ' + (item.optional ? "checked" : "") + '></div>' +
         '<div class="c-del"><button data-s="' + sIdx + '" data-i="' + iIdx + '" data-act="delitem">&#10005;</button></div>';
       container.appendChild(row);
@@ -271,6 +322,26 @@ function renderQuestions() {
   });
 }
 
+// "Accept" on a guessed price. Delegated against the container so it keeps
+// working after every renderBuilder() re-render.
+document.getElementById("sectionsContainer").addEventListener("click", function (e) {
+  var btn = e.target.closest && e.target.closest('button[data-act="accept"]');
+  if (!btn) return;
+  var item = sow.sections[btn.dataset.s].items[btn.dataset.i];
+  confirmPrice(item);
+  // Accepting is the human decision the rate table has been waiting for, so
+  // now it's worth remembering.
+  var text = (item.text || "").trim();
+  if (text && (item.labor != null || item.material != null)) {
+    fetch("/.netlify/functions/rate-save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: text, labor: item.labor, material: item.material })
+    }).catch(function () { /* background save - fine to silently drop */ });
+  }
+  renderBuilder();
+});
+
 // The camera icon on a line item shows its picture in place instead of
 // navigating to CompanyCam - see sow-lightbox.js. Bound once against the
 // container, so it survives every renderBuilder() re-render.
@@ -312,7 +383,16 @@ function attachBuilderListeners() {
   document.querySelectorAll(".price").forEach(function (el) {
     el.oninput = function (e) {
       var s = e.target.dataset.s, i = e.target.dataset.i, f = e.target.dataset.field;
-      sow.sections[s].items[i][f] = e.target.value === "" ? null : Number(e.target.value);
+      var editedItem = sow.sections[s].items[i];
+      editedItem[f] = e.target.value === "" ? null : Number(e.target.value);
+      // Typing over a guess is how you accept it - it stops being a guess.
+      if (isUnconfirmed(editedItem)) {
+        confirmPrice(editedItem);
+        e.target.classList.remove("unconfirmed");
+        var row = e.target.closest(".item-row");
+        var basisEl = row && row.querySelector(".price-basis");
+        if (basisEl) basisEl.remove();
+      }
       var totals = computeTotals(sow);
       document.getElementById("contractorTotalOverrideInput").placeholder = String(totals.contractorTotal);
       updateContractorVariance(totals.contractorTotal);
@@ -328,6 +408,9 @@ function attachBuilderListeners() {
       var item = sow.sections[s].items[i];
       var text = (item.text || "").trim();
       if (!text || (item.labor == null && item.material == null)) return;
+      // Never teach the rate table a price no human has confirmed, or the
+      // builder ends up matching future SOWs against its own guesses.
+      if (isUnconfirmed(item)) return;
       fetch("/.netlify/functions/rate-save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -591,6 +674,14 @@ document.getElementById("uploadSowInput").onchange = function (e) {
 // ---- Print views (static, built fresh each time) ----
 // buildPrintHtml lives in sow-shared.js - see the note there.
 function downloadCopy(mode) {
+  // An unconfirmed price still counts toward the total. Sending an owner an
+  // estimate built partly on guesses is exactly the mistake this whole
+  // greyed-out mechanism exists to prevent, so say so before it leaves.
+  var pending = countUnconfirmed();
+  if (pending && !confirm(pending + (pending === 1 ? " price is" : " prices are") +
+      " still greyed out - guessed from past jobs and not yet accepted. They're included in the total. Download anyway?")) {
+    return;
+  }
   var contractorFilter = mode === "contractor" ? (document.getElementById("contractorFilterSelect").value || "") : "";
   document.getElementById("printView").innerHTML = buildPrintHtml(sow, mode, contractorFilter);
   var titleSuffix = contractorFilter ? " (" + contractorFilter + ")" : "";
