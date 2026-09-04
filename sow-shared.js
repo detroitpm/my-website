@@ -28,6 +28,18 @@ function normalizeKey(s) {
   return (s || "").toLowerCase().trim().replace(/\s+/g, " ");
 }
 
+// Is this photoUrl actually a picture, or just a pointer at the project?
+//
+// A line item's photoUrl is normally a CompanyCam asset permalink
+// (.../assets/Image/123). But a line taken from a narrated video has no one
+// photo to point at, so it used to get the PROJECT link instead
+// (.../projects/456). That still rendered a camera icon and a hyperlink, and
+// clicking it just said there was no picture - 23 of 88 lines on one real SOW.
+// An icon that promises a photo and doesn't have one is worse than no icon.
+function isPhotoLink(url) {
+  return /\/assets\/(Image|Video)\/\d+/i.test(url || "");
+}
+
 // ---- Price matching against the saved rate table ----
 // The rate table is keyed by normalizeKey() above, which is an EXACT match:
 // "Install a furnace filter." never found "Install furnace filter." because
@@ -205,7 +217,7 @@ function buildPrintHtml(sow, mode, contractorFilter) {
       // becomes the click target (a real PDF link annotation) - no added
       // label or icon, just the same text wrapped in <a>.
       var descText = escapeHtml(item.text);
-      var desc = item.photoUrl ? '<a href="' + escapeHtml(item.photoUrl) + '">' + descText + "</a>" : descText;
+      var desc = isPhotoLink(item.photoUrl) ? '<a href="' + escapeHtml(item.photoUrl) + '">' + descText + "</a>" : descText;
       html += '<tr class="pv-item-row' + (item.optional ? " optional" : "") + '">' +
         '<td class="pv-c-room"></td>' +
         '<td class="pv-c-desc">&#9744; ' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + desc + contractorTag + "</td></tr>";
@@ -299,6 +311,7 @@ if (typeof module !== "undefined" && module.exports) {
     computeTotals: computeTotals,
     computeContractorLaborTotal: computeContractorLaborTotal,
     normalizeKey: normalizeKey,
+    isPhotoLink: isPhotoLink,
     usablePrice: usablePrice,
     matchTokens: matchTokens,
     matchScore: matchScore,
