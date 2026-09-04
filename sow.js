@@ -257,7 +257,7 @@ function renderBuilder() {
             : 'You&rsquo;ve done this before: &ldquo;' + escapeHtml(item.priceBasis) + '&rdquo; &mdash; no price was saved for it') +
           "</div>";
       }
-      var photoLinkHtml = item.photoUrl
+      var photoLinkHtml = isPhotoLink(item.photoUrl)
         ? '<a class="photo-link" href="' + escapeHtml(item.photoUrl) + '" rel="noopener" title="Show the picture" data-caption="' + escapeHtml(item.text) + '">&#128247;</a>'
         : '';
       row.innerHTML =
