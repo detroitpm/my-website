@@ -205,6 +205,11 @@
     .wrap{max-width:100%;margin:0;padding:0;}
     body[data-printing] #builderView{display:none !important;}
     body[data-printing] #printView{display:block !important;}
+    /* The Contractor Copy is deliberately unbranded - a contractor who falls
+       out with us over a job shouldn't be handed our company name to aim a
+       Google review at. The Owner Copy keeps the masthead: owners are clients
+       and already know who we are. */
+    body[data-printing="contractor"] .masthead{display:none !important;}
   }
 
   @media (max-width:640px){
