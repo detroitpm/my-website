@@ -54,7 +54,28 @@ For each photo that has a caption, call `mcp__companycam__view_photo` and actual
 
 When the caption and the photo give two different plausible reads of the *same* issue, **go with the caption** — it was written on-site by a human who was standing there. Don't "correct" a caption's description just because you'd have described the photo differently.
 
+The caption wins on *what the issue is and where* — but **not on the name of the part.** See step 3b.
+
 If a caption and photo genuinely can't be reconciled at all (photo too dark, clearly unrelated, totally ambiguous), don't silently guess — keep the item but flag it in your summary to the user as something to double-check.
+
+### 3b. Fix wrong, made-up, and missing part names
+
+The user writes captions and narrates video fast, standing in the room, and will sometimes reach for the wrong word. Three shapes this takes:
+
+- **A plausible-sounding invention** — "conduit box" for what is actually a junction box, "water box" for a water heater pan.
+- **An out-loud blank** — "crap, I forgot what that thing is called," "the whatchamacallit," "the doohickey on the wall."
+- **A bare placeholder** — "fix this thing," "that piece is broken."
+
+In all three, **look at the photo and write the correct name.** This is a deliberate exception to "the caption wins" in step 3, and it's at the user's explicit request: a wrong part name sends a contractor to the supply house for the wrong thing, and a line that says "fix that thing" isn't actionable at all.
+
+How to do it well:
+- **Correct the noun, keep their sentence.** Their phrasing and word order stay; only the misnamed part changes. "Put a cover plate on the open conduit box next to the furnace" becomes "Put a blank cover on the open junction box next to the furnace" — same shape, right nouns.
+- **This is not a license to jargon-ify.** Step 4's plain-language rule still governs everything else. If a term is already unambiguous, leave it alone even when a trade guy would say it differently — "exhaust vent going into the chimney" does not need to become "vent connector entering the thimble." Only fix what would actually mislead someone.
+- **Fix the fix, too.** A wrong part name often drags a wrong repair noun with it. A junction box takes a *blank cover*, not a *device plate* — name the right part for the job as well as the right part for the thing.
+- **If the photo doesn't let you name it confidently, don't invent one.** Keep their wording, and flag it in the summary as a term to confirm. A confidently wrong name is worse than an honest "that thing by the furnace."
+- **Say what you changed.** List each terminology fix in your chat summary with the original wording — the user is learning the terms, and wants to see the correction, not have it quietly applied.
+
+This applies to video narration exactly as it does to captions, and it's a *different* rule from the ASR-noise correction in step 3a: that one fixes what the transcriber mis-heard, this one fixes what the speaker actually said.
 
 ### 3a. Pull scope items out of the video transcript(s) — then dedup against the photo captions
 
@@ -71,9 +92,10 @@ Speech-to-text transcripts are noisy — expect mis-heard words (e.g. "GSA outle
 
 Every line must:
 - **Start with an operational verb**: Replace, Repair, Install, Paint, Clean, Fix, Remove, Reconnect, Tighten, Inspect, etc. — matched to what the caption says needs doing.
-- **Stick to simple, plain-language vocabulary** — use the words already in the caption wherever possible. Avoid construction/trade jargon the caption itself didn't use (no "skim coat," "lockset," "reglaze," etc. unless the caption used that term). The goal is a line item anyone can read, not a contractor spec sheet.
+- **Stick to simple, plain-language vocabulary** — use the words already in the caption wherever possible. Avoid construction/trade jargon the caption itself didn't use (no "skim coat," "lockset," "reglaze," etc. unless the caption used that term). The goal is a line item anyone can read, not a contractor spec sheet. **The one exception is a misnamed or unnamed part** — correct that per step 3b. Naming the right part isn't jargon; swapping "fix the window so it opens" for "restore sash operation" is.
 - **Don't invent "left"/"right"** — if the caption specifies a side, keep it exactly as written; if it doesn't, don't add one.
 - **Be specific about location** — name the room/spot, the way the caption already implies it.
+- **Keep it terse — no fluffy full sentences.** Say the job and stop. Trim filler openers and framing clauses ("This is a...", "Please make sure to...", "It appears that..."), and don't pad a caption into prose. Extra detail that a contractor actually needs — a size, a count, a qualifier — stays, but as a fragment appended after the job, not as its own sentence. Write "Clean out the entire house — living room, all closets, basement. 20 yard clean out." not "Clean out the entire house, including the living room, all closets, and the basement. This is a 20 yard cleanout."
 
 If a line item is something *you* noticed independently in a photo with no caption support for it, still add it — but see step 6a, it must be flagged as AI-added, not blended in as if it came from the caption.
 
@@ -126,6 +148,22 @@ Every line item comes from one of three sources, and each must be visually disti
 Append one final section, "Questions," with exactly these two items, answers left blank:
 - "Is the job 100% done?"
 - "Did I put the keys back?"
+
+### 8. Write video-derived captions back onto uncaptioned photos
+
+Whenever a project has **both** a video with a usable transcript **and** photos with no caption, push the video's wording onto those photos with `mcp__companycam__add_photo_description`. Captions are what make the next pass over this property useful, and a narrated walkthrough is exactly the material to fill them in with. Do this on the first pass, at the same time you deliver the artifact.
+
+**Write them automatically — don't ask.** The user has standing approval for this specific write. Report what you wrote in the chat summary; don't pause the job for a confirmation.
+
+The rules:
+- **Never overwrite an existing caption.** `add_photo_description` *replaces* — it does not append. Only write to photos whose `description` is `null` or empty. A caption someone typed on-site is the more authoritative source and must survive untouched.
+- **Only caption a photo the video actually covers.** Match on a confident read — same fix, same room, same thing visible in frame. If the video never mentions what's in the photo, **leave it blank.** Never write an AI-only observation into CompanyCam; that turns your inference into what looks like a human record. Same answer when the match is merely plausible: skip it.
+- **Write the scope line plain** — the same verb-first text as the SOW line (steps 4 and 3b, so corrected terminology goes in too). **No provenance prefix**, no "[from video]" tag. The user asked for these clean.
+- **One caption per photo.** Where several SOW lines share one photo, write the one that best describes what's actually in frame, not all of them concatenated.
+- **Badging for this run doesn't change.** An item you sourced from the video is still video-derived in the artifact (step 6a), even though its photo now carries a caption. Be aware of the consequence on a *re-run*: the skill will then read that caption as an ordinary on-site caption and treat it as caption-derived. Same text either way, so nothing breaks — but don't be surprised by the badge flip.
+- **Attribution is not yours.** CompanyCam files the caption under the photo's owner, so it will read as though that person typed it. Mention this in the summary the first time you write captions on a project.
+
+In your chat reply, list which photos got captions and which you deliberately left blank, with the reason.
 
 ## Delivering the artifact
 
@@ -216,32 +254,73 @@ For each `needsSuggestion` line, set `labor` and `material`, plus:
 - `priceSource`: `"suggested"` — always, without exception. This is what makes
   the price show greyed out and keeps it out of the rate table until a human
   accepts it. A price without it silently becomes their standard rate.
-- `priceBasis`: one short sentence naming the anchor you reasoned from, e.g.
-  `Closest past job: "Tighten the loose tub spout" at $25/$25`. The user reads
-  this to check your reasoning, so name the actual job, not "similar work".
+- `priceBasis`: one short sentence showing your reasoning — for labor, the
+  minutes and the arithmetic (see below). The user reads this to check you.
 
-How to suggest well:
-- **Anchor to their own numbers.** Every suggestion should trace to one or more
-  `anchors`. Their pricing clusters hard on round figures — labor is $25 on 30
-  of 80 rows, material $25 on 33 of 82 — so a $37 suggestion is almost certainly
-  wrong even when the arithmetic says otherwise. Land on the numbers they use.
-- **Use the photo for quantity, never for size.** Counting is reliable: six
-  windows, four bulbs, three outlets. Measuring is not — do not estimate square
-  footage or linear feet from a photo with nothing in frame for scale. If the
-  price depends on a dimension you can't count, say so in `priceBasis` and
-  suggest for a single unit.
-- **Scale by count where the anchor was for a different quantity.** "Install
-  missing screens on both windows" pricing a single window should come down, and
-  say so in the basis.
-- **When there is genuinely nothing comparable, leave it `null`.** A blank the
-  user fills in costs them thirty seconds. A wrong number they don't catch ends
-  up in a contract. Blank is the better failure.
+#### Labor: estimate the time, then apply the day rate
+
+**The crew rate is $250 for a 7-hour day — $35.71/hr, $0.5952/min.** For every
+`needsSuggestion` line, estimate how long the job actually takes, multiply, and
+**round up to a whole dollar**. 30 minutes → $17.86 → **$18**. Put the minutes in
+`priceBasis`: `Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Diagnose,
+then swap flapper and/or fill valve, test.`
+
+The day is billed as 8 hours but priced across **7 hours of on-site work** — the
+eighth hour is absorbed by Home Depot runs. That has one consequence you must
+respect: **estimate on-site wrench time only.** Never add minutes for a supply
+run, a parts trip, or travel between jobs, and never add a separate line item
+for one. That hour is already inside the rate; counting it again bills it twice.
+
+This is the user's own instruction and it replaces anchor-matching for labor —
+they would rather review a time estimate they can sanity-check than a price
+pattern-matched off a job that only sounds similar. Estimating is expected to be
+approximate; they review and adjust every number.
+
+Estimate the time honestly:
+- **You have the photos and the video — use them.** How bad is the access, how
+  many of the thing are there, is it a five-minute swap or a strip-and-rebuild?
+  That is most of what drives the number.
+- **Count units and multiply.** Two windows at ~40 min each is 80 min. Say so in
+  the basis.
+- **Include the real setup cost — on site.** Mixing mortar has a fixed overhead
+  no matter how small the patch. So does getting under a sink. This means setup
+  *at the property*, not the trip to buy the mortar.
+- **Don't inflate to look reasonable.** Some jobs genuinely are ten minutes and
+  $6 — a cover plate, pulling two blind brackets. A too-small number is easy for
+  the user to spot and fix; a padded one just quietly overcharges.
+- **Sanity-check the total.** Sum the labor and divide by $250: that's how many
+  person-days the punch list is. If the number doesn't match the size of the job
+  you just looked at, individual estimates have drifted. Report this figure.
+
+#### Material: only when it's obvious
+
+Set `material` **only where the part is unambiguous and cheap** — a blank cover,
+a toilet flapper, a light bulb, a handful of screws. Anchor those to the round
+figures in `priceLandscape` (their material clusters at $25 and $50; minimum
+seen is $10).
+
+**Leave `material` at `null` whenever the price depends on a size, grade, or
+count you can't judge from a photo** — a sash cord, a length of pipe, a fixture
+the user may want to spec themselves. The user fills these in; that is the
+agreed split. A blank costs them thirty seconds, a wrong number they don't catch
+ends up in a contract.
+
+#### Lines the site already prices
+
+**Leave every `covered` line at `null`, and don't comment on it.** A price they
+actually charged beats an estimate, so the history match wins and there's no
+need to show what your time estimate would have been. The one exception worth
+raising: if a `covered` match is clearly a *different fixture or job* — the
+matcher pairing "tighten loose kitchen faucet" to a past job about an outlet —
+flag that one line so they can check it. Still leave it `null`.
+
 - **Never put a price in the artifact.** The review artifact stays price-free —
-  suggestions belong only in the exported JSON.
+  prices belong only in the exported JSON.
 
-Tell the user in your chat reply how many lines the site will price from history,
-how many you suggested, and how many you left blank because nothing was
-comparable.
+In your chat reply, give the user a table of every line you priced with its
+**estimated minutes and labor dollars**, so they can accept or adjust each one.
+Then say how many lines the site will price from history, how many materials you
+left blank for them, and the total labor as a person-day figure.
 
 Save it as `sow-files/sow-<address-slugified>.json` (e.g. `sow-files/sow-123-example-st.json`) **in the project folder**, creating `sow-files/` if it does not exist yet — job files live there, separate from the website code, not loose in the repo root and not just in a scratch/temp directory — this is a deliverable file they'll want to find again locally, not a throwaway.
 
