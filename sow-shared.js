@@ -6,6 +6,14 @@
 // same real <table> markup - see the note above buildPrintHtml below for why
 // that matters for CompanyCam's checklist import.
 
+// Maintenance line printed on the Contractor Copy so a contractor with a
+// question can call us from the jobsite. Contractor-facing only - it never
+// appears on the Owner Copy. Deliberately just a number: the Contractor Copy
+// carries no company name (see the print CSS in sow.html for why).
+// Leave this as "" to print no row at all, so a missing number can never
+// ship as a placeholder.
+var MAINTENANCE_PHONE = "(313) 442-7328";
+
 function escapeHtml(s) {
   return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
@@ -240,6 +248,11 @@ function buildPrintHtml(sow, mode, contractorFilter) {
   // and there's actually a value to show.
   if (mode === "contractor" && sow.showKeyLocation !== false && (sow.keyLocation || "").trim() !== "") {
     html += '<tr class="pv-footer-row"><td class="pv-c-room">Key Location</td><td class="pv-c-desc">' + escapeHtml(sow.keyLocation) + "</td></tr>";
+  }
+
+  // Contractor-facing only, and only when a number is actually configured.
+  if (mode === "contractor" && MAINTENANCE_PHONE.trim() !== "") {
+    html += '<tr class="pv-footer-row"><td class="pv-c-room">Questions</td><td class="pv-c-desc">Call the maintenance line: ' + escapeHtml(MAINTENANCE_PHONE) + "</td></tr>";
   }
 
   html += '<tr class="pv-footer-row"><td class="pv-c-room">Pictures / Videos</td><td class="pv-c-desc">' + escapeHtml(sow.mediaLink || "none") + "</td></tr>";
