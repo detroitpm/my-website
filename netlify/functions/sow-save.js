@@ -22,13 +22,17 @@ exports.handler = async function (event) {
   }
 
   const addressKey = normalizeKey(sow.address);
+  // Address alone no longer identifies a SOW - a property can have several
+  // (e.g. "Pre-inspection list 1" and "Pre-inspection list 2"). Normalized so
+  // casing and stray spaces don't split one SOW into two.
+  const typeOfWorkKey = normalizeKey(sow.typeOfWork);
 
   try {
     const pool = getPool();
     const { rows } = await pool.query(
-      `INSERT INTO sows (address_key, address, type_of_work, media_link, buffer_pct, sections, questions, contractor_total_override, key_location, show_key_location, updated_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW())
-       ON CONFLICT (address_key) DO UPDATE SET
+      `INSERT INTO sows (address_key, address, type_of_work, type_of_work_key, media_link, buffer_pct, sections, questions, contractor_total_override, key_location, show_key_location, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW())
+       ON CONFLICT (address_key, type_of_work_key) DO UPDATE SET
          address = EXCLUDED.address,
          type_of_work = EXCLUDED.type_of_work,
          media_link = EXCLUDED.media_link,
@@ -44,6 +48,7 @@ exports.handler = async function (event) {
         addressKey,
         sow.address,
         sow.typeOfWork || null,
+        typeOfWorkKey,
         sow.mediaLink || null,
         sow.bufferPct != null ? sow.bufferPct : 20,
         JSON.stringify(sow.sections || []),

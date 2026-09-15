@@ -21,6 +21,29 @@ There is often more than one CompanyCam project per property (e.g. separate proj
 - Also check `mcp__companycam__list_projects` and match on the `address` field directly — `search_projects` matches on project *name*, and projects aren't always named after their address, so name search alone can miss real matches. Compare street address, city, and zip.
 - If more than one project matches, pull photos from **all** of them, not just one.
 
+### 1a. Check whether this property already has a saved SOW
+
+Before building anything, look for `sow-files/sow-<address-slugified>.json`. If one
+exists, read it — this run is very likely a **second pass on a job you already
+scoped**, not a fresh SOW.
+
+That second pass has a predictable shape: the user walked the property, you built
+the list, and then they realized a few things were missed, went back, and shot
+photos/video of **just those things**. So the new source material covers only the
+missed items — especially when the user scopes the run ("yesterday's photos", "the
+new pictures", "what I shot this morning"). The list you build from it is a
+*fragment of the job*, not a replacement for it.
+
+**Treat the saved file as the base and add to it.** Build the artifact from the
+merged list — every item already in the file, plus the newly found ones — so what
+the user reviews is the whole job, not just the new corner of it. Badge the new
+ones ("New this pass") alongside the source badges from step 6a so they're easy to
+pick out. An item already in the saved file **keeps its original wording** — don't
+re-word it on a re-run; the user already read and approved that line.
+
+If the saved file and what you just built don't look like the same property or the
+same job at all, stop and ask before touching it.
+
 ### 2. Pull photos in walkthrough order
 
 For each matched project, call `mcp__companycam__list_project_photos`. Sort the results by `captured_at` **ascending** (oldest first) — this reconstructs the order the photos were actually taken while walking the property, which is the order the final SOW should follow.
@@ -177,7 +200,8 @@ Build the SOW as a **Claude artifact** (HTML). Before writing it, load the `arti
   - a **checkbox** — checked by default for caption-derived and video-derived items, unchecked by default for AI-added items (step 6a),
   - the editable line-item text (verb-first, plain language, per step 4),
   - a **thumbnail** next to the item so the user can verify without leaving the artifact — the source photo for caption/AI-added items; for a video-derived item (no single photo to point to), use that video's `thumbnail_urls` frame instead, so there's still something to look at,
-  - a badge on AI-added and video-derived rows per step 6a,
+  - a badge on AI-added and video-derived rows per step 6a, plus a "New this pass"
+    badge on items added in a re-run over a saved SOW (step 1a),
   - optional items shown greyed-out (step 6).
 - **Thumbnails must be inlined as base64 data URIs, not linked to the CompanyCam CDN.** The Artifact sandbox's CSP blocks remote `<img>` loads, so a `src="https://static.companycam.com/..."` renders as a broken image every time. Download each photo/video-thumbnail (`curl`/`urllib`, the `web`-size CompanyCam photo URL or the video's `medium` thumbnail is plenty) and inline it as `src="data:image/jpeg;base64,..."` before publishing. Do this for every thumbnail up front — don't publish first and fix it only if the user notices.
 - **No pricing anywhere** — that's a later step, not part of this artifact.
@@ -324,9 +348,50 @@ left blank for them, and the total labor as a person-day figure.
 
 Save it as `sow-files/sow-<address-slugified>.json` (e.g. `sow-files/sow-123-example-st.json`) **in the project folder**, creating `sow-files/` if it does not exist yet — job files live there, separate from the website code, not loose in the repo root and not just in a scratch/temp directory — this is a deliverable file they'll want to find again locally, not a throwaway.
 
-Before writing it, check whether a file with that exact name already exists there. If it does, read it and compare:
-- If it's clearly the same SOW (matching address, same rough structure) just from an earlier pass, overwriting is expected — go ahead.
-- If it looks like a *different* SOW for the same address — different sections, items you never generated (a prior run with different source data, or a hand-edited version) — don't silently overwrite it. Tell the user what's different and ask whether to overwrite, save under a new name (e.g. append `-v2`), or hold off.
+Before writing it, re-read the existing file if there is one (step 1a). **Merge into
+it — never replace it.** Compare line item by line item, not by "rough structure":
+
+- **Never drop a line the saved file already has.** If an item is in that file and
+  not in the list you just built, it stays. It was scoped and approved on an earlier
+  pass, and a re-run built from partial source material is not evidence against it —
+  the photos for it simply weren't in this batch. The only thing that removes a line
+  is the user telling you to remove it.
+- **Carry prices forward untouched.** If a line in the saved file already has a
+  `labor` or `material` number, keep that number, its `priceSource` and its
+  `priceBasis` exactly as they are, and don't re-run the estimate on it. The user
+  reviews and adjusts every price by hand; regenerating one silently throws that
+  work away and replaces a number they accepted with a fresh guess.
+- **Only price the genuinely new lines.** Run `sow-price-check.js` as usual, but
+  fill in `labor`/`material` only for items that weren't already in the saved file.
+- **Keep the saved file's room order.** Put new items into an existing room where
+  one matches; add a new section only for a room that isn't in the file yet.
+- **Ask only when something would actually be lost** — a line whose text would
+  change, an `optional` flag flipping, a price being overwritten, or two items that
+  are clearly the same real-world issue worded differently. List those specific
+  lines and ask whether to overwrite, save under a new name (e.g. append `-v2`), or
+  hold off. **Don't ask about pure additions** — adding missed items to an existing
+  list is the normal case, not an exception.
+
+After a merge, say plainly in your chat reply: how many items carried over from the
+saved file, which ones are new this pass, and that the existing prices were left
+alone.
+
+**`typeOfWork` is half the SOW's identity on the website.** The builder stores one
+SOW per address *plus* type of work, so the value you put in `typeOfWork` decides
+what happens to the copy already on section8pm.com:
+
+- **Same address, same type of work → the saved SOW is replaced.** That's what you
+  want for a normal second pass, where you merged the missed items into the existing
+  list and the result is the one true list for that job.
+- **Same address, different type of work → a second, separate SOW.** Use this when
+  the user wants both to survive as their own documents — "Pre-inspection list 1"
+  and "Pre-inspection list 2", or a pre-inspection list and a later turn scope.
+
+Don't change `typeOfWork` between passes by accident — casing and extra spaces are
+ignored, but a reworded type of work ("Walkthrough punch list" one pass, "Punch
+list" the next) silently creates a second SOW instead of updating the first. Reuse
+the saved file's exact `typeOfWork` on a re-run unless the user asks for a new
+version to sit alongside the old one.
 
 Once saved, also send it with `SendUserFile` so it shows up in the conversation, and remind the user it's ready to upload via the "Upload SOW file" button at **https://section8pm.com**.
 

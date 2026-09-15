@@ -565,7 +565,16 @@ function refreshSowList() {
         var opt = document.createElement("option");
         opt.value = row.id;
         var d = new Date(row.updated_at);
-        opt.textContent = row.address + " (" + (d.toString() !== "Invalid Date" ? d.toLocaleDateString() : "") + ")";
+        // Address + type of work, because one property can have several SOWs
+        // and the address on its own would show up twice looking identical.
+        var label = row.address;
+        if (row.type_of_work && row.type_of_work.trim()) {
+          label += " \u2014 " + row.type_of_work.trim();
+        }
+        if (d.toString() !== "Invalid Date") {
+          label += " (" + d.toLocaleDateString() + ")";
+        }
+        opt.textContent = label;
         select.appendChild(opt);
       });
       select.value = current;

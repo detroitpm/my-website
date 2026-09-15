@@ -1,5 +1,7 @@
-// Lists saved SOWs (id/address/updated_at only, no line-item content) for
-// the "Load previous SOW" dropdown.
+// Lists saved SOWs (id/address/type/updated_at only, no line-item content)
+// for the "Load previous SOW" dropdown. type_of_work comes back because a
+// property can have more than one SOW now, and the address alone wouldn't
+// tell them apart in the list.
 const { getPool } = require("../../db.js");
 
 exports.handler = async function (event) {
@@ -10,7 +12,7 @@ exports.handler = async function (event) {
   try {
     const pool = getPool();
     const { rows } = await pool.query(
-      `SELECT id, address, updated_at FROM sows ORDER BY updated_at DESC LIMIT 200`
+      `SELECT id, address, type_of_work, updated_at FROM sows ORDER BY updated_at DESC LIMIT 200`
     );
     return { statusCode: 200, body: JSON.stringify({ sows: rows }) };
   } catch (err) {
