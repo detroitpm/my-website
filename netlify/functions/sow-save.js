@@ -30,8 +30,8 @@ exports.handler = async function (event) {
   try {
     const pool = getPool();
     const { rows } = await pool.query(
-      `INSERT INTO sows (address_key, address, type_of_work, type_of_work_key, media_link, buffer_pct, sections, questions, contractor_total_override, key_location, show_key_location, updated_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW())
+      `INSERT INTO sows (address_key, address, type_of_work, type_of_work_key, media_link, buffer_pct, sections, questions, contractor_total_override, key_location, show_key_location, show_itemized_pricing, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW())
        ON CONFLICT (address_key, type_of_work_key) DO UPDATE SET
          address = EXCLUDED.address,
          type_of_work = EXCLUDED.type_of_work,
@@ -42,6 +42,7 @@ exports.handler = async function (event) {
          contractor_total_override = EXCLUDED.contractor_total_override,
          key_location = EXCLUDED.key_location,
          show_key_location = EXCLUDED.show_key_location,
+         show_itemized_pricing = EXCLUDED.show_itemized_pricing,
          updated_at = NOW()
        RETURNING id`,
       [
@@ -55,7 +56,8 @@ exports.handler = async function (event) {
         JSON.stringify(sow.questions || []),
         sow.contractorTotalOverride != null ? sow.contractorTotalOverride : null,
         sow.keyLocation || null,
-        sow.showKeyLocation !== false
+        sow.showKeyLocation !== false,
+        !!sow.showItemizedPricing
       ]
     );
 

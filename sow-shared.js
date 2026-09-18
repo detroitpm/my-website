@@ -221,6 +221,13 @@ function buildPrintHtml(sow, mode, contractorFilter) {
       // Owner copy - a filtered single-contractor copy already only shows
       // their own lines, so repeating the name on every row is redundant.
       var contractorTag = (mode === "contractor" && !isFiltered && item.contractor) ? ' <span class="tag">' + escapeHtml(item.contractor) + "</span>" : "";
+      // Owner-facing only, and only when the toggle is on - every other
+      // copy/mode keeps pricing off the page entirely (see jobcard-hint in
+      // sow.html). Labor and Material print as two separate figures per
+      // the line, not combined, so it reads the same way it's entered.
+      var priceTag = (mode === "owner" && sow.showItemizedPricing)
+        ? ' <span class="tag price-tag">Labor ' + currency(item.labor || 0) + ' &middot; Material ' + currency(item.material || 0) + '</span>'
+        : "";
       // When a photo/video exists for this line, the description itself
       // becomes the click target (a real PDF link annotation) - no added
       // label or icon, just the same text wrapped in <a>.
@@ -228,7 +235,7 @@ function buildPrintHtml(sow, mode, contractorFilter) {
       var desc = isPhotoLink(item.photoUrl) ? '<a href="' + escapeHtml(item.photoUrl) + '">' + descText + "</a>" : descText;
       html += '<tr class="pv-item-row' + (item.optional ? " optional" : "") + '">' +
         '<td class="pv-c-room"></td>' +
-        '<td class="pv-c-desc">&#9744; ' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + desc + contractorTag + "</td></tr>";
+        '<td class="pv-c-desc">&#9744; ' + (item.optional ? '<span class="tag">OPTIONAL</span>' : "") + desc + contractorTag + priceTag + "</td></tr>";
     });
   });
 

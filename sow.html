@@ -262,7 +262,7 @@
   <div class="wrap">
     <div id="builderView">
       <div class="jobcard no-print">
-        <p class="jobcard-hint">Labor and Material prices are private &mdash; they never show up on either copy you send out.</p>
+        <p class="jobcard-hint">Labor and Material prices are private &mdash; they never print on the Contractor Copy, and only show up on the Owner Copy as a single total unless itemized pricing is turned on below.</p>
         <div class="toprow">
           <div class="fld">
             <label>Property Address</label>
@@ -275,6 +275,15 @@
           <div class="fld small">
             <label>Buffer %</label>
             <input type="number" id="bufferInput" min="0" step="1" value="20">
+          </div>
+        </div>
+        <div class="toprow">
+          <div class="fld" style="flex:1 1 100%;">
+            <label class="key-location-toggle" style="margin-top:0;">
+              <input type="checkbox" id="showItemizedPricingInput">
+              Show itemized Labor/Material pricing on Owner Copy
+            </label>
+            <p class="jobcard-hint" style="margin-top:4px;">Off by default (just the total). Never affects the Contractor Copy.</p>
           </div>
         </div>
         <div class="toprow">

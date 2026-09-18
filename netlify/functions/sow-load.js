@@ -15,7 +15,7 @@ exports.handler = async function (event) {
   try {
     const pool = getPool();
     const { rows } = await pool.query(
-      `SELECT address, type_of_work, media_link, buffer_pct, sections, questions, contractor_total_override, key_location, show_key_location
+      `SELECT address, type_of_work, media_link, buffer_pct, sections, questions, contractor_total_override, key_location, show_key_location, show_itemized_pricing
        FROM sows WHERE id = $1`,
       [id]
     );
@@ -35,7 +35,8 @@ exports.handler = async function (event) {
           questions: row.questions || [],
           contractorTotalOverride: row.contractor_total_override != null ? Number(row.contractor_total_override) : null,
           keyLocation: row.key_location || "",
-          showKeyLocation: row.show_key_location !== false
+          showKeyLocation: row.show_key_location !== false,
+          showItemizedPricing: !!row.show_itemized_pricing
         }
       })
     };

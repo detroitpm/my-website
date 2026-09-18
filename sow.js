@@ -21,7 +21,11 @@ var DEFAULT_SOW = {
   // Shown on the Contractor Copy only (never the Owner Copy), and only
   // when showKeyLocation is true.
   keyLocation: "",
-  showKeyLocation: true
+  showKeyLocation: true,
+  // When true, the Owner Copy prints each line's Labor/Material $ instead
+  // of just the grand total. Owner-facing only - the Contractor Copy's
+  // pricing behavior (labor-only total, no line prices) never changes.
+  showItemizedPricing: false
 };
 
 // A failed function call's JSON body isn't always shaped the way our own
@@ -215,6 +219,7 @@ function renderBuilder() {
   document.getElementById("mediaInput").value = sow.mediaLink || "";
   document.getElementById("keyLocationInput").value = sow.keyLocation || "";
   document.getElementById("showKeyLocationInput").checked = sow.showKeyLocation !== false;
+  document.getElementById("showItemizedPricingInput").checked = !!sow.showItemizedPricing;
 
   renderContractorChips();
   renderContractorFilterSelect();
@@ -388,6 +393,7 @@ function attachBuilderListeners() {
   document.getElementById("mediaInput").oninput = function (e) { sow.mediaLink = e.target.value; renderBuilder(); };
   document.getElementById("keyLocationInput").oninput = function (e) { sow.keyLocation = e.target.value; pushStateToUrl(); };
   document.getElementById("showKeyLocationInput").onchange = function (e) { sow.showKeyLocation = e.target.checked; pushStateToUrl(); };
+  document.getElementById("showItemizedPricingInput").onchange = function (e) { sow.showItemizedPricing = e.target.checked; pushStateToUrl(); };
 
   document.querySelectorAll(".room-name").forEach(function (el) {
     el.oninput = function (e) { sow.sections[e.target.dataset.s].room = e.target.value; pushStateToUrl(); };
@@ -689,6 +695,7 @@ document.getElementById("uploadSowInput").onchange = function (e) {
       contractorTotalOverride: parsed.contractorTotalOverride != null ? Number(parsed.contractorTotalOverride) : null,
       keyLocation: parsed.keyLocation || "",
       showKeyLocation: parsed.showKeyLocation !== false,
+      showItemizedPricing: !!parsed.showItemizedPricing,
       sections: parsed.sections.map(function (s) {
         return {
           room: s.room || "",
