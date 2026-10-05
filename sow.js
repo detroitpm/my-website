@@ -700,7 +700,14 @@ document.getElementById("uploadSowInput").onchange = function (e) {
         return {
           room: s.room || "",
           items: s.items.map(function (it) {
-            return { text: it.text || "", labor: it.labor != null ? it.labor : null, material: it.material != null ? it.material : null, optional: !!it.optional, contractor: it.contractor || "", photoUrl: it.photoUrl || null };
+            var item = { text: it.text || "", labor: it.labor != null ? it.labor : null, material: it.material != null ? it.material : null, optional: !!it.optional, contractor: it.contractor || "", photoUrl: it.photoUrl || null };
+            // Keep the "this is a guess" marker the build-sow skill puts on
+            // its suggested prices. Dropping it made a suggestion look like a
+            // price the user had accepted, and saving then wrote it into the
+            // rate table as real history (see isUnconfirmed).
+            if (it.priceSource === "suggested" || it.priceSource === "matched") item.priceSource = it.priceSource;
+            if (it.priceBasis) item.priceBasis = it.priceBasis;
+            return item;
           })
         };
       }),
