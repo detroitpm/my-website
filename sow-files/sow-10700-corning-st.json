@@ -1,0 +1,283 @@
+{
+  "address": "10700 Corning St, Oak Park, MI 48237",
+  "typeOfWork": "Turn scope of work",
+  "mediaLink": "https://app.companycam.com/projects/93446860",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Exterior",
+      "items": [
+        {
+          "text": "Trim the bush to the left of the front door and the small rose bush.",
+          "labor": 18,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Trim two small shrubs, bag clippings."
+        },
+        {
+          "text": "Reinstall the downspout on the left side of the house \u2014 it's laying on the ground. Add a downspout extension.",
+          "labor": 18,
+          "material": 25,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Re-hang existing downspout, strap it, add extension. Material is the extension."
+        },
+        {
+          "text": "Clean up the trees, bushes and weeds touching and growing into the carport.",
+          "labor": 72,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 120 min at $35.71/hr ($250 per 7-hour day) = $72. Cut back saplings and brush around and inside the carport, haul to the curb."
+        },
+        {
+          "text": "Clean up the fence line on both sides.",
+          "labor": 72,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 120 min at $35.71/hr ($250 per 7-hour day) = $72. Weed-whack and cut back both fence lines, ~1 hr per side."
+        }
+      ]
+    },
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Clean out the inside of the house \u2014 minor, less than 5 yards.",
+          "labor": 108,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Load out under 5 yards of debris; dumpster/dump fee left for you to set."
+        },
+        {
+          "text": "Touch up paint throughout the house, patch holes.",
+          "labor": 179,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 300 min at $35.71/hr ($250 per 7-hour day) = $179. Patch and touch up small holes and scuffs room by room, two coats; paint match left blank."
+        },
+        {
+          "text": "Turn cleaning throughout the house.",
+          "labor": 250,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 420 min at $35.71/hr ($250 per 7-hour day) = $250. One full day for a 2-bed, 1-bath turn clean."
+        }
+      ]
+    },
+    {
+      "room": "Living Room",
+      "items": [
+        {
+          "text": "Install new flooring in the living room and hallway.",
+          "labor": 500,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608447683",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 840 min at $35.71/hr ($250 per 7-hour day) = $500. Roughly 2 person-days: pull old laminate, prep, lay ~300 sq ft, trim out. Material depends on product and square footage."
+        }
+      ]
+    },
+    {
+      "room": "Kitchen",
+      "items": [
+        {
+          "text": "Demo the countertop and cabinets. Install new cabinets, new countertop, sink and faucet.",
+          "labor": 429,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608479567",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 720 min at $35.71/hr ($250 per 7-hour day) = $429. Demo 2 hr, hang/set cabinets 6 hr, countertop 2 hr, sink and faucet hookup 2 hr. Cabinet/counter material left for you to spec."
+        },
+        {
+          "text": "Install new stove and new fridge.",
+          "labor": 36,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608480024",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Gas stove hookup and leak check plus set the fridge. Appliance cost left blank."
+        }
+      ]
+    },
+    {
+      "room": "Laundry Area",
+      "items": [
+        {
+          "text": "Remove the old paint cans and other old items from the back laundry area.",
+          "labor": 18,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Carry out paint cans and junk from one small area."
+        }
+      ]
+    },
+    {
+      "room": "Hallway",
+      "items": [
+        {
+          "text": "Patch the hole in the hallway closet door, install a doorknob.",
+          "labor": 27,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608510935",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Fill/patch door 25 min, install passage knob 20 min. Material is knob plus filler."
+        },
+        {
+          "text": "Install a carbon monoxide (CO) detector in the hallway outside the bedrooms.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Bathroom",
+      "items": [
+        {
+          "text": "Reinstall the bathroom door \u2014 it's off the hinges.",
+          "labor": 18,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511017",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Rehang door on existing hinges, adjust to latch."
+        },
+        {
+          "text": "Tighten the toilet seat.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511385"
+        },
+        {
+          "text": "Make the trim around the shower head fit snugly against the wall.",
+          "labor": 6,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511506",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Reseat or swap the shower arm flange."
+        },
+        {
+          "text": "Recaulk the tub.",
+          "labor": 36,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511573",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Strip old caulk, clean, recaulk tub-to-wall and tub-to-floor."
+        },
+        {
+          "text": "Replace the medicine cabinet \u2014 mirror is cracked.",
+          "labor": 27,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511648",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Remove old surface-mount cabinet, hang new one. Cabinet size/price left blank."
+        },
+        {
+          "text": "Replace the bent, broken window blinds.",
+          "labor": 9,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511648",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Pull old blind, mount new one. Blind size left blank."
+        }
+      ]
+    },
+    {
+      "room": "Rear Bedroom",
+      "items": [
+        {
+          "text": "Replace the bedroom door.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511155"
+        },
+        {
+          "text": "Reinstall the closet door \u2014 it's off the track.",
+          "labor": 12,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511253",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Reset bifold doors on track and pivots."
+        },
+        {
+          "text": "Repair the holes in the walls.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Front Bedroom",
+      "items": [
+        {
+          "text": "Replace the cover plate on the outlet.",
+          "labor": 3,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511724",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 5 min at $35.71/hr ($250 per 7-hour day) = $3. Swap one cover plate."
+        },
+        {
+          "text": "Put the closet door back on its hinges.",
+          "labor": 12,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511780",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Rehang the loose bifold panel and adjust."
+        },
+        {
+          "text": "Replace the bedroom door.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511856"
+        },
+        {
+          "text": "Install a door stop behind the bedroom door.",
+          "labor": 6,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3608511856",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Screw in one door stop."
+        },
+        {
+          "text": "Install two window screens.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}

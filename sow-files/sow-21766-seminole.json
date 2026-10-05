@@ -1,0 +1,181 @@
+{
+  "address": "21766 Seminole, Southfield, MI 48033",
+  "typeOfWork": "Walkthrough punch list",
+  "mediaLink": "https://app.companycam.com/projects/93914879",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Exterior",
+      "items": [
+        {
+          "text": "Clean up the trash at the side of the house and in the backyard.",
+          "labor": 27,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Walk the side yard and backyard picking up scattered trash and the pile along the wall."
+        },
+        {
+          "text": "Take the trash can out to the curb. Fill it no more than 3/4 full — the city won't take it if it's overflowing or too heavy.",
+          "labor": 5,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 8 min at $35.71/hr ($250 per 7-hour day) = $5. Redistribute so the can is no more than 3/4 full, then wheel it to the curb."
+        },
+        {
+          "text": "Bag up the leftover trash and haul it off-site. About 2–3 bags.",
+          "labor": 15,
+          "material": 10,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 25 min at $35.71/hr ($250 per 7-hour day) = $15 for bagging and loading 2-3 bags. The drive to dump them is not billed separately - it is inside the day rate. Material is a box of contractor bags."
+        },
+        {
+          "text": "Replace the blinking light fixture. Get one that takes a replaceable bulb — matte black preferred.",
+          "labor": 21,
+          "material": 50,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 35 min at $35.71/hr ($250 per 7-hour day) = $21. Kill power, pull the old fixture, wire and mount the new one. Material is a basic matte black fixture; your past matte fixtures ran about $31 each."
+        }
+      ]
+    },
+    {
+      "room": "Entryway",
+      "items": [
+        {
+          "text": "Secure the curtain rods. Anchor into the studs — the curtains are heavy.",
+          "labor": 18,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3562975573",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18 - two rods at ~15 min each to find studs, re-mount the brackets and patch the old holes. Material is anchors and screws."
+        },
+        {
+          "text": "Install 4 recessed lights, evenly spaced. Exact placement is flexible, just keep them equal distance.",
+          "labor": 197,
+          "material": 100,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 5.5 hr at $35.71/hr ($250 per 7-hour day) = $197 - about 75 min per light to cut, fish, wire and mount, plus 30 min laying out the spacing. Your past 'Install 4 recessed lights in the living room' job was $250 labor, but that one also included a dimmer switch."
+        }
+      ]
+    },
+    {
+      "room": "Living Room",
+      "items": [
+        {
+          "text": "Replace the closet lock with a keypad lock you punch a code into.",
+          "labor": 27,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27, including boring the new door for the lockset. Material left blank - keypad locks run $40 to $200 depending on the grade you want."
+        },
+        {
+          "text": "Replace the closet door with a solid core door.",
+          "labor": 72,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 2 hr at $35.71/hr ($250 per 7-hour day) = $72. Solid core slabs are heavy and need fitting - pull the old door, mortise the hinges, plane to fit, hang and test. Material left blank - depends on the door size and whether you want a slab or prehung."
+        },
+        {
+          "text": "Install a door stop so the new closet door doesn't get damaged.",
+          "labor": 6,
+          "material": 10,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Drill and screw in a baseboard door stop."
+        },
+        {
+          "text": "Make the cedar closet door open, close, and latch smoothly. It should not catch anywhere.",
+          "labor": 42,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3562965629",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 70 min at $35.71/hr ($250 per 7-hour day) = $42. Plane the edge that is catching, adjust the hinges, reset the strike plate, test. Your past 'Repair the door so it latches and opens and closes smoothly' was $50 labor."
+        },
+        {
+          "text": "Remove the carpet from underneath the sofa, roll it up, and put it in the garage.",
+          "labor": 18,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3562970479",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Move the sectional and coffee table off, roll the rug, carry it to the garage, put the furniture back. Nothing to buy."
+        }
+      ]
+    },
+    {
+      "room": "Hallway",
+      "items": [
+        {
+          "text": "Make the hallway light work. Most likely needs a new light fixture.",
+          "labor": 24,
+          "material": 50,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 40 min at $35.71/hr ($250 per 7-hour day) = $24 to diagnose bulb, then fixture, then switch, and swap the fixture. Material is a basic flush mount - less if it turns out to be only a bulb."
+        }
+      ]
+    },
+    {
+      "room": "Bathroom",
+      "items": [
+        {
+          "text": "Tighten the toilet seat.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3562959659"
+        },
+        {
+          "text": "Replace the medicine cabinet.",
+          "labor": 36,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3562959702",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. The photo shows a surface-mount cabinet, so it is unscrew, remove, level and remount. Material left blank - cabinets run $60 to $250 and you may want to pick the size and style."
+        }
+      ]
+    },
+    {
+      "room": "Left Bedroom",
+      "items": [
+        {
+          "text": "Tighten the globe on the ceiling light, or replace the light fixture, so the globe doesn't look like it's falling out.",
+          "labor": 9,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3562959774",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9 to tighten the globe thumbscrews, which is the caption's first choice. If the fixture has to be replaced instead, closer to 35 min/$21 plus about $50 for the fixture."
+        },
+        {
+          "text": "Install brackets so the dresser mirror does not move.",
+          "labor": 15,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3562962018",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 25 min at $35.71/hr ($250 per 7-hour day) = $15. Find the studs and screw in mirror brackets. Material anchored to your past 'Secure the laundry tub so that it does not move' at $25."
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}

@@ -1,0 +1,406 @@
+{
+  "address": "19328 Ashton Ave, Detroit, MI 48219",
+  "typeOfWork": "Pre-inspection list",
+  "mediaLink": "https://app.companycam.com/projects/114167922",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Exterior",
+      "items": [
+        {
+          "text": "Optional, install railing around the front porch and handrails on one side of the stairs. Porch is 29 inches, under the 30 inch rule, so only if the inspector calls it.",
+          "labor": 143,
+          "material": null,
+          "optional": true,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551102350",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 240 min at $35.71/hr ($250 per 7-hour day) = $143. Set posts and rail around roughly 20 ft of porch edge plus a handrail on the steps, anchored into concrete. Material left blank \u2014 depends on the railing you spec."
+        },
+        {
+          "text": "Front porch steps, resurface the crumbling concrete or replace the step. Trip hazard. Resurfacing may only last about a year; a new step lasts 10 to 15.",
+          "labor": 90,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604050642",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 150 min at $35.71/hr ($250 per 7-hour day) = $90. Break out loose concrete, bond and resurface the crumbling step. Material left blank: depends on resurface vs. new step."
+        },
+        {
+          "text": "Front porch, tighten the metal railing so it does not move.",
+          "labor": 18,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551132598",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Re-anchor the loose railing base into the porch concrete. Material is masonry anchors."
+        },
+        {
+          "text": "Exterior right, clear all the weeds touching the house.",
+          "labor": 27,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551106199",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Pull and cut weeds along the right foundation and walkway edge."
+        },
+        {
+          "text": "Exterior right, clean up the fence line. Clear it about five feet up.",
+          "labor": 90,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551111966",
+          "priceSource": "suggested",
+          "priceBasis": "Carried from the earlier SOW, where this was two lines ($54 brush cleanup + $36 clearing five feet up). Est. 150 min at $35.71/hr ($250 per 7-hour day) = $90."
+        },
+        {
+          "text": "Exterior rear, clear away the debris: the tire, the gasoline can, and the rake.",
+          "labor": 9,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551109864",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Pick up three items and carry them to the curb."
+        },
+        {
+          "text": "Exterior rear, cut the grass, clean the fence line about five feet up, and make sure no branches or trees hang five feet or lower.",
+          "labor": 108,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551121095",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Mow the full rear yard, clear the fence line, and cut overhanging branches down to five feet."
+        },
+        {
+          "text": "Exterior left, clear away any weeds and trees touching the left side of the house.",
+          "labor": 36,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551116529",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Cut the growth pressed against the left wall back off the siding."
+        },
+        {
+          "text": "Clear away the weeds on the driveway.",
+          "labor": 27,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551126564",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Pull and scrape weeds out of the full run of concrete joints."
+        },
+        {
+          "text": "Exterior front, cut away any trees or weeds touching the siding.",
+          "labor": 12,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604335292",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Pull the weed clump and small tree at the bay window foundation."
+        },
+        {
+          "text": "Exterior rear, repair the broken siding. This spot plus three or four other cracked spots.",
+          "labor": 72,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604335325",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 120 min at $35.71/hr ($250 per 7-hour day) = $72. About 25 min each for 4-5 cracked spots. Material left blank: depends on matching the siding."
+        },
+        {
+          "text": "Exterior rear, remove the cable wires and patch the holes they leave in the siding.",
+          "labor": 27,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604335373",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Pull the dead cable runs off the meter wall and seal the screw and wire holes. Material is exterior sealant."
+        },
+        {
+          "text": "Exterior rear, put a patch over the dryer vent hole or install a proper dryer vent.",
+          "labor": 18,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604335405",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Cover the vent hole with a patch plate. Material left blank: patch vs. a new dryer vent."
+        },
+        {
+          "text": "Optional, repair the driveway tripping hazards and the dip in the driveway.",
+          "labor": 108,
+          "material": null,
+          "optional": true,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604335461",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Patch the worst broken slabs and fill the dip. Material left blank: depends how much concrete you want to do."
+        }
+      ]
+    },
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Install five 10-year sealed smoke detectors, one in each bedroom, one in the basement, one in the hallway. The current battery detectors will not pass Section 8.",
+          "labor": 45,
+          "material": 125,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551139188",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 75 min at $35.71/hr ($250 per 7-hour day) = $45. Five detectors at about 15 min each including ladder work. Material is 5 sealed 10-year detectors at about $25."
+        }
+      ]
+    },
+    {
+      "room": "Basement",
+      "items": [
+        {
+          "text": "Basement stairs, extend the handrail two feet at the top so it covers the top two stairs.",
+          "labor": 27,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604081091",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Add brackets and a 2 ft extension at the top of the stair rail. Material left blank: rail length and brackets."
+        },
+        {
+          "text": "Basement, replace the light fixture to make it functional.",
+          "labor": 15,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551206145",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 25 min at $35.71/hr ($250 per 7-hour day) = $15. Swap the lampholder on the existing box and test. Material is the lampholder and bulb."
+        },
+        {
+          "text": "Basement, install a blank cover on the open junction box to prevent exposed wires.",
+          "labor": 6,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551207298",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Tuck the wire nuts back in and screw on a blank cover. Matches a past job at $6/$10."
+        },
+        {
+          "text": "Basement, board up the bathroom wall and the wiring to the left of the bathroom door so the wires and the switch box are not exposed.",
+          "labor": 54,
+          "material": 50,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551208917",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Cut and fasten sheet goods over the open stud bay beside the bathroom door, cut around the switch box. Material is roughly one sheet."
+        },
+        {
+          "text": "Basement, drywall around the electrical panel and fill the hole in the bathroom wall.",
+          "labor": 108,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551225430",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Frame and hang drywall around the panel area, cut around the panel, fill the bathroom wall hole, tape and first coat. Material left blank: sheet count unknown."
+        },
+        {
+          "text": "Basement bathroom, drywall the ceiling.",
+          "labor": 143,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 240 min at $35.71/hr ($250 per 7-hour day) = $143. Hang and tape drywall on a small bathroom ceiling, about 5x7 ft. Material left blank: sheet count unknown."
+        },
+        {
+          "text": "Basement bathroom, screw the door shut so it cannot be opened, and caulk the wall next to the bathroom.",
+          "labor": 18,
+          "material": 10,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Screw the door to the frame and run a caulk bead along the wall. Material is screws and caulk."
+        },
+        {
+          "text": "Basement bathroom, make sure the two old drain openings in the floor by the left wall are sealed.",
+          "labor": 9,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551225430",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Check both plugs are tight and seal if needed."
+        },
+        {
+          "text": "Remove the loose cable wire throughout the basement.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551214146"
+        },
+        {
+          "text": "Basement, remove the screws and nails from the board or hammer them flat. Cut hazard.",
+          "labor": 9,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551215474",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Pull or flatten the protruding fasteners on the one board."
+        },
+        {
+          "text": "Basement, stabilize the laundry sink legs so they sit firmly under the sink and it does not move.",
+          "labor": 18,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551217342",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Reset the legs under the basin and anchor it so it stops moving."
+        },
+        {
+          "text": "Remove the random loose hanging wires above the laundry sink.",
+          "labor": 15,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551228657",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 25 min at $35.71/hr ($250 per 7-hour day) = $15. Cut out the dead wiring in the joist bay above the sink."
+        },
+        {
+          "text": "Basement, install a floor drain cover.",
+          "labor": 6,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604198097",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Set a drop-in cover in the floor drain. Material is the cover."
+        },
+        {
+          "text": "Basement, repair the crack in the drywall at the bottom of the stairs. Skim coat, sand down, and repaint.",
+          "labor": 54,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604201348",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Scrape, skim coat, sand and repaint the cracked corner. On-site time only. Material is compound and paint."
+        }
+      ]
+    },
+    {
+      "room": "Dining Room",
+      "items": [
+        {
+          "text": "Dining room, tighten the outlet under the window.",
+          "labor": 6,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551233965",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Pull the plate, tighten the device in the box, refit."
+        }
+      ]
+    },
+    {
+      "room": "Kitchen",
+      "items": [
+        {
+          "text": "Kitchen, replace the ripped window screen above the sink.",
+          "labor": 18,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551463798",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Pull the sash screen and fit the replacement."
+        },
+        {
+          "text": "Kitchen, remove the old smoke detector bracket from the ceiling.",
+          "labor": 9,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551463849",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Unscrew the bracket, fill the two screw holes, touch up paint."
+        },
+        {
+          "text": "Kitchen, repair or replace the GFCI outlet to the right of the fridge. It does not work and will not reset. Fix the wiring as needed.",
+          "labor": 27,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604206421",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Check the wiring, swap the GFCI outlet, test. Material is the GFCI."
+        }
+      ]
+    },
+    {
+      "room": "Rear Left Bedroom",
+      "items": [
+        {
+          "text": "Cut the spray foam sealing the rear window shut and make the window open.",
+          "labor": 27,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604102241",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Cut the foam out of the sash gaps and free the window so it opens."
+        }
+      ]
+    },
+    {
+      "room": "Bathroom",
+      "items": [
+        {
+          "text": "Bathroom, repair the hole near the shower curtain rod.",
+          "labor": 18,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604124134",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Patch the hole around the rod bracket, re-set the bracket. Material is patch compound."
+        }
+      ]
+    },
+    {
+      "room": "Left Bedroom (front or rear unclear)",
+      "items": [
+        {
+          "text": "Install a rod for clothes in the closet.",
+          "labor": 18,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604131603",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Mount rod sockets and cut a rod to the closet width. Material is rod and sockets."
+        }
+      ]
+    },
+    {
+      "room": "Rear Right Bedroom",
+      "items": [
+        {
+          "text": "Make the outlet next to the rear window flush to the wall and tighten the cover plate. Replace the outlet if needed.",
+          "labor": 12,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604142562",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Shim the outlet flush with spacers and tighten the plate. Material is outlet spacers."
+        }
+      ]
+    },
+    {
+      "room": "Front Left Bedroom",
+      "items": [
+        {
+          "text": "Make the door latch and open smoothly.",
+          "labor": 18,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3604181671",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Adjust the strike plate and hinges so the door latches and swings freely."
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}

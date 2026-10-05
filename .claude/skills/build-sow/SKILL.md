@@ -163,7 +163,7 @@ If a caption explicitly frames something as optional, a nice-to-have, or somethi
 
 Every line item comes from one of three sources, and each must be visually distinguishable in the artifact:
 - **Caption-derived** (from a photo's written caption, per steps 3–4) — the default look, no badge, **checked** by default.
-- **AI-added** (something *you* noticed independently in a photo with no caption support for it) — badge it distinctly (e.g. "AI-added — not in caption") and default it to **unchecked**, since it's your read, not a human's.
+- **AI-added** (something *you* noticed independently in a photo with no caption support for it) — badge it distinctly (e.g. "AI-added — not in caption") and default it to **unchecked**, since it's your read, not a human's. These do **not** go in the artifact at all — the user picks them in chat from a numbered photo sheet, and only the picked ones are folded into their rooms. See "Picking the AI-added items" under Delivering the artifact.
 - **Video-derived** (a genuinely new item from a transcript per step 3a, with no matching caption anywhere) — badge it distinctly from both of the above (e.g. "From video walkthrough") but default it to **checked**, same as caption-derived — it's still a human on-site describing a real issue, just narrated instead of typed. Use a different badge color than AI-added so the user can tell "a person said this" apart from "the AI inferred this."
 
 ### 7. Always add a closing Questions section
@@ -196,11 +196,11 @@ Build the SOW as a **Claude artifact** (HTML). Before writing it, load the `arti
 - Room headings are just the room name (e.g. "Kitchen") — no "Room:" or "Section:" label/eyebrow in front of it. It's obvious from context.
 - **Table styling**: bold outer border, thin inner gridlines.
 - **Color palette matches the existing SOW Google Sheets** (see the "SOW and Estimates" Drive folder, e.g. the monthly "<Month> 2026 SOW" spreadsheets) — a red theme, not an arbitrary accent color: bright red header/title band (e.g. `#E1432A`) with white text, a slightly darker/muted red band for each room heading (e.g. `#B23A2E`) with white text, black/near-black bold borders, white row backgrounds with light-grey thin inner gridlines. Keep this consistent across light/dark themes (darken the reds for dark mode, don't swap to a different hue).
-- **One row per line item**, grouped under room headers in walkthrough order, containing:
-  - a **checkbox** — checked by default for caption-derived and video-derived items, unchecked by default for AI-added items (step 6a),
+- **One row per line item**, grouped under room headers in walkthrough order. The room tables hold **only caption-derived and video-derived items** — AI-added ones live in their own section (below). Each row contains:
+  - a **checkbox**, checked by default,
   - the editable line-item text (verb-first, plain language, per step 4),
-  - a **thumbnail** next to the item so the user can verify without leaving the artifact — the source photo for caption/AI-added items; for a video-derived item (no single photo to point to), use that video's `thumbnail_urls` frame instead, so there's still something to look at,
-  - a badge on AI-added and video-derived rows per step 6a, plus a "New this pass"
+  - a **thumbnail** next to the item so the user can verify without leaving the artifact — the source photo for caption-derived items; for a video-derived item (no single photo to point to), use that video's `thumbnail_urls` frame instead, so there's still something to look at,
+  - a badge on video-derived rows per step 6a, plus a "New this pass"
     badge on items added in a re-run over a saved SOW (step 1a),
   - optional items shown greyed-out (step 6).
 - **Thumbnails must be inlined as base64 data URIs, not linked to the CompanyCam CDN.** The Artifact sandbox's CSP blocks remote `<img>` loads, so a `src="https://static.companycam.com/..."` renders as a broken image every time. Download each photo/video-thumbnail (`curl`/`urllib`, the `web`-size CompanyCam photo URL or the video's `medium` thumbnail is plenty) and inline it as `src="data:image/jpeg;base64,..."` before publishing. Do this for every thumbnail up front — don't publish first and fix it only if the user notices.
@@ -208,6 +208,40 @@ Build the SOW as a **Claude artifact** (HTML). Before writing it, load the `arti
 - Everything (checkboxes, text, grey/optional state) should be editable by the user directly in the artifact. **All text on the page must be editable** — every line item, room heading, the address/type-of-work in the header band, and the Questions answers — not just the line items.
 - Don't wrap a checkbox and its line-item text in the same `<label>`/click target. That makes clicking into the text to edit it also toggle the checkbox. Keep the checkbox and the editable text as independent elements so each can be interacted with on its own.
 - No JSON file, no `SendUserFile` at this stage — the artifact itself is the deliverable for the review pass.
+
+### Picking the AI-added items — do this in chat, with a photo sheet
+
+AI-added items (step 6a) are the one thing the user has to *judge* rather than read, and
+they can only judge them from the photo. **Keep them out of the artifact entirely** and
+settle them in chat instead, at the same time you deliver the artifact.
+
+The reason is mechanical: the artifact is a static page and you cannot read back what the
+user ticked in it. Any picking surface built into the artifact just makes them tick boxes
+and then type the answer to you anyway. Chat is where the answer can actually reach you —
+so the pictures have to come to chat too.
+
+Do it in two calls, in the same turn as the artifact:
+
+1. **Build one numbered contact sheet image** of every AI-added item and send it with
+   `SendUserFile` (`display: "render"` so it opens inline). One tile per suggestion:
+   a **big** photo — crop to the defect when it's small in a wide frame, a whole room shot
+   is useless for judging a hole in the tile — a large number badge in the corner, the room
+   name, and the proposed scope line underneath. Three across reads well; keep the whole
+   sheet under ~2000px wide. Compose it with PIL; there is no ImageMagick on this machine.
+   Match the SOW palette (red badges, near-black borders) so it reads as part of the job.
+2. **Ask with `AskUserQuestion`**, `multiSelect: true`, one option per suggestion, each
+   labelled with its **number from the sheet** first (`"3 — Tree stump in back yard"`) so
+   the option list and the picture line up at a glance. Split across several questions when
+   there are more than four, grouped by room.
+
+Then republish the artifact with the picked items folded into their room sections in normal
+walkthrough position (step 5), so the page ends up being the real agreed scope rather than
+a draft full of maybes.
+
+Never ask about these as a bare text list with no sheet — that is choosing without the
+photos, which is the whole problem.
+
+If a run produces no AI-added items, skip all of this silently.
 
 In your chat reply alongside the artifact, include:
 - A short summary grouped by room of what you found.
@@ -283,7 +317,7 @@ For each `needsSuggestion` line, set `labor` and `material`, plus:
 
 #### Labor: estimate the time, then apply the day rate
 
-**The crew rate is $250 for a 7-hour day — $35.71/hr, $0.5952/min.** For every
+**The crew rate is $250 for a 7-hour day — $35.71/hr, about 60 cents a minute (0.5952 dollars/min).** For every
 `needsSuggestion` line, estimate how long the job actually takes, multiply, and
 **round up to a whole dollar**. 30 minutes → $17.86 → **$18**. Put the minutes in
 `priceBasis`: `Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Diagnose,

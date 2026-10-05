@@ -1,0 +1,329 @@
+{
+  "address": "9922 Coyle St, Detroit, MI 48227",
+  "typeOfWork": "Pre-inspection list",
+  "mediaLink": "https://app.companycam.com/galleries/PrwkVpv4",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Exterior",
+      "items": [
+        {
+          "text": "Replace missing corner siding where it is cracked",
+          "labor": 27,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910487",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Cut and fit a replacement corner piece and lock it into the adjoining courses. Material anchored to your past 'Install the missing corner siding piece at the rear right corner.' at $25."
+        },
+        {
+          "text": "Clean discolored, burned siding on right exterior wall",
+          "labor": 36,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910496",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Scrub and rinse the discolored/burned section of the right wall. Material is siding cleaner."
+        },
+        {
+          "text": "Clean vines off left exterior wall",
+          "labor": 45,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910514",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 75 min at $35.71/hr ($250 per 7-hour day) = $45. Pull the vines off the wall, cut the roots at grade, and bag the debris. Material is contractor bags."
+        },
+        {
+          "text": "Repair siding corner where it is cracked",
+          "labor": 24,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910478",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 40 min at $35.71/hr ($250 per 7-hour day) = $24. Anchored to your past 'Repair the siding that is loose, cracked, and missing at the rear right corner.' at $25 labor / $25 material."
+        },
+        {
+          "text": "Clean up backyard - cut grass, weed wack, remove any weeds touching house and clean up any debris",
+          "labor": 143,
+          "material": 50,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910452",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 4 hr at $35.71/hr ($250 per 7-hour day) = $143 - overgrown yard: mow, weed-whack the perimeter, pull the weeds off the house, then pick up and bag debris. Anchored to your past 'Exterior clean up - remove any weed touching the house and cut tree branches' at $150 labor / $50 material."
+        }
+      ]
+    },
+    {
+      "room": "Living Room",
+      "items": [
+        {
+          "text": "Replace glass in front right window (bullet holes)",
+          "labor": 36,
+          "material": 125,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910551",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36 to strip the old glazing, cut and set the new pane, and re-glaze. Material is HALF of your past 'Replace glass in upper and lower panes - cracked' ($250 for two panes) - it is size-dependent, so check it."
+        },
+        {
+          "text": "Replace broken glass in side window",
+          "labor": 36,
+          "material": 125,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910566",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Same scope as the front right window. Material is size-dependent - half of your past two-pane job at $250."
+        },
+        {
+          "text": "Repair torn screen and replace broken glass in back right window",
+          "labor": 54,
+          "material": 150,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910583",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54 - the glass (60 min) plus re-screening the frame (30 min). Material is $125 glass + $25 screen spline and mesh."
+        },
+        {
+          "text": "Install missing screen on front right window",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910605"
+        },
+        {
+          "text": "Install LVP flooring instead of carpet (optional - $750 - not included in estimate)",
+          "labor": null,
+          "material": null,
+          "optional": true,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915493"
+        },
+        {
+          "text": "Install cover plate on outlet where missing",
+          "labor": 6,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915506",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Material is a blank/outlet cover plate at your $10 minimum."
+        }
+      ]
+    },
+    {
+      "room": "Front Bedroom",
+      "items": [
+        {
+          "text": "Repair hole in wall",
+          "labor": 27,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402910621",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27 of on-site time to back, patch, tape and mud. Anchored to your past 'Repair holes in the wall, upper left next to the door.' at $25/$25."
+        }
+      ]
+    },
+    {
+      "room": "Bedroom Two",
+      "items": [
+        {
+          "text": "Secure and repaint loose heat vent",
+          "labor": 21,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915403",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 35 min at $35.71/hr ($250 per 7-hour day) = $21. Refasten the register/boot to the floor or wall, then prime and paint it. Material is a small amount of primer and paint."
+        },
+        {
+          "text": "Replace door",
+          "labor": 72,
+          "material": 150,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915407",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 2 hr at $35.71/hr ($250 per 7-hour day) = $72. Pull the old door, fit the slab, mortise the hinges, hang it and set the hardware. Material is a standard interior door - CHECK THIS, it moves a lot on size and slab vs prehung."
+        },
+        {
+          "text": "Install ten-year sealed smoke detector",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915421"
+        },
+        {
+          "text": "Repair drywall damage",
+          "labor": 36,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915460",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36 of on-site time to cut back, patch, tape, mud and sand. Material is compound, tape and a patch."
+        }
+      ]
+    },
+    {
+      "room": "Hallway",
+      "items": [
+        {
+          "text": "Install ten-year sealed smoke detector and change CO2 detector batteries",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915428"
+        }
+      ]
+    },
+    {
+      "room": "Kitchen",
+      "items": [
+        {
+          "text": "Replace cracked window glass",
+          "labor": 36,
+          "material": 125,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915469",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Your closest past job 'Replace glass in upper and lower panes - cracked' was $50 labor / $250 material, but that was TWO panes - the photo caption here is one cracked window, so this is half the material."
+        },
+        {
+          "text": "Paint inside and outside of upper kitchen cabinets",
+          "labor": 215,
+          "material": 75,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915475",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 6 hr at $35.71/hr ($250 per 7-hour day) = $215. Kitchen cabinets are slow: degrease, scuff-sand, prime, then two finish coats, and the insides double the surface. Material is primer plus cabinet enamel."
+        }
+      ]
+    },
+    {
+      "room": "Back Room",
+      "items": [
+        {
+          "text": "Install ten-year sealed smoke detector",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915447"
+        }
+      ]
+    },
+    {
+      "room": "Basement",
+      "items": [
+        {
+          "text": "Install furnace and hot water tank (labor only)",
+          "labor": 357,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915512",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 hr at $35.71/hr ($250 per 7-hour day) = $357 - roughly a full day for the furnace changeout (disconnect, set, duct transition, gas, flue, wiring, start-up) plus about 3 hr for the tank. Your past 'Install hot water tank. Includes pressure release pipe and properly vented' was $125 labor, which lines up with the tank half. Material is BLANK on purpose - the line says labor only, so the owner supplies the equipment."
+        },
+        {
+          "text": "Tighten loose laundry tub so that it secure to the floor",
+          "labor": 15,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915531",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 25 min at $35.71/hr ($250 per 7-hour day) = $15. Anchored to your past 'Secure the laundry tub so that it does not move.' at $25/$25."
+        },
+        {
+          "text": "Secure loose cable wires at ceiling",
+          "labor": 18,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915541",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18 to route and staple the loose cable runs up tight to the joists. Material is staples/clips at your $10 minimum."
+        },
+        {
+          "text": "Reinstall light fixture and globe, secure hanging wires",
+          "labor": 24,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915553",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 40 min at $35.71/hr ($250 per 7-hour day) = $24 - kill power, land the loose wires properly, remount the fixture and refit the globe. Anchored to your past 'Reinstall both basement light fixtures.' at $25/$25."
+        },
+        {
+          "text": "Paint basement",
+          "labor": 215,
+          "material": 250,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915563",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 6 hr at $35.71/hr ($250 per 7-hour day) = $215. Your past 'Paint the basement floor and basement wall, including spackle.' was $75 labor / $250 material - the $250 material still holds, but $75 of labor is well under a real basement, so this is a time estimate instead. WORTH A LOOK."
+        },
+        {
+          "text": "Install ten-year sealed smoke detector",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915574"
+        },
+        {
+          "text": "Install weather stripping on basement side door",
+          "labor": 18,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915590",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18 to cut and fasten stripping to the jambs and set a sweep. Material is a weatherstrip kit at your common $25."
+        },
+        {
+          "text": "Repair very significant leaks from bathroom and kitchen into the basement",
+          "labor": 143,
+          "material": 75,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3402915616",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 4 hr at $35.71/hr ($250 per 7-hour day) = $143 - two separate leaks (bath and kitchen), each needing the drain/supply opened up, traced and re-piped. Your past 'Reconnect kitchen drain - currently runs straight into the basement' was $50/$50 for one fixture. CHECK THIS - 'very significant' could mean opening a ceiling, which would push it higher."
+        }
+      ]
+    },
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Paint entire unit including ceiling paint on ceiling, grey on walls and semi gloss on door and trim",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Turn cleaning",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install blinds on the first floor (8x)",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Replace carpet",
+          "labor": 215,
+          "material": 650,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 6 hr at $35.71/hr ($250 per 7-hour day) = $215 to tear out the old carpet and pad, re-tack, lay, stretch and trim. Material is carpet plus pad for the unit - CHECK THIS, it is entirely a square-footage and grade call."
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "address": "16171 Stansbury Ave, Detroit, MI 48227",
+  "typeOfWork": "Final Punch List",
+  "mediaLink": "https://app.companycam.com/projects/95593866",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Upper Bathroom",
+      "items": [
+        {
+          "text": "Make the toilet flush, and make sure it isn't running.",
+          "labor": 27,
+          "material": 25,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Diagnose, then swap flapper and/or fill valve, test. Material $25 for flapper/fill valve.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Upper Left Bedroom",
+      "items": [
+        {
+          "text": "Remove the boards off both windows. Make at least one window open, stay open, close, and lock.",
+          "labor": 36,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Unboard two windows, then free the sash, adjust, and get one locking.",
+          "optional": false
+        },
+        {
+          "text": "Screw shut the other window if it can't be made to work.",
+          "labor": 6,
+          "material": 10,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. A few screws once the call is made. Material $10 for screws.",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "room": "Upper Right Bedroom",
+      "items": [
+        {
+          "text": "Remove the blinds from both windows — they're broken.",
+          "labor": 9,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Unscrew and pull two sets of brackets.",
+          "optional": false
+        },
+        {
+          "text": "Make the window on the driveway side open, stay open, close, and lock.",
+          "labor": 24,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 40 min at $35.71/hr ($250 per 7-hour day) = $24. Free one stuck sash, adjust the balance, confirm it holds and locks.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Living Room",
+      "items": [
+        {
+          "text": "Make at least two of the three living room windows open, stay open, close, and lock.",
+          "labor": 48,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 80 min at $35.71/hr ($250 per 7-hour day) = $48. Two windows at ~40 min each.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Kitchen",
+      "items": [
+        {
+          "text": "Tighten the loose kitchen faucet.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Basement",
+      "items": [
+        {
+          "text": "Install a bulb in the pull chain light fixture close to the furnace, or replace the fixture to make it work.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551463948"
+        },
+        {
+          "text": "Secure both exhaust vents going into the chimney and seal any gaps with mortar — no potential for a leak.",
+          "labor": 54,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Mix mortar, pack and tool two penetrations, secure both pipes, clean up.",
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551464116"
+        },
+        {
+          "text": "Put a blank cover on the open junction box next to the furnace.",
+          "labor": 6,
+          "material": 10,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Fit and screw on one blank cover. Material $10 for one blank cover.",
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551464048"
+        },
+        {
+          "text": "Put the loose hanging wires where they join the furnace into a box, and remove any loose hanging cable wires.",
+          "labor": 36,
+          "material": 25,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Mount a box, land the wires, secure the run, pull the abandoned cable. Material $25 for a box and connectors.",
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3551463994"
+        }
+      ]
+    },
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Get windows operating — open, stay open, close, lock — in three rooms: upper left bedroom (1 of 2), upper right bedroom (driveway side), living room (2 of 3).",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}

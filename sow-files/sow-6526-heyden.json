@@ -1,0 +1,47 @@
+{
+  "address": "6526 Heyden, Detroit, MI 48228",
+  "typeOfWork": "Pre-Inspection List",
+  "mediaLink": "https://app.companycam.com/projects/111699431",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Unscrew all windows and make sure they open, close, stay open and lock.",
+          "labor": 54,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Roughly 8-10 windows at ~10 min each: back out the screws, free the sash, test open/close/stay open/lock. Your near-identical past job \"Remove screws on all windows and make them open, stay open, close and lock\" ran $50 labor, so this is in line.",
+          "optional": false
+        },
+        {
+          "text": "Replace screens as needed — 3 screens.",
+          "labor": 21,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 35 min at $35.71/hr ($250 per 7-hour day) = $21. Three screens at ~10 min each to pull and fit, plus a few minutes to check which ones actually need it.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Kitchen",
+      "items": [
+        {
+          "text": "Remove trip hazard between kitchen and hallway — exposed metal transition strip at the floor threshold.",
+          "labor": 24,
+          "material": 25,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 40 min at $35.71/hr ($250 per 7-hour day) = $24. Pry out the old metal track, scrape the old adhesive off the subfloor, cut a new transition strip to the doorway width and fasten it. Material $25 for one transition strip, matching your usual $25 material figure.",
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3564268765"
+        }
+      ]
+    }
+  ],
+  "questions": [
+    { "text": "Is the job 100% done?", "answer": "" },
+    { "text": "Did I put the keys back?", "answer": "" }
+  ]
+}

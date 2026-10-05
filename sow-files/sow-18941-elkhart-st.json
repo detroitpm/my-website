@@ -1,0 +1,303 @@
+{
+  "address": "18941 Elkhart St, Harper Woods, MI 48225",
+  "typeOfWork": "Turn & Section 8 pre-inspection list",
+  "mediaLink": "https://app.companycam.com/projects/110571884",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Exterior",
+      "items": [
+        {
+          "text": "Repair the siding that is loose, cracked, and missing at the rear right corner.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Cut back the tree branches that are touching the electric wire.",
+          "labor": 150,
+          "material": 50,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Exterior clean up - remove any weed touching the house and cut tree branches which are less than 3 feet overhead\" at $150/$50"
+        },
+        {
+          "text": "Cut back the trees blocking the entryway to the garage.",
+          "labor": 150,
+          "material": 150,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Anchored to \"Cut tree touching the garage\" at $0/$1000 but scaled far down - the photo shows overgrown brush crowding the drive, not a mature tree"
+        },
+        {
+          "text": "Clear away the weeds and trees touching the back left corner of the house.",
+          "labor": 100,
+          "material": 50,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Remove vines from the back of the house\" at $0/$100, scaled to one corner"
+        },
+        {
+          "text": "Attach the mailbox so it is firm and does not move.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Tighten the loose tub spout\" at $25/$25"
+        }
+      ]
+    },
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Clean out the entire house \u2014 living room, all kitchen cabinets, all closets, bathroom, both bedrooms, basement, and the old hot water heater. 20 yard clean out.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539642766"
+        },
+        {
+          "text": "Shampoo and clean the carpet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539642870"
+        },
+        {
+          "text": "Replace 11 blinds on the 1st floor.",
+          "labor": 100,
+          "material": 250,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539643018",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Install new blinds on the 1st floor (5)\" at $50/$100, scaled from 5 blinds to 11"
+        },
+        {
+          "text": "Install smoke detectors and CO2 detectors to meet Section 8 standards \u2014 four new ten year smoke detectors and two CO2 detectors.",
+          "labor": 25,
+          "material": 150,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539643102",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Replace smoke detectors throughout with 10-year sealed battery-operated type per Section 8 requirements (6)\" at $5/$150; labor raised because the CO2 detectors are new installs here"
+        }
+      ]
+    },
+    {
+      "room": "Living Room",
+      "items": [
+        {
+          "text": "Install left window screen, which is damaged.",
+          "labor": null,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539642938",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Install a new screen in the left window - it is missing\" at $0/$25"
+        }
+      ]
+    },
+    {
+      "room": "Kitchen",
+      "items": [
+        {
+          "text": "Inspect the gas and electric stove hookup.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539677076"
+        },
+        {
+          "text": "Touch up paint near where the stove and fridge would go.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539681469",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Touch-up paint\" at $50/$50, scaled down to one small area behind the stove and fridge"
+        }
+      ]
+    },
+    {
+      "room": "Bathroom",
+      "items": [
+        {
+          "text": "Secure the sink, which is very loose, and caulk the sink.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539643202",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Tighten the loose tub spout\" at $25/$25"
+        },
+        {
+          "text": "Resecure the trim, which is loose.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539643271",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Tighten the loose tub spout\" at $25/$25"
+        },
+        {
+          "text": "Snake the toilet, which is backed up, and make sure it flushes properly.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539643334"
+        }
+      ]
+    },
+    {
+      "room": "Lower Rear Right Bedroom",
+      "items": [
+        {
+          "text": "Skim coat and repair the hole in the drywall where the old cable wires used to come from, and repaint.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539643414",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Repair holes in the wall, upper left next to the door. Touch up paint\" at $26/$25"
+        },
+        {
+          "text": "Repair the closet door so it opens and closes.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539676409"
+        }
+      ]
+    },
+    {
+      "room": "Lower Rear Left Bedroom",
+      "items": [
+        {
+          "text": "Repair the door so it latches and opens and closes smoothly.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539676729"
+        },
+        {
+          "text": "Repair the closet.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539676907",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Repair bathroom door - does not latch and has a gap at the top\" at $25/$25"
+        },
+        {
+          "text": "Install the screen where it is missing.",
+          "labor": null,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539684576",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Install a new screen in the left window - it is missing\" at $0/$25"
+        },
+        {
+          "text": "Repair the rear window so it opens, closes, and stays open.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539684654",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Make rear window open, close, and stay open smoothly\" at $25/$25"
+        }
+      ]
+    },
+    {
+      "room": "Upper Bedroom",
+      "items": [
+        {
+          "text": "Install the plexiglass in the window, which is coming out.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539690662",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Fix windows so the pane stops falling out.\" at $11/$25"
+        },
+        {
+          "text": "Repair the knob on the door going to the upstairs bedroom.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539704408",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Tighten the loose door knob\" at $17/$0, raised because the knob may need replacing rather than tightening"
+        }
+      ]
+    },
+    {
+      "room": "Basement",
+      "items": [
+        {
+          "text": "Secure the laundry tub so that it does not move.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539711276",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Secure both doors\" at $25/$0, plus material to anchor the tub"
+        },
+        {
+          "text": "Make sure the laundry tub faucet is functional.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539713390",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Tighten the loose tub spout\" at $25/$25"
+        },
+        {
+          "text": "Reinstall both basement light fixtures.",
+          "labor": 25,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539722486",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Make all 5 pull chain light fixtures fuctional\" at $50/$50, scaled from 5 fixtures to 2"
+        },
+        {
+          "text": "Board up the fireplace.",
+          "labor": 50,
+          "material": 50,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539725624",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Board up garage roof and close garage door\" at $150/$150, scaled to a single fireplace opening"
+        },
+        {
+          "text": "Install a bulb in the pull chain light fixture.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539727887"
+        },
+        {
+          "text": "Install the furnace wire in conduit and put the wire in the junction box.",
+          "labor": 100,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3539729083",
+          "priceSource": "suggested",
+          "priceBasis": "Closest past job: \"Repair GFCI outlet - not working\" at $100/$100; less material since it is conduit and a junction box cover"
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}
