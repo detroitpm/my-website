@@ -9,103 +9,133 @@
       "items": [
         {
           "text": "Attach downspout to the house and install downspout extension.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609117785"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609117785",
+          "labor": 18,
+          "material": 25,
+          "priceSource": "matched",
+          "priceBasis": "Attach downspout to the house and install downspout extension."
         },
         {
           "text": "Remove tree touching the house.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609117850"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609117850",
+          "labor": 143,
+          "material": 450,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 240 min at $35.71/hr ($250 per 7-hour day) = $143. Cut down mid-size multi-trunk tree beside the house and cut it up for haul-off."
         },
         {
           "text": "Full exterior cleanup — remove branches touching the top of the garage, remove the tree and all its branches, clean up the backyard. Remove weeds on the driveway, cut the grass, cut away weeds touching the house. Clean up the front yard and remove the branches and trees sitting on the curb. Remove the weed tree on the right of the house touching the neighbor's carport and the house.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609118094"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118094",
+          "labor": 250,
+          "material": null,
+          "priceSource": "matched",
+          "priceBasis": "Full exterior cleanup — remove branches touching the top of the garage, remove the tree and all its branches, clean up the backyard. Remove weeds on the driveway, cut the grass, cut away weeds touching the house. Clean up the front yard and remove the branches and trees sitting on the curb. Remove the weed tree on the right of the house touching the neighbor's carport and the house."
         },
         {
           "text": "Tuck point the front steps.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609118167"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118167",
+          "labor": 50,
+          "material": 50,
+          "priceSource": "matched",
+          "priceBasis": "Tuck point the front steps."
         },
         {
           "text": "Prune weed trees touching the front of the house.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609118247"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118247",
+          "labor": 18,
+          "material": null,
+          "priceSource": "matched",
+          "priceBasis": "Prune weed trees touching the front of the house."
         },
         {
           "text": "Tuck point the front porch where the porch meets the house.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609118401"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118401",
+          "labor": 27,
+          "material": 10,
+          "priceSource": "matched",
+          "priceBasis": "Tuck point the front porch where the porch meets the house."
         },
         {
           "text": "Tuck point all around the front porch — front, sides, and underneath.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "optional": false,
+          "labor": 108,
+          "material": 25,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Mix mortar, rake and repoint front, both sides and underneath of porch."
         },
         {
           "text": "Strap the rear downspout flush against the wall.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "optional": false,
+          "labor": 12,
+          "material": 10,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Re-hang and strap one downspout."
         },
         {
           "text": "Install corner trim piece on the siding where it's missing — exterior left.",
-          "labor": null,
+          "optional": false,
+          "labor": 18,
           "material": null,
-          "optional": false
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Cut and fasten one corner trim piece; material depends on siding profile."
         },
         {
           "text": "Strap the electrical conduit flush against the wall with brackets.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636856697"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636856697",
+          "labor": 18,
+          "material": 10,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Add straps/brackets along conduit run below meter."
         },
         {
           "text": "Remove or tidy the loose cable/phone wires hanging on the wall by the meter.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636856904"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636856904",
+          "labor": 12,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Cut back dead cable/phone runs, clip the rest to the wall."
         },
         {
           "text": "Have DTE install the electric meter — meter missing from the meter socket.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636854187"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636854187",
+          "labor": 9,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. On-site time to meet DTE; any DTE fee not included."
         },
         {
           "text": "Trim back the tree over the roof line — cut branches back all the way around, staying about 2 feet from the electric wire running through it.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636854841"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636854841",
+          "labor": 108,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Cut branches back around the canopy, working clear of the service wire; haul-off not included."
         },
         {
           "text": "Clean tree debris off the roof and out of the gutters.",
-          "labor": null,
+          "optional": false,
+          "labor": 72,
           "material": null,
-          "optional": false
+          "priceSource": "suggested",
+          "priceBasis": "Est. 120 min at $35.71/hr ($250 per 7-hour day) = $72. Ladder work: clear roof and full gutter run."
         },
         {
           "text": "Paint the house number.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "optional": false,
+          "labor": 9,
+          "material": 10,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Small brush/stencil job."
         }
       ]
     },
@@ -114,23 +144,29 @@
       "items": [
         {
           "text": "Repair garage door — hanging crooked off its track.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609117483"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609117483",
+          "labor": 72,
+          "material": 300,
+          "priceSource": "matched",
+          "priceBasis": "Repair garage door — hanging crooked off its track."
         },
         {
           "text": "Scrape and paint the peeling garage trim and siding.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609117632"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609117632",
+          "labor": 179,
+          "material": 150,
+          "priceSource": "matched",
+          "priceBasis": "Scrape and paint the peeling garage trim and siding."
         },
         {
           "text": "Reattach the gutters falling off the garage.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "optional": false,
+          "labor": 36,
+          "material": 10,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Re-hang garage gutter run with new hangers."
         }
       ]
     },
@@ -139,30 +175,38 @@
       "items": [
         {
           "text": "Paint the exterior of the front door.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609118337"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118337",
+          "labor": 36,
+          "material": 25,
+          "priceSource": "matched",
+          "priceBasis": "Paint the exterior of the front door."
         },
         {
           "text": "Install new plexiglass on the front door.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609118442"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118442",
+          "labor": 50,
+          "material": 50,
+          "priceSource": "matched",
+          "priceBasis": "Install new plexiglass on the front door."
         },
         {
           "text": "Replace the front door if it's a standard size — hard to find locks that fit the current door.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609118524"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118524",
+          "labor": 143,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 240 min at $35.71/hr ($250 per 7-hour day) = $143. Remove old door, install a pre-hung exterior door, fit lock."
         },
         {
           "text": "Get a key for the front door — replace the lock if needed.",
-          "labor": null,
+          "optional": false,
+          "labor": 18,
           "material": null,
-          "optional": false
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Rekey or swap lockset; lock price depends on door/style."
         }
       ]
     },
@@ -171,10 +215,12 @@
       "items": [
         {
           "text": "Install glass in the side door — glass entirely missing.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636857071"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857071",
+          "labor": 27,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Measure, set glass in storm door; glass size unknown."
         }
       ]
     },
@@ -183,10 +229,12 @@
       "items": [
         {
           "text": "Replace glass in window.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609150488"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150488",
+          "labor": 36,
+          "material": 125,
+          "priceSource": "matched",
+          "priceBasis": "Replace glass in window."
         }
       ]
     },
@@ -195,10 +243,12 @@
       "items": [
         {
           "text": "Board up fireplace and paint white.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609150531"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150531",
+          "labor": 25,
+          "material": 50,
+          "priceSource": "matched",
+          "priceBasis": "Board up fireplace and paint white."
         }
       ]
     },
@@ -207,15 +257,19 @@
       "items": [
         {
           "text": "Patch holes in the wall.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "optional": false,
+          "labor": 27,
+          "material": 25,
+          "priceSource": "matched",
+          "priceBasis": "Repair hole in wall"
         },
         {
           "text": "Install glass in the rear window and fix the lock — glass missing entirely.",
-          "labor": null,
+          "optional": false,
+          "labor": 36,
           "material": null,
-          "optional": false
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Glaze one sash and adjust/replace sash lock."
         }
       ]
     },
@@ -224,9 +278,11 @@
       "items": [
         {
           "text": "Install glass in the window — glass broken.",
-          "labor": null,
+          "optional": false,
+          "labor": 27,
           "material": null,
-          "optional": false
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Remove broken glass, glaze one pane."
         }
       ]
     },
@@ -235,9 +291,11 @@
       "items": [
         {
           "text": "Replace the toilet — tank lid missing, and lids usually can't be bought separately.",
-          "labor": null,
+          "optional": false,
+          "labor": 54,
           "material": null,
-          "optional": false
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Pull old, set new toilet with wax ring and supply; toilet model is your pick."
         }
       ]
     },
@@ -246,43 +304,53 @@
       "items": [
         {
           "text": "Replace cracked window glass — lower left and upper right panes.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609150577"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150577",
+          "labor": 50,
+          "material": 50,
+          "priceSource": "matched",
+          "priceBasis": "Replace cracked window glass — lower left and upper right panes."
         },
         {
           "text": "Replace damaged countertop next to the sink — laminate missing, stained.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609150623"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150623",
+          "labor": 150,
+          "material": 150,
+          "priceSource": "matched",
+          "priceBasis": "Replace damaged countertop next to the sink — laminate missing, stained."
         },
         {
           "text": "Replace mismatched / missing backsplash tile beside the stove.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609150664"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150664",
+          "labor": 72,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 120 min at $35.71/hr ($250 per 7-hour day) = $72. Remove patched tile, set new tile and grout behind the stove."
         },
         {
           "text": "Note: stove spot is set up for both gas and electric stove.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3609150664"
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150664",
+          "labor": null,
+          "material": null
         },
         {
           "text": "Install a faucet in the kitchen.",
-          "labor": null,
+          "optional": false,
+          "labor": 27,
           "material": null,
-          "optional": false
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Under-sink install; faucet is your pick."
         },
         {
           "text": "Find and remove dead rodent — strong smell in the kitchen.",
-          "labor": null,
+          "optional": false,
+          "labor": 27,
           "material": null,
-          "optional": false
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Locate source, remove, bag and deodorize."
         }
       ]
     },
@@ -291,57 +359,73 @@
       "items": [
         {
           "text": "Reinstall the water meter — it's been removed and straight piped.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636857094"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857094",
+          "labor": 36,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Cut out straight pipe and set meter; meter comes from the water dept."
         },
         {
           "text": "Replace the outlet near the laundry sink with a GFCI outlet.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636857126"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857126",
+          "labor": 12,
+          "material": 25,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Swap one receptacle for a GFCI."
         },
         {
           "text": "Mount the dryer outlet flush against the wall with brackets; run the wire in conduit.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636857163"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857163",
+          "labor": 27,
+          "material": 25,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Mount box to block wall, run cord/wire in conduit with straps."
         },
         {
           "text": "Put the cover on the electrical panel and turn the electric on to the house — panel looks partly rigged, check it over.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636857214"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857214",
+          "labor": 36,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Reinstall dead front, check over the rigged wiring, energize."
         },
         {
           "text": "Install furnace and hot water tank.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636857267"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857267",
+          "labor": 357,
+          "material": null,
+          "priceSource": "matched",
+          "priceBasis": "Install furnace and hot water tank (labor only)"
         },
         {
           "text": "Paint the basement floor.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636857317"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857317",
+          "labor": 300,
+          "material": 250,
+          "priceSource": "matched",
+          "priceBasis": "Paint basement"
         },
         {
           "text": "Install 3–4 more spindles on the basement stair railing, all the way down — gaps can't be more than 6 inches.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "optional": false,
+          "labor": 54,
+          "material": 25,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Cut and fasten 3–4 spindles down the run."
         },
         {
           "text": "Install a graspable handrail on the spindle side of the basement stairs.",
-          "labor": null,
+          "optional": false,
+          "labor": 36,
           "material": null,
-          "optional": false
+          "priceSource": "matched",
+          "priceBasis": "Install a hand-graspable (round) handrail on the basement stairs."
         }
       ]
     },
@@ -350,9 +434,11 @@
       "items": [
         {
           "text": "Install a handrail on one side of the stairs to the upper floor.",
-          "labor": null,
+          "optional": false,
+          "labor": 36,
           "material": null,
-          "optional": false
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Brackets and rail on one side; rail length unknown."
         }
       ]
     },
@@ -361,45 +447,57 @@
       "items": [
         {
           "text": "Board up the attic access opening.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636866529"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636866529",
+          "labor": 27,
+          "material": 25,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Cut plywood panel to the opening and fasten."
         },
         {
           "text": "Install glass in the window missing glass.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636866647"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636866647",
+          "labor": 27,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Glaze one sash; glass size unknown."
         },
         {
           "text": "Install glass in the small wood window.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636867861"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636867861",
+          "labor": 27,
+          "material": null,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Glaze small wood sash; glass size unknown."
         },
         {
           "text": "Install a cover plate on the outlet in the closet.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636867431"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636867431",
+          "labor": 6,
+          "material": 10,
+          "priceSource": "matched",
+          "priceBasis": "Install cover plate on outlet where missing"
         },
         {
           "text": "Patch torn drywall around the closet outlet.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636867431"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636867431",
+          "labor": 27,
+          "material": 10,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Cut torn paper, mud/tape, sand; second coat same visit."
         },
         {
           "text": "Install cover plates on the open outlets and switches — about 7 total upstairs, including the two on this wall.",
-          "labor": null,
-          "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3636867565"
+          "photoUrl": "https://app.companycam.com/assets/Image/3636867565",
+          "labor": 21,
+          "material": 10,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 35 min at $35.71/hr ($250 per 7-hour day) = $21. About 7 plates at ~5 min each."
         }
       ]
     },
@@ -408,21 +506,27 @@
       "items": [
         {
           "text": "Remove the screws from all windows screwed shut — make sure they open, close, and stay open.",
-          "labor": null,
+          "optional": false,
+          "labor": 50,
           "material": null,
-          "optional": false
+          "priceSource": "matched",
+          "priceBasis": "Remove the screws from all windows — make sure each opens, stays open, closes and locks."
         },
         {
           "text": "Install blinds on the first floor.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "optional": false,
+          "labor": 50,
+          "material": 100,
+          "priceSource": "matched",
+          "priceBasis": "Install blinds on the first floor (8x)"
         },
         {
           "text": "Install smoke and CO detectors throughout per Section 8 standards.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "optional": false,
+          "labor": 66,
+          "material": 200,
+          "priceSource": "matched",
+          "priceBasis": "Install smoke and CO detectors to Section 8 standards — about 7 smoke, 4 CO."
         }
       ]
     }
