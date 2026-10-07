@@ -1,0 +1,440 @@
+{
+  "address": "16260 Collingham Dr, Detroit, MI 48205",
+  "typeOfWork": "Pre-inspection list",
+  "mediaLink": "https://app.companycam.com/projects/115523133",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Exterior",
+      "items": [
+        {
+          "text": "Attach downspout to the house and install downspout extension.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609117785"
+        },
+        {
+          "text": "Remove tree touching the house.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609117850"
+        },
+        {
+          "text": "Full exterior cleanup — remove branches touching the top of the garage, remove the tree and all its branches, clean up the backyard. Remove weeds on the driveway, cut the grass, cut away weeds touching the house. Clean up the front yard and remove the branches and trees sitting on the curb. Remove the weed tree on the right of the house touching the neighbor's carport and the house.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118094"
+        },
+        {
+          "text": "Tuck point the front steps.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118167"
+        },
+        {
+          "text": "Prune weed trees touching the front of the house.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118247"
+        },
+        {
+          "text": "Tuck point the front porch where the porch meets the house.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118401"
+        },
+        {
+          "text": "Tuck point all around the front porch — front, sides, and underneath.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Strap the rear downspout flush against the wall.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install corner trim piece on the siding where it's missing — exterior left.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Strap the electrical conduit flush against the wall with brackets.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636856697"
+        },
+        {
+          "text": "Remove or tidy the loose cable/phone wires hanging on the wall by the meter.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636856904"
+        },
+        {
+          "text": "Have DTE install the electric meter — meter missing from the meter socket.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636854187"
+        },
+        {
+          "text": "Trim back the tree over the roof line — cut branches back all the way around, staying about 2 feet from the electric wire running through it.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636854841"
+        },
+        {
+          "text": "Clean tree debris off the roof and out of the gutters.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Paint the house number.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Garage",
+      "items": [
+        {
+          "text": "Repair garage door — hanging crooked off its track.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609117483"
+        },
+        {
+          "text": "Scrape and paint the peeling garage trim and siding.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609117632"
+        },
+        {
+          "text": "Reattach the gutters falling off the garage.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Front Door",
+      "items": [
+        {
+          "text": "Paint the exterior of the front door.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118337"
+        },
+        {
+          "text": "Install new plexiglass on the front door.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118442"
+        },
+        {
+          "text": "Replace the front door if it's a standard size — hard to find locks that fit the current door.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609118524"
+        },
+        {
+          "text": "Get a key for the front door — replace the lock if needed.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Side Door",
+      "items": [
+        {
+          "text": "Install glass in the side door — glass entirely missing.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857071"
+        }
+      ]
+    },
+    {
+      "room": "Dining Room",
+      "items": [
+        {
+          "text": "Replace glass in window.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150488"
+        }
+      ]
+    },
+    {
+      "room": "Living Room",
+      "items": [
+        {
+          "text": "Board up fireplace and paint white.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150531"
+        }
+      ]
+    },
+    {
+      "room": "Lower Right Bedroom",
+      "items": [
+        {
+          "text": "Patch holes in the wall.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install glass in the rear window and fix the lock — glass missing entirely.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Lower Left Bedroom",
+      "items": [
+        {
+          "text": "Install glass in the window — glass broken.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Bathroom",
+      "items": [
+        {
+          "text": "Replace the toilet — tank lid missing, and lids usually can't be bought separately.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Kitchen",
+      "items": [
+        {
+          "text": "Replace cracked window glass — lower left and upper right panes.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150577"
+        },
+        {
+          "text": "Replace damaged countertop next to the sink — laminate missing, stained.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150623"
+        },
+        {
+          "text": "Replace mismatched / missing backsplash tile beside the stove.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150664"
+        },
+        {
+          "text": "Note: stove spot is set up for both gas and electric stove.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3609150664"
+        },
+        {
+          "text": "Install a faucet in the kitchen.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Find and remove dead rodent — strong smell in the kitchen.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Basement",
+      "items": [
+        {
+          "text": "Reinstall the water meter — it's been removed and straight piped.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857094"
+        },
+        {
+          "text": "Replace the outlet near the laundry sink with a GFCI outlet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857126"
+        },
+        {
+          "text": "Mount the dryer outlet flush against the wall with brackets; run the wire in conduit.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857163"
+        },
+        {
+          "text": "Put the cover on the electrical panel and turn the electric on to the house — panel looks partly rigged, check it over.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857214"
+        },
+        {
+          "text": "Install furnace and hot water tank.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857267"
+        },
+        {
+          "text": "Paint the basement floor.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636857317"
+        },
+        {
+          "text": "Install 3–4 more spindles on the basement stair railing, all the way down — gaps can't be more than 6 inches.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install a graspable handrail on the spindle side of the basement stairs.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Upper Stairs",
+      "items": [
+        {
+          "text": "Install a handrail on one side of the stairs to the upper floor.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Upper Bedroom",
+      "items": [
+        {
+          "text": "Board up the attic access opening.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636866529"
+        },
+        {
+          "text": "Install glass in the window missing glass.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636866647"
+        },
+        {
+          "text": "Install glass in the small wood window.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636867861"
+        },
+        {
+          "text": "Install a cover plate on the outlet in the closet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636867431"
+        },
+        {
+          "text": "Patch torn drywall around the closet outlet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636867431"
+        },
+        {
+          "text": "Install cover plates on the open outlets and switches — about 7 total upstairs, including the two on this wall.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3636867565"
+        }
+      ]
+    },
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Remove the screws from all windows screwed shut — make sure they open, close, and stay open.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install blinds on the first floor.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install smoke and CO detectors throughout per Section 8 standards.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}
