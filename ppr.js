@@ -968,24 +968,67 @@ document.getElementById("downloadPdfBtn").onclick = function () {
 };
 
 // ---- Copy link ----
+// This used to be the builder's own URL + "?d=" + base64(whole report), which
+// meant the link opened the editable builder and carried the report in the
+// URL. A real report doesn't fit (9383 Rutland encodes to ~26k characters and
+// Netlify answers 414 URI Too Long), so the link simply failed. Same fix as
+// the SOW builder's owner link: save the report, then link to ppr-view.html
+// by its id.
+function viewLinkFor(id) {
+  var dir = location.pathname.replace(/[^/]*$/, "");
+  return location.origin + dir + "ppr-view.html?id=" + encodeURIComponent(id);
+}
+
 document.getElementById("copyLinkBtn").onclick = function () {
-  var url = currentUrlWithState();
+  var btn = document.getElementById("copyLinkBtn");
   var wrap = document.getElementById("linkwrap");
+  var hint = document.getElementById("linkHint");
   var out = document.getElementById("linkOut");
-  out.value = url;
-  wrap.style.display = "block";
-  document.getElementById("linkHint").textContent = url.length > 6000
-    ? "Link is long — use Save report for anything you need to reliably reopen."
-    : "Link copied. Embedded photos aren't in the link; re-embed after opening.";
-  out.focus(); out.select();
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(function () {
-      var btn = document.getElementById("copyLinkBtn");
-      var t = btn.textContent;
-      btn.textContent = "Copied!";
-      setTimeout(function () { btn.textContent = t; }, 1600);
-    }, function () {});
+
+  if (!report.address || !report.address.trim()) {
+    wrap.style.display = "block";
+    hint.textContent = "Add the property address first - the link is saved under it.";
+    out.value = "";
+    return;
   }
+
+  var label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Saving…";
+
+  fetch("/.netlify/functions/ppr-save", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ report: report })
+  })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, status: r.status, data: d }; }); })
+    .then(function (result) {
+      btn.disabled = false;
+      btn.textContent = label;
+      if (!result.ok || !result.data.id) throw new Error(extractErrorMessage(result));
+
+      isDirty = false;
+      clearDraft();
+      refreshReportList();
+
+      var url = viewLinkFor(result.data.id);
+      wrap.style.display = "block";
+      hint.textContent = "Link copied. It opens a read-only copy of the report - no prices, no builder. Saving again updates what this link shows.";
+      out.value = url;
+      out.focus(); out.select();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () {
+          btn.textContent = "Copied!";
+          setTimeout(function () { btn.textContent = label; }, 1600);
+        }, function () {});
+      }
+    })
+    .catch(function (err) {
+      btn.disabled = false;
+      btn.textContent = label;
+      wrap.style.display = "block";
+      hint.textContent = "Couldn't save the report for a link: " + err.message;
+      out.value = "";
+    });
 };
 
 // ---- Send to CompanyCam ----
