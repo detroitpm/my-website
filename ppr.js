@@ -115,9 +115,8 @@ function isDataUri(s) { return typeof s === "string" && /^data:/i.test(s); }
 
 var report = loadInitialState();
 
-// Nothing autosaves to the database while you type - the URL copy below is
-// only a best-effort convenience for "Copy link" and gives up silently if
-// it can't keep up (see pushStateToUrl). "Save report" is the only thing
+// Nothing autosaves to the database while you type - the localStorage draft
+// below is only a best-effort safety net (see pushStateToUrl). "Save report" is the only thing
 // that actually writes to Supabase, so we track whether there are edits
 // since the last real save/load and warn before the tab can be closed or
 // navigated away from with unsaved work sitting only in memory.
@@ -151,9 +150,6 @@ function shareableClone() {
     mediaListLinks: (report.mediaListLinks || []).map(function (l) { return { label: l.label, url: l.url }; }),
     pmNotes: report.pmNotes
   };
-}
-function currentUrlWithState() {
-  return location.origin + location.pathname + "?d=" + encodeState(shareableClone());
 }
 
 // ---- Local draft autosave ----
@@ -191,10 +187,9 @@ function reportIsEmpty(r) {
     !(r.preparedFor || "").trim() && !(r.mediaListLinks || []).length && !(r.pmNotes || "").trim();
 }
 
-// Debounced: typing fires this constantly, and history.replaceState with a
-// multi-KB URL on every keystroke stutters. The URL is only a convenience
-// (Copy link) — Save report is the real store — so a ~half-second lag on
-// the address bar is fine.
+// Debounced: typing fires this constantly, and serializing the draft on
+// every keystroke stutters. Save report is the real store, so a
+// ~half-second lag on the draft is fine.
 var _urlSyncTimer = null;
 function pushStateToUrl() {
   // Marked synchronously (not inside the debounce below) so the
@@ -205,7 +200,14 @@ function pushStateToUrl() {
   _urlSyncTimer = setTimeout(function () {
     _urlSyncTimer = null;
     saveDraft();
-    try { history.replaceState(null, "", currentUrlWithState()); } catch (e) { /* URL too long — Save report is what actually persists this, so this failing silently is fine on its own; it just means "Copy link" won't reflect the very latest edits until a save. */ }
+    // The address bar used to carry the whole report as ?d=<base64>. A real
+    // report is ~26k characters, so copying the address bar gave a link
+    // Netlify refuses (414) - people did copy it and send it. Keep the bar
+    // clean instead; "Copy link" hands out the short ppr-view.html?id= link,
+    // and the localStorage draft above covers an accidental reload.
+    if (location.search) {
+      try { history.replaceState(null, "", location.pathname); } catch (e) { /* cosmetic only */ }
+    }
   }, 500);
 }
 
