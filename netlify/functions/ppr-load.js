@@ -15,10 +15,9 @@ exports.handler = async function (event) {
   try {
     const pool = getPool();
     const { rows } = await pool.query(
-      `SELECT address, prepared_for, inspection_date, company_name, companycam_project_id,
-              media_link, front_exterior_photo, buffer_pct, legal_disclosures,
-              context_photos, sections, media_list_links, pm_notes
-       FROM underwriting_reports WHERE id = $1`,
+      // SELECT * rather than a column list so show_itemized_pricing comes
+      // back once its migration has run, without failing before it has.
+      `SELECT * FROM underwriting_reports WHERE id = $1`,
       [id]
     );
     if (!rows.length) {
@@ -41,7 +40,8 @@ exports.handler = async function (event) {
           contextPhotos: row.context_photos || [],
           sections: row.sections || [],
           mediaListLinks: row.media_list_links || [],
-          pmNotes: row.pm_notes || ""
+          pmNotes: row.pm_notes || "",
+          showItemizedPricing: !!row.show_itemized_pricing
         }
       })
     };

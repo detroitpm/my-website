@@ -33,7 +33,11 @@ var DEFAULT_REPORT = {
   contextPhotos: [],
   sections: [],
   mediaListLinks: [],
-  pmNotes: ""
+  pmNotes: "",
+  // When true, the printed report and the buyer page (ppr-view.html) show
+  // each line's Labor/Material $ under the item, not just the flag
+  // subtotals. Same idea as the SOW builder's Owner Copy toggle.
+  showItemizedPricing: false
 };
 
 function extractErrorMessage(result) {
@@ -107,7 +111,8 @@ function normalizeReport(r) {
       l = l || {};
       return { label: l.label || "", url: l.url || "" };
     }),
-    pmNotes: r.pmNotes || ""
+    pmNotes: r.pmNotes || "",
+    showItemizedPricing: !!r.showItemizedPricing
   };
 }
 
@@ -148,7 +153,8 @@ function shareableClone() {
       }) };
     }),
     mediaListLinks: (report.mediaListLinks || []).map(function (l) { return { label: l.label, url: l.url }; }),
-    pmNotes: report.pmNotes
+    pmNotes: report.pmNotes,
+    showItemizedPricing: !!report.showItemizedPricing
   };
 }
 
@@ -342,6 +348,7 @@ function renderBuilder() {
   document.getElementById("inspectionDateInput").value = report.inspectionDate;
   document.getElementById("companyNameInput").value = report.companyName;
   document.getElementById("bufferInput").value = report.bufferPct;
+  document.getElementById("showItemizedPricingInput").checked = !!report.showItemizedPricing;
   updateMediaField();
   document.getElementById("frontPhotoInput").value = report.frontExteriorPhotoSrc || (isDataUri(report.frontExteriorPhoto) ? "" : report.frontExteriorPhoto);
   document.getElementById("disclosuresInput").value = report.legalDisclosures;
@@ -575,6 +582,7 @@ document.getElementById("preparedForInput").oninput = function (e) { report.prep
 document.getElementById("inspectionDateInput").oninput = function (e) { report.inspectionDate = e.target.value; pushStateToUrl(); };
 document.getElementById("companyNameInput").oninput = function (e) { report.companyName = e.target.value; pushStateToUrl(); };
 document.getElementById("bufferInput").oninput = function (e) { report.bufferPct = e.target.value === "" ? 0 : Number(e.target.value); computeAndShowTotals(); pushStateToUrl(); };
+document.getElementById("showItemizedPricingInput").onchange = function (e) { report.showItemizedPricing = e.target.checked; pushStateToUrl(); };
 (function () {
   var input = document.getElementById("mediaInput");
   var box = document.getElementById("mediaResults");

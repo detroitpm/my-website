@@ -58,6 +58,8 @@
   .fld.small{flex:0 0 120px;}
   .fld.full{flex:1 1 100%;}
   .fld label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .fld label.price-toggle{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--ink);cursor:pointer;}
+  .fld label.price-toggle input{width:18px;height:18px;margin:0;}
   .fld input, .fld textarea{padding:8px 9px;border:1px solid var(--ink);border-radius:0;font-family:var(--sans);font-size:13.5px;}
   textarea.big{width:100%;min-height:220px;line-height:1.5;resize:vertical;}
   textarea.notes{width:100%;min-height:130px;line-height:1.5;resize:vertical;}
@@ -213,7 +215,7 @@
 
       <div class="card no-print">
         <h2>Cover &amp; Setup</h2>
-        <p class="card-hint">Labor and Material prices are internal &mdash; they never print. Only the flag subtotals and grand total appear on the report.</p>
+        <p class="card-hint">Labor and Material prices are internal &mdash; only the flag subtotals and grand total appear on the report, unless line-by-line pricing is turned on below.</p>
         <div class="grid">
           <div class="fld"><label>Property Address (full)</label><input type="text" id="addressInput" placeholder="8210 Decatur St, Detroit, MI 48228"></div>
           <div class="fld"><label>Prepared For</label><input type="text" id="preparedForInput" placeholder="Buyer / client name"></div>
@@ -222,6 +224,10 @@
           <div class="fld"><label>Date of Inspection</label><input type="text" id="inspectionDateInput" placeholder="August 27, 2026"></div>
           <div class="fld"><label>Prepared By (company)</label><input type="text" id="companyNameInput" placeholder="Detroit Section 8 Property Management"></div>
           <div class="fld small"><label>Buffer %</label><input type="number" id="bufferInput" min="0" step="1" value="20"></div>
+        </div>
+        <div class="grid" style="margin-top:12px;">
+          <div class="fld"><label class="price-toggle"><input type="checkbox" id="showItemizedPricingInput"> Show line-by-line Labor/Material pricing on the report</label>
+            <p class="card-hint" style="margin:4px 0 0;">Off by default (just the subtotals and total). Applies to the PDF and the shared link.</p></div>
         </div>
         <div class="grid" style="margin-top:12px;">
           <div class="fld full cc-search-wrap">

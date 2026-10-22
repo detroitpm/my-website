@@ -149,9 +149,15 @@ function pprBuildReportHtml(report) {
       var mark = flag === "red" ? '<span class="ppr-flag ppr-flag-red">&#9873;</span>'
         : flag === "yellow" ? '<span class="ppr-flag ppr-flag-yellow">&#9873;</span>'
         : '<span class="ppr-flag-opt">Optional</span>';
+      // Only when the builder's line-by-line toggle is on. Labor and Material
+      // print as two figures, the way they're entered (and the way the SOW
+      // Owner Copy does it), before the buffer the totals below add.
+      var price = report.showItemizedPricing
+        ? '<span class="ppr-price">Labor ' + pprCurrency(Number(item.labor) || 0) + ' &middot; Material ' + pprCurrency(Number(item.material) || 0) + '</span>'
+        : "";
       html += '<tr class="ppr-item-row ppr-row-' + flag + '">' +
         '<td class="ppr-c-room ppr-c-flagcell">' + mark + "</td>" +
-        '<td class="ppr-c-item">&#9744; ' + desc + "</td></tr>";
+        '<td class="ppr-c-item">&#9744; ' + desc + price + "</td></tr>";
     });
   });
   html += "</tbody></table>";
@@ -255,6 +261,7 @@ var PPR_REPORT_CSS = [
   '.ppr-table td.ppr-c-flagcell{text-align:center;}',
   '.ppr-table tr.ppr-row-optional td{background:var(--opt-bg);}',
   '.ppr-table td.ppr-c-item a{color:inherit;text-decoration:underline dotted;text-decoration-color:#9a9a9a;}',
+  '.ppr-price{display:block;margin-top:3px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;}',
   /* Estimate summary */
   '.ppr-estimate{border-collapse:collapse;width:100%;max-width:420px;border:2.5px solid #000;color:var(--ink);}',
   '.ppr-estimate th,.ppr-estimate td{padding:8px 12px;font-size:14px;border:1px solid #9a9a9a;}',
