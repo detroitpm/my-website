@@ -36,6 +36,15 @@
   #doc{background:var(--paper);}
   @media (max-width:600px){ #doc .ppr-page{padding:24px 16px;} }
 
+  /* Camera button ppr-view.js adds to each line that has a photo. */
+  .ppr-cam{font:inherit;font-size:15px;line-height:1;padding:3px 6px;margin-left:2px;
+    border:1.5px solid var(--ink);background:var(--paper);cursor:zoom-in;vertical-align:baseline;}
+  .ppr-cam:hover{background:var(--gold);}
+  .ppr-cam:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  /* Buyers don't have CompanyCam logins, so the lightbox's
+     "Open in CompanyCam" link would only dead-end. */
+  .sow-lb-src{display:none !important;}
+
   @media print{
     body{background:var(--paper);}
     .shell{max-width:none;padding:0;}
@@ -54,6 +63,7 @@
   </div>
 
 <script src="ppr-shared.js"></script>
+<script src="sow-lightbox.js"></script>
 <script src="ppr-view.js"></script>
 </body>
 </html>

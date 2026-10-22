@@ -18,9 +18,34 @@
     stateEl.textContent = message;
   }
 
+  // pprBuildReportHtml prints a line with a photo as a link to its CompanyCam
+  // permalink - right for the PDF, wrong here: a buyer has no CompanyCam
+  // login, so the link dead-ends. On this page the line goes back to plain
+  // text and gets a camera button that shows the picture in place
+  // (SowLightbox resolves the permalink through sow-photo).
+  function addPhotoButtons() {
+    docEl.querySelectorAll(".ppr-c-item a").forEach(function (link) {
+      var text = link.textContent.trim();
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "ppr-cam no-print";
+      btn.setAttribute("aria-label", "See photo");
+      btn.dataset.photo = link.getAttribute("href");
+      btn.dataset.caption = text;
+      btn.textContent = "📷";
+      link.replaceWith(document.createTextNode(link.textContent), document.createTextNode(" "), btn);
+    });
+  }
+
+  docEl.addEventListener("click", function (e) {
+    var btn = e.target.closest ? e.target.closest(".ppr-cam") : null;
+    if (btn) SowLightbox.open(btn.dataset.photo, btn.dataset.caption);
+  });
+
   function render(report) {
     stateEl.hidden = true;
     docEl.innerHTML = pprBuildReportHtml(report);
+    addPhotoButtons();
     if ((report.address || "").trim()) document.title = "Pre-Purchase Report - " + report.address;
     printBtn.hidden = false;
   }
