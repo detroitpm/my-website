@@ -63,6 +63,18 @@ exports.handler = async function (event) {
         report.pmNotes || null
       ]
     );
+    // The line-by-line pricing toggle is written separately so a database
+    // that hasn't had 20261022193000_add_ppr_show_itemized_pricing.sql run yet
+    // still saves the report itself (42703 = undefined column). Until that
+    // migration runs the toggle just doesn't stick between loads.
+    try {
+      await pool.query(
+        "UPDATE underwriting_reports SET show_itemized_pricing = $1 WHERE id = $2",
+        [!!report.showItemizedPricing, rows[0].id]
+      );
+    } catch (err) {
+      if (err.code !== "42703") throw err;
+    }
     return { statusCode: 200, body: JSON.stringify({ ok: true, id: rows[0].id }) };
   } catch (err) {
     return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
