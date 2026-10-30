@@ -9,21 +9,27 @@
       "items": [
         {
           "text": "Tuck point the top front step — crack will keep getting worse.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "labor": 36,
+          "material": 25,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Mix mortar, rake out and repoint the crack in the top step. Mostly setup time. Material $25 for a bag of mortar."
         },
         {
           "text": "Paint the metal railing black — paint is chipped off.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "labor": 36,
+          "material": 25,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Wire-brush the loose paint off two short front railings, then brush on black metal paint. Material $25 for a quart of rust paint."
         },
         {
           "text": "Install a downspout extension at the front.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "labor": 6,
+          "material": 10,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Snap one extension onto the front downspout. Material $10."
         }
       ]
     },
@@ -32,9 +38,11 @@
       "items": [
         {
           "text": "Clean up the little weeds touching the house and around the air conditioning unit.",
-          "labor": null,
+          "labor": 27,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Pull the weeds along the foundation and around the AC unit, then bag them."
         },
         {
           "text": "Remove the fallen cable wire.",
@@ -44,9 +52,11 @@
         },
         {
           "text": "Remove the railing in the backyard — only two steps, not needed.",
-          "labor": null,
+          "labor": 18,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Unbolt the railing at the two back steps, fill the screw holes, haul it off."
         },
         {
           "text": "Clean up along the fence line.",
@@ -56,22 +66,28 @@
         },
         {
           "text": "Cut the grass — front, side and rear yard, and along the fence line. City courtesy notice dated 10-28-26 gives 48 hours.",
-          "labor": null,
+          "labor": 36,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713598662"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598662",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Mow and edge the front, side and rear yard and along the fence (city notice). Normal-height lawn, not overgrown."
         },
         {
           "text": "Cut the branches on top of the shed.",
-          "labor": null,
+          "labor": 18,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Lop the overhanging branches off the shed roof and haul them away."
         },
         {
           "text": "Clean up the shed, close the door and lock it so there's no access.",
-          "labor": null,
+          "labor": 27,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Clear the debris out of the shed, shut the door and padlock it. Lock material left blank."
         }
       ]
     },
@@ -80,10 +96,12 @@
       "items": [
         {
           "text": "Repair the exterior so water does not get into the basement — about 1-inch-wide crack on the left side. Coat it with rubber coating.",
-          "labor": null,
+          "labor": 72,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597989"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597989",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 120 min at $35.71/hr ($250 per 7-hour day) = $72. Clean and dry about 1-inch-wide crack along the left side foundation, fill it, then roll on the rubber coating. Coating left blank, since you said you already have it."
         }
       ]
     },
@@ -92,24 +110,30 @@
       "items": [
         {
           "text": "Make the kitchen outlet next to the side door flush against the wall.",
-          "labor": null,
+          "labor": 12,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597532"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597532",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Pull the outlet, add box spacers so it sits tight to the wall, remount it."
         },
         {
           "text": "Put the left door of the cabinet under the sink back on the hinges.",
-          "labor": null,
+          "labor": 9,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597571"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597571",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Rehang the sink base door on its hinges and adjust it."
         },
         {
           "text": "Replace the light fixtures in the dining room and kitchen — not functional.",
-          "labor": null,
+          "labor": 54,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597603"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597603",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Two ceiling fixtures (kitchen and dining) at about 45 min each: swap and test. Fixtures left blank so you can pick them."
         }
       ]
     },
@@ -125,17 +149,21 @@
         },
         {
           "text": "Skim coat the damaged wall and paint.",
-          "labor": null,
+          "labor": 90,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597683"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597683",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 150 min at $35.71/hr ($250 per 7-hour day) = $90. Fill the anchor holes and the patch on one living room wall, skim coat (2 coats with drying time), sand and paint."
         },
         {
           "text": "Make the outlet on top of the fireplace flush against the fireplace.",
-          "labor": null,
+          "labor": 12,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597723"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597723",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Remount the loose outlet tight to the fireplace with spacers."
         },
         {
           "text": "Board up fireplace and paint.",
@@ -146,16 +174,20 @@
         },
         {
           "text": "Fix the ungrounded outlet.",
-          "labor": null,
+          "labor": 18,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Trace the ground and wire it, or swap in a GFCI labeled 'no equipment ground'. Material depends on which fix, so it's left blank."
         },
         {
           "text": "Make the right rear window lock — it does not lock now.",
-          "labor": null,
-          "material": null,
+          "labor": 12,
+          "material": 10,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713628211"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713628211",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Swap or adjust the sash lock so the window latches. Material $10 for a sash lock."
         }
       ]
     },
@@ -164,17 +196,21 @@
       "items": [
         {
           "text": "Skim coat and patch the hole in the wall going down to the basement.",
-          "labor": null,
+          "labor": 54,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597807"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597807",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Patch the broken corner and skim coat the cracked plaster on the basement stairwell wall, then paint."
         },
         {
           "text": "Install a blank cover on the open junction box with exposed wires at the bottom of the stairs.",
-          "labor": null,
-          "material": null,
+          "labor": 6,
+          "material": 10,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597851"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597851",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Tuck the wires in and screw a blank cover on one ceiling box. Material $10."
         }
       ]
     },
@@ -190,9 +226,11 @@
         },
         {
           "text": "Install a drain for the laundry sink.",
-          "labor": null,
+          "labor": 36,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Run a drain line and P-trap from the laundry tub to the floor drain/standpipe. Pipe length unknown, so material is left blank."
         },
         {
           "text": "Install a filter on the furnace.",
@@ -203,17 +241,21 @@
         },
         {
           "text": "Scrape and paint the wall near the laundry room.",
-          "labor": null,
+          "labor": 54,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597989"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597989",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Scrape the flaking, stained block wall by the laundry and paint it. Paint left blank."
         },
         {
           "text": "Paint the floor where it's chipping near the laundry room.",
-          "labor": null,
+          "labor": 36,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597989"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597989",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Scrape and repaint the chipped floor area near the laundry. Paint left blank."
         },
         {
           "text": "Install a floor drain cover in the laundry area.",
@@ -224,24 +266,30 @@
         },
         {
           "text": "Install a second floor drain cover near the laundry area.",
-          "labor": null,
-          "material": null,
+          "labor": 6,
+          "material": 10,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713598104"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598104",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Set a second drain cover by the laundry. Material $10."
         },
         {
           "text": "Fix the GFCI outlet near the laundry area so it trips — it does not trip now.",
-          "labor": null,
-          "material": null,
+          "labor": 12,
+          "material": 25,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713598163"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598163",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Replace the GFCI by the laundry that won't trip, then test it. Material $25 for the GFCI."
         },
         {
           "text": "Clean cobwebs in the laundry area on the basement ceiling.",
-          "labor": null,
+          "labor": 12,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713598371"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598371",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Brush down the cobwebs on the laundry area ceiling joists."
         }
       ]
     },
@@ -250,10 +298,12 @@
       "items": [
         {
           "text": "Replace the upper hallway light fixture — does not work.",
-          "labor": null,
+          "labor": 27,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713598402"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598402",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Swap one ceiling fixture in the upper hallway and test it. Fixture left blank so you can pick it."
         }
       ]
     },
@@ -262,29 +312,37 @@
       "items": [
         {
           "text": "Repaint bathroom ceiling with mold killing primer to get rid of the little mildew spots.",
-          "labor": null,
+          "labor": 54,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713598473"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598473",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Prime the upper bathroom ceiling with mold-killing primer and topcoat it. Material left blank."
         },
         {
           "text": "Glaze bathroom tub.",
-          "labor": null,
+          "labor": 108,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713598560"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598560",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Clean/etch, mask and spray-glaze the tub, not counting cure time. Kit left blank."
         },
         {
           "text": "Install the missing shelving in the medicine cabinet.",
-          "labor": null,
+          "labor": 9,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Fit the shelves in the medicine cabinet. Size depends on the cabinet, so material is left blank."
         },
         {
           "text": "Touch up paint around the medicine cabinet and next to the switch — taped spots.",
-          "labor": null,
+          "labor": 18,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Patch and touch up the taped spots around the medicine cabinet and switch."
         }
       ]
     },
@@ -293,29 +351,37 @@
       "items": [
         {
           "text": "Replace smoke detectors and install CO detectors throughout to meet Section 8 standards — 7 smoke detectors and 3 carbon monoxide detectors.",
-          "labor": null,
+          "labor": 60,
           "material": null,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713598526"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598526",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 100 min at $35.71/hr ($250 per 7-hour day) = $60. 10 detectors (7 smoke, 3 CO) at about 10 min each. Material left blank: depends on the detectors chosen."
         },
         {
           "text": "Install missing light bulbs — 5 at the basement stairs and basement, plus the upper and lower bathroom lights.",
-          "labor": null,
-          "material": null,
+          "labor": 15,
+          "material": 25,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713597851"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597851",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 25 min at $35.71/hr ($250 per 7-hour day) = $15. About 8 bulbs (5 basement/stairs plus bathroom lights). Material $25 for a pack of bulbs."
         },
         {
           "text": "Install blinds on all the windows — for security.",
-          "labor": null,
+          "labor": 143,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 240 min at $35.71/hr ($250 per 7-hour day) = $143. About 12 windows at about 20 min each. Blind sizes and count are left blank for you."
         },
         {
           "text": "Touch up paint throughout — about 8 or 9 taped spots.",
-          "labor": null,
+          "labor": 72,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 120 min at $35.71/hr ($250 per 7-hour day) = $72. 8 or 9 taped spots at about 10–15 min each: spackle, sand, touch up."
         },
         {
           "text": "Wash carpet throughout.",
@@ -337,9 +403,11 @@
         },
         {
           "text": "Install trim inside the closet.",
-          "labor": null,
+          "labor": 27,
           "material": null,
-          "optional": false
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Cut and nail trim inside the upper right bedroom closet, then caulk. Trim left blank."
         }
       ]
     },
@@ -348,10 +416,12 @@
       "items": [
         {
           "text": "Repair the bifold closet door.",
-          "labor": null,
-          "material": null,
+          "labor": 18,
+          "material": 10,
           "optional": false,
-          "photoUrl": "https://app.companycam.com/assets/Image/3713628168"
+          "photoUrl": "https://app.companycam.com/assets/Image/3713628168",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Reset the bifold door on its track and replace the pivot/guide if it's broken. Material $10 for a pivot kit."
         },
         {
           "text": "Touch up the paint on the doors.",
@@ -366,9 +436,11 @@
       "items": [
         {
           "text": "Put the mirror back on the wall — it's hanging with nothing holding it.",
-          "labor": null,
-          "material": null,
-          "optional": false
+          "labor": 12,
+          "material": 10,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Rehang the loose bathroom mirror with proper clips/anchors. Material $10."
         },
         {
           "text": "Tighten the toilet seat.",
