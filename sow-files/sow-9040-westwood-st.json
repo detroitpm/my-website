@@ -1,0 +1,455 @@
+{
+  "address": "9040 Westwood St, Detroit, MI 48228",
+  "typeOfWork": "Pre-inspection list",
+  "mediaLink": "https://app.companycam.com/projects/117870787",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Garage",
+      "items": [
+        {
+          "text": "Repair holes in garage roof. Tarp and tie down the roof for now — the current tarp doesn't cover everything.",
+          "labor": 108,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712686502",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Board/patch the open holes from inside, then tarp the whole roof and tie it down. Tarp/lumber left blank: depends on how much of the roof needs covering."
+        },
+        {
+          "text": "Clean out garage.",
+          "labor": 72,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712688420",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 120 min at $35.71/hr ($250 per 7-hour day) = $72. One person bagging and hauling the garage debris out to the dumpster (dumpster is on the general clean-out line)."
+        },
+        {
+          "text": "Close and lock the garage door.",
+          "labor": 6,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Close the overhead door and lock it; add a padlock if the latch has none."
+        }
+      ]
+    },
+    {
+      "room": "Exterior",
+      "items": [
+        {
+          "text": "Clean up fence line.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712693853"
+        },
+        {
+          "text": "Cut the grass.",
+          "labor": 54,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Front, side and back yard, all knee-high and overgrown: weed-whack then mow."
+        },
+        {
+          "text": "Clean up the weeds touching the house.",
+          "labor": 18,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712695671",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Pull the sumac/weeds along the driveway-side wall and glass block window."
+        }
+      ]
+    },
+    {
+      "room": "Exterior Front",
+      "items": [
+        {
+          "text": "Reposition the downspout extension so it points away from the house.",
+          "labor": 6,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712703282",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Swing the extension out and point it away from the foundation."
+        },
+        {
+          "text": "Tighten up the railing — it moves easily. Make it solid and hand-graspable.",
+          "labor": 27,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712712836",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Re-fasten the wood front-step railing at the post and porch so it doesn't move; material $10 for screws/lags."
+        },
+        {
+          "text": "Clean up the weed tree touching the house.",
+          "labor": 12,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712714954",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Cut one weed tree at the front of the house and haul it away."
+        },
+        {
+          "text": "Tuck point the steps — top step.",
+          "labor": 36,
+          "material": 25,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Mix mortar, rake out and repoint the top step. Mostly mixing/setup time. Material $25 for a bag of mortar."
+        },
+        {
+          "text": "Install plexiglass in the front screen door frame.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Exterior Left",
+      "items": [
+        {
+          "text": "Clean up the little weed trees touching the house.",
+          "labor": 27,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712708414",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Cut several small weed trees along the left side wall and haul them away."
+        }
+      ]
+    },
+    {
+      "room": "Exterior Rear",
+      "items": [
+        {
+          "text": "Clean up the weed trees touching the house.",
+          "labor": 36,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712719454",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. The rear wall is heavily overgrown with sumac and vines: cut it back and haul it away."
+        }
+      ]
+    },
+    {
+      "room": "Living Room",
+      "items": [
+        {
+          "text": "Scrape, skim coat, and paint the two patches in the living room ceiling.",
+          "labor": 108,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712730742",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Scrape the two peeling ceiling patches, skim coat (2 coats with drying time), prime and paint. Material left blank."
+        }
+      ]
+    },
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Install 12 blinds on the 1st floor.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712733791"
+        },
+        {
+          "text": "Replace smoke detectors with 10-year smoke detectors.",
+          "labor": 30,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712924768",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 50 min at $35.71/hr ($250 per 7-hour day) = $30. About 5 detectors (3 bedrooms, hallway, basement) at ~10 min each. Material left blank: depends on count."
+        },
+        {
+          "text": "General cleaning — whole house.",
+          "labor": 250,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712924768",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 420 min at $35.71/hr ($250 per 7-hour day) = $250. Full turn cleaning of a 3-bedroom house after the clean-out: one 7-hour day."
+        },
+        {
+          "text": "Replace the carpet.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712924768"
+        },
+        {
+          "text": "Clean up debris outside the house and in the garage. Also clean out living room, kitchen cabinets, basement. About 15 yard clean out.",
+          "labor": 500,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712725762",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 840 min at $35.71/hr ($250 per 7-hour day) = $500. 15-yard clean-out of yard, garage overflow, living room, kitchen cabinets and basement: about two person-days loading. Dumpster cost left blank."
+        },
+        {
+          "text": "Install missing light bulbs — 4 in the basement (incl. the closet), 2 in the bathroom, and the exterior front light fixture.",
+          "labor": 15,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712806358",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 25 min at $35.71/hr ($250 per 7-hour day) = $15. 7 bulbs (4 basement, 2 bathroom, front porch) at a few minutes each. Material $25 for a pack of bulbs."
+        },
+        {
+          "text": "Clean up all weeds and weed trees touching the house — front, left, rear, and driveway side.",
+          "labor": 0,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712708414",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 0 min at $35.71/hr ($250 per 7-hour day) = $0. Summary line only. The work is priced on the per-side weed lines (front, left, rear, driveway side), so labor is $0 to avoid billing it twice."
+        }
+      ]
+    },
+    {
+      "room": "Lower Left Bedroom",
+      "items": [
+        {
+          "text": "Paint bedroom.",
+          "labor": 143,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 240 min at $35.71/hr ($250 per 7-hour day) = $143. Patch nail holes and roll walls in one bedroom, 2 coats. Paint left blank."
+        },
+        {
+          "text": "Install screens in both windows.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Tighten the door knob.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Lower Right Bedroom",
+      "items": [
+        {
+          "text": "Replace the broken window glass — signs of a break-in.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712741203"
+        },
+        {
+          "text": "Install screen.",
+          "labor": 9,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Fit one screen in the broken-into window once the glass is replaced. Screen size unknown, so material left blank."
+        },
+        {
+          "text": "Put the closet door back on the hinges.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Paint the room — marks all over the walls.",
+          "labor": 143,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 240 min at $35.71/hr ($250 per 7-hour day) = $143. Wash off marks, patch, and roll the walls in one bedroom, 2 coats. Paint left blank."
+        }
+      ]
+    },
+    {
+      "room": "Upper Bedroom",
+      "items": [
+        {
+          "text": "Repair the handrail going up the stairs.",
+          "labor": 27,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712743906",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 45 min at $35.71/hr ($250 per 7-hour day) = $27. Re-secure the loose stair handrail, replacing brackets if needed. Material left blank until we know if brackets are needed."
+        },
+        {
+          "text": "Install a smoke detector upstairs — there's a CO detector but no smoke detector.",
+          "labor": 6,
+          "material": 25,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 10 min at $35.71/hr ($250 per 7-hour day) = $6. Mount one 10-year sealed smoke detector in the upper bedroom. Material $25, matching your usual 10-year detector price."
+        }
+      ]
+    },
+    {
+      "room": "Lower Bathroom",
+      "items": [
+        {
+          "text": "Tighten toilet seat.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712759846"
+        },
+        {
+          "text": "Glaze bathtub.",
+          "labor": 108,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712760673",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 180 min at $35.71/hr ($250 per 7-hour day) = $108. Clean/etch, mask and spray-glaze the tub. Not counting cure time. Material left blank: kit grade varies."
+        },
+        {
+          "text": "Repair or replace the right and left shower handles — they spin a full 360° and are likely leaking.",
+          "labor": 54,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Shut off water, pull both handles, swap the stems/cartridges, reset the handle stops and test for leaks. Parts depend on the valve brand, so material is left blank."
+        },
+        {
+          "text": "Fix the P-trap leak — leaking from several spots.",
+          "labor": 18,
+          "material": 25,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Pull the leaking P-trap and fit a new one, then test. Material $25 for a P-trap kit."
+        },
+        {
+          "text": "Install the missing vanity door and knob.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install a toilet paper holder — the recessed holder is empty.",
+          "labor": 12,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712759846",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Fit a roller in the existing recessed holder, or swap the holder. Material $10."
+        }
+      ]
+    },
+    {
+      "room": "Kitchen and Dining Room",
+      "items": [
+        {
+          "text": "Paint kitchen and dining room walls.",
+          "labor": 215,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 360 min at $35.71/hr ($250 per 7-hour day) = $215. Cut in around the cabinets and windows and roll both rooms, 2 coats. Paint left blank."
+        },
+        {
+          "text": "Remove dishwasher.",
+          "labor": 18,
+          "material": null,
+          "optional": false,
+          "priceSource": "suggested",
+          "priceBasis": "Est. 30 min at $35.71/hr ($250 per 7-hour day) = $18. Cap the supply, disconnect the drain and power, pull the unit and haul it to the dumpster."
+        }
+      ]
+    },
+    {
+      "room": "Basement",
+      "items": [
+        {
+          "text": "Check the water meter and its connections for a leak — water stain on the floor under the meter.",
+          "labor": 12,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712786150",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Dry the floor, check the meter couplings and the valve, and tighten anything that's weeping."
+        },
+        {
+          "text": "Install water heater at the water heater hookup.",
+          "labor": 179,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712787082",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 300 min at $35.71/hr ($250 per 7-hour day) = $179. Set the tank, connect water and gas, connect the vent, fill and light. The tank is left blank because its size isn't decided."
+        },
+        {
+          "text": "Install furnace at the furnace hookup.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712787775"
+        },
+        {
+          "text": "Reconnect and hang the loose ductwork at the furnace hookup.",
+          "labor": 54,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712787775",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 90 min at $35.71/hr ($250 per 7-hour day) = $54. Lift and refasten the hanging trunk and boot sections to the plenum and re-hang them with strapping. Material left blank."
+        },
+        {
+          "text": "Put blank covers on the open junction boxes in the basement ceiling — loose wire splices showing.",
+          "labor": 9,
+          "material": 10,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712806851",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 15 min at $35.71/hr ($250 per 7-hour day) = $9. Two open ceiling boxes: tuck the splices in and screw on blank covers. Material $10."
+        },
+        {
+          "text": "Turn the regular outlet near the laundry sink into a GFCI outlet.",
+          "labor": 12,
+          "material": 25,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712807147",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 20 min at $35.71/hr ($250 per 7-hour day) = $12. Swap one outlet for a GFCI and test it. Material $25 for the GFCI."
+        }
+      ]
+    },
+    {
+      "room": "Side Door",
+      "items": [
+        {
+          "text": "Repair the damaged side door trim.",
+          "labor": 36,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3712807355",
+          "priceSource": "suggested",
+          "priceBasis": "Est. 60 min at $35.71/hr ($250 per 7-hour day) = $36. Pull the broken casing, cut and nail new trim, then caulk. Material left blank: depends on the trim profile."
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}
