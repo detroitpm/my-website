@@ -1,0 +1,398 @@
+{
+  "address": "20040 Washtenaw St, Harper Woods, MI 48225",
+  "typeOfWork": "Pre-inspection list",
+  "mediaLink": "https://app.companycam.com/projects/117882011",
+  "bufferPct": 20,
+  "sections": [
+    {
+      "room": "Exterior Front",
+      "items": [
+        {
+          "text": "Tuck point the top front step — crack will keep getting worse.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Paint the metal railing black — paint is chipped off.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install a downspout extension at the front.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Back Yard",
+      "items": [
+        {
+          "text": "Clean up the little weeds touching the house and around the air conditioning unit.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Remove the fallen cable wire.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Remove the railing in the backyard — only two steps, not needed.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Clean up along the fence line.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Cut the grass — front, side and rear yard, and along the fence line. City courtesy notice dated 10-28-26 gives 48 hours.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598662"
+        },
+        {
+          "text": "Cut the branches on top of the shed.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Clean up the shed, close the door and lock it so there's no access.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Exterior Left",
+      "items": [
+        {
+          "text": "Repair the exterior so water does not get into the basement — about 1-inch-wide crack on the left side. Coat it with rubber coating.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597989"
+        }
+      ]
+    },
+    {
+      "room": "Kitchen and Dining Room",
+      "items": [
+        {
+          "text": "Make the kitchen outlet next to the side door flush against the wall.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597532"
+        },
+        {
+          "text": "Put the left door of the cabinet under the sink back on the hinges.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597571"
+        },
+        {
+          "text": "Replace the light fixtures in the dining room and kitchen — not functional.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597603"
+        }
+      ]
+    },
+    {
+      "room": "Living Room",
+      "items": [
+        {
+          "text": "Replace the cracked living room window pane.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597649"
+        },
+        {
+          "text": "Skim coat the damaged wall and paint.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597683"
+        },
+        {
+          "text": "Make the outlet on top of the fireplace flush against the fireplace.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597723"
+        },
+        {
+          "text": "Board up fireplace and paint.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597756"
+        },
+        {
+          "text": "Fix the ungrounded outlet.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Make the right rear window lock — it does not lock now.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713628211"
+        }
+      ]
+    },
+    {
+      "room": "Basement Stairs",
+      "items": [
+        {
+          "text": "Skim coat and patch the hole in the wall going down to the basement.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597807"
+        },
+        {
+          "text": "Install a blank cover on the open junction box with exposed wires at the bottom of the stairs.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597851"
+        }
+      ]
+    },
+    {
+      "room": "Basement",
+      "items": [
+        {
+          "text": "Make the laundry sink flush against the floor and stabilize it so it does not move.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597905"
+        },
+        {
+          "text": "Install a drain for the laundry sink.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install a filter on the furnace.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598329"
+        },
+        {
+          "text": "Scrape and paint the wall near the laundry room.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597989"
+        },
+        {
+          "text": "Paint the floor where it's chipping near the laundry room.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597989"
+        },
+        {
+          "text": "Install a floor drain cover in the laundry area.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598062"
+        },
+        {
+          "text": "Install a second floor drain cover near the laundry area.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598104"
+        },
+        {
+          "text": "Fix the GFCI outlet near the laundry area so it trips — it does not trip now.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598163"
+        },
+        {
+          "text": "Clean cobwebs in the laundry area on the basement ceiling.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598371"
+        }
+      ]
+    },
+    {
+      "room": "Upper Hallway",
+      "items": [
+        {
+          "text": "Replace the upper hallway light fixture — does not work.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598402"
+        }
+      ]
+    },
+    {
+      "room": "Upper Bathroom",
+      "items": [
+        {
+          "text": "Repaint bathroom ceiling with mold killing primer to get rid of the little mildew spots.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598473"
+        },
+        {
+          "text": "Glaze bathroom tub.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598560"
+        },
+        {
+          "text": "Install the missing shelving in the medicine cabinet.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Touch up paint around the medicine cabinet and next to the switch — taped spots.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "General",
+      "items": [
+        {
+          "text": "Replace smoke detectors and install CO detectors throughout to meet Section 8 standards — 7 smoke detectors and 3 carbon monoxide detectors.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713598526"
+        },
+        {
+          "text": "Install missing light bulbs — 5 at the basement stairs and basement, plus the upper and lower bathroom lights.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713597851"
+        },
+        {
+          "text": "Install blinds on all the windows — for security.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Touch up paint throughout — about 8 or 9 taped spots.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Wash carpet throughout.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713628126"
+        }
+      ]
+    },
+    {
+      "room": "Upper Right Bedroom",
+      "items": [
+        {
+          "text": "Touch up the paint.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Install trim inside the closet.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Lower Bedroom",
+      "items": [
+        {
+          "text": "Repair the bifold closet door.",
+          "labor": null,
+          "material": null,
+          "optional": false,
+          "photoUrl": "https://app.companycam.com/assets/Image/3713628168"
+        },
+        {
+          "text": "Touch up the paint on the doors.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "room": "Lower Bathroom",
+      "items": [
+        {
+          "text": "Put the mirror back on the wall — it's hanging with nothing holding it.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Tighten the toilet seat.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        },
+        {
+          "text": "Touch up the paint on the bathroom door.",
+          "labor": null,
+          "material": null,
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "text": "Is the job 100% done?",
+      "answer": ""
+    },
+    {
+      "text": "Did I put the keys back?",
+      "answer": ""
+    }
+  ]
+}
