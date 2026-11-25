@@ -190,7 +190,29 @@ In your chat reply, list which photos got captions and which you deliberately le
 
 ## Delivering the artifact
 
-Build the SOW as a **Claude artifact** (HTML). Before writing it, load the `artifact-design` skill for layout/theming guidance, then follow these SOW-specific requirements:
+Build the SOW as a **Claude artifact** (HTML) that **saves itself**, so you can read
+back what the user ticked and typed. Don't hand-write the page — use the builder:
+
+1. Write the SOW as a state file in the scratchpad (shape is in the docstring of
+   `tools/sow-artifact.py`): address, typeOfWork, sections → items with `text`,
+   `checked`, `optional`, `badges` (`"video"`, `"new"`), `img` (CompanyCam `web` URL or
+   video `medium` thumbnail), `photoId`, `photoUrl`; plus the two Questions.
+2. `python3 tools/sow-artifact.py state.json sow-<address>.html` — it downloads and
+   inlines every thumbnail and builds the red SOW page.
+3. Publish it with `capabilities: {"artifact": {}}`. Without that, edits are not saved.
+
+The page publishes a new version of itself a few seconds after the user ticks a box,
+marks an item optional, or finishes typing, with the whole state embedded as JSON in
+`<script type="application/json" id="sow-state">`. To see their edits, call `Artifact`
+`action: "read"` on the page's URL and parse that JSON. The header shows "Saved" /
+"Saving…" so the user knows it worked.
+
+On a re-publish from this session (adding picked AI items, re-runs), **read the page
+first and build the new state from what's in it** — republishing from your old state file
+would wipe the user's edits.
+
+The builder already follows the requirements below; they're kept here so you know what
+the page must do if the builder ever needs changing:
 
 - **Heading centered** at the top: property address + type of work, inside a colored header band.
 - Room headings are just the room name (e.g. "Kitchen") — no "Room:" or "Section:" label/eyebrow in front of it. It's obvious from context.
@@ -207,7 +229,7 @@ Build the SOW as a **Claude artifact** (HTML). Before writing it, load the `arti
 - **No pricing anywhere** — that's a later step, not part of this artifact.
 - Everything (checkboxes, text, grey/optional state) should be editable by the user directly in the artifact. **All text on the page must be editable** — every line item, room heading, the address/type-of-work in the header band, and the Questions answers — not just the line items.
 - Don't wrap a checkbox and its line-item text in the same `<label>`/click target. That makes clicking into the text to edit it also toggle the checkbox. Keep the checkbox and the editable text as independent elements so each can be interacted with on its own.
-- No JSON file, no `SendUserFile` at this stage — the artifact itself is the deliverable for the review pass.
+- No website JSON, no `SendUserFile` at this stage — the artifact itself is the deliverable for the review pass.
 
 ### Picking the AI-added items — do this in chat, with a photo sheet
 
@@ -215,10 +237,8 @@ AI-added items (step 6a) are the one thing the user has to *judge* rather than r
 they can only judge them from the photo. **Keep them out of the artifact entirely** and
 settle them in chat instead, at the same time you deliver the artifact.
 
-The reason is mechanical: the artifact is a static page and you cannot read back what the
-user ticked in it. Any picking surface built into the artifact just makes them tick boxes
-and then type the answer to you anyway. Chat is where the answer can actually reach you —
-so the pictures have to come to chat too.
+The reason: judging a suggestion needs a big photo and a one-tap answer, and chat gives
+both in one place. The page is for reviewing the agreed scope, not for maybes.
 
 Do it in two calls, in the same turn as the artifact:
 
@@ -252,7 +272,11 @@ If the user hand-edits something in the artifact, treat it as a signal a rule mi
 
 ## Exporting to the website
 
-The artifact is a static page — there's no capability declared to read its live DOM state back, so you cannot see what the user checked/unchecked or edited after you published it. Before generating the export, ask the user whether they made any changes since the draft, and how they want to convey them (typically a screenshot of the artifact is easiest — read the checkbox states and any edited text straight off the image). Don't assume the original draft still matches what they approved.
+Read the page back first (`Artifact` `action: "read"` on its URL, then parse the
+`sow-state` JSON). That is what the user approved: their ticks, edits, and optional flags.
+Use it directly — don't ask for a screenshot. Only if the read shows no `sow-state`
+(an older, non-saving page) ask the user what they changed. If the header said
+"View only" for them, saving was off; ask then too.
 
 Once you know the final state, build a JSON file matching this exact schema — the website's upload feature validates this shape and will reject anything else:
 
@@ -428,6 +452,129 @@ the saved file's exact `typeOfWork` on a re-run unless the user asks for a new
 version to sit alongside the old one.
 
 Once saved, also send it with `SendUserFile` so it shows up in the conversation, and remind the user it's ready to upload via the "Upload SOW file" button at **https://section8pm.com**.
+
+## Owner approval email (after the prices are final)
+
+Once the SOW is on section8pm.com and the user has finished the prices, draft the
+"Owners approval needed" email to the property's owner in Gmail. **Draft only —
+never send.** The user reads and sends it themselves.
+
+**When:** only when the user says the prices are done ("draft the owner email for
+Corning", "send it to the owner"). Never at the artifact stage or right after the
+JSON export: at that point the prices are still suggestions and many materials are
+blank, so the total would be wrong.
+
+### 1. Read the SOW back from the website
+
+The user may have changed prices, wording or optional flags in the builder, so the
+website is the source of truth, not the local JSON.
+
+- `GET https://section8pm.com/.netlify/functions/sow-list` → match the address
+  (and `type_of_work`, when the property has more than one SOW) → its `id`.
+- `GET .../sow-load?id=<id>` → the saved SOW.
+- **If any line still has a `priceSource`** (an unaccepted suggestion or history
+  match), stop and say how many — the user hasn't finished pricing. Draft anyway
+  only if they say so.
+
+### 2. Work out the estimated cost exactly as the website does
+
+Same math as `computeTotals()` in `sow-shared.js`: for every line that is **not
+optional**, add labor + material; multiply the sum by `(1 + bufferPct / 100)`.
+Show it to the cent, e.g. "4182.20" (the Ashton email). Optional lines are not in
+the total.
+
+### 3. Find the owner's email — Slack, Gmail, then Quo
+
+Check `sow-files/owner-directory.json` first (`{"<street address>":
+["owner@example.com", ...]}`); if the property is there, use it.
+
+Otherwise search **Slack** first (`slack_search_public_and_private`, keyword = the
+street name, bots included). The team's day-to-day notes live there — #pm-kirtan,
+#admin, the mail-run summaries — and they often name the owner or who gets the
+property's bills and ledgers. Then look in Gmail (pm@section8pm.com):
+- earlier "Owners approval needed" or owner-update emails for the address,
+- sent mail about the address where the person is clearly the owner (approving
+  work, paying invoices, asking about rent or the tenant),
+- the owner's name or number from Quo's **Owners - public number** inbox, which
+  you can then match to an email address in Gmail.
+
+Search by street number + street name (e.g. `"10700" Corning`), not the city —
+a city name matches hundreds of unrelated threads. Some properties have more than
+one owner: put every one in **To**, the way the Ashton email went to both owners.
+
+**Never guess.** Housing-authority staff, inspectors, attorneys, contractors and
+tenants all show up in the same threads. If it isn't clearly the owner, show the
+user the candidates and ask; if nothing turns up, leave **To** empty and say so.
+Once the user confirms, save the address(es) to `owner-directory.json` so you
+don't search again next time.
+
+### 4. "More context from the PM" — only if there's something worth saying
+
+Gather context the way Claude Tag (Claude in the team's Slack) does: start from
+Slack, where the team already writes down what's happening, then fill in from the
+other sources. Read across all of them before writing anything:
+- **Slack** — search the street name across all channels, bots included
+  (`slack_search_public_and_private`), last ~60 days, and open the threads that
+  matter (`slack_read_thread`). Mail-run summaries, to-do lists in #pm-kirtan and
+  #admin, and tenant or housing-authority updates usually surface here first —
+  e.g. a tenant's notice to vacate or a HAP contract ending.
+- **Gmail** — search the street address (last ~30 days): inspection scheduling and
+  results, housing-authority emails, rent approvals, tenant move-in.
+- **Quo** — the **leasing line** (+12483924604) and **Maintenance** line
+  (+13134427328). Pull each inbox's recent messages (`fetch-messages`,
+  `createdAfter` ~30 days back) and keep only conversations that mention this
+  street; check call transcripts the same way (`fetch-call-transcripts`, run one
+  at a time) when the messages point to a call that matters.
+
+Pick only what the owner would actually want to know: an inspection date, a
+failed or passed inspection, approved rent, a move-in date, something the housing
+authority is waiting on.
+
+- **No more than 2 bullets, each no more than 2 sentences.** Short and specific.
+- **Not templated.** Write it fresh from what you read. Never add a bullet just to
+  fill the section.
+- **Leave the whole section out** when there's nothing useful. Most emails won't
+  need one.
+- Only facts you actually read — no guessed dates or amounts. Leave out internal
+  business (crew pay, contractor issues, other properties). In your chat reply,
+  say which email or Quo conversation each bullet came from.
+
+### 5. Create the draft
+
+`create_draft` in pm@section8pm.com with:
+
+- **Subject:** `Owners approval needed - <street address>` (street only, e.g.
+  "19328 Ashton Ave").
+- **To:** the owner(s) from step 3.
+- **Attachment:** the "How Our Maintenance Works" PDF
+  (`sow-files/owner-email/`). The draft tool needs the file pasted in as ~95,000
+  characters of base64, which is too error-prone to do reliably, so **leave it off
+  and tell the user to attach it** in Gmail before sending (paperclip → that file).
+- **Body** (`htmlBody`), matching the Ashton email:
+
+```html
+<div>Attached is an explainer on how to think about the below scope of work and estimate.</div>
+<div><br></div>
+<div><b>Scope of work (including pictures and videos): </b><br>
+<a href="https://section8pm.com/sow-view.html?id=<id>">https://section8pm.com/sow-view.html?id=<id></a></div>
+<div><br></div>
+<!-- only when step 4 found something -->
+<div><b>More context from the PM: </b></div>
+<ol><li>...</li><li>...</li></ol>
+<div><br></div>
+<div><b>Estimated cost:</b> $<total></div>
+<div><br></div>
+<div><b>Action items for Owner: </b></div>
+<ol><li>Approve estimate</li><li>Pay the $<total> via Tenant Cloud invoice</li></ol>
+<div><b>Action items for PM: </b></div>
+<div>NA</div>
+```
+
+Also pass the same content as plain text in `body`.
+
+In your chat reply: the draft link, who it's addressed to (and where that came
+from — Gmail, Quo, or the saved directory), the total, and any PM-context bullets with their source email. Remind the
+user it is a draft and nothing has been sent.
 
 ## A note on judgment
 
