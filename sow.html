@@ -221,7 +221,116 @@
     .sow-colheader .c-contractor,.item-row .c-contractor{flex-basis:96px;}
     .sow-colheader .c-room,.room-row .room-name-wrap,.item-row .c-room-blank,.qitem-row .c-room-blank,.footer-row .c-room-blank{flex-basis:22%;}
   }
+
+  /* ================================================================
+     Clean, Mercury-style screen look. Screen only - the printed
+     Contractor/Owner copies keep their original styling untouched.
+     ================================================================ */
+  @media screen{
+    :root{
+      --m-bg:#eceef2; --m-card:#ffffff; --m-ink:#0f1115; --m-muted:#4a4e57;
+      --m-line:#cfd2da; --m-line-2:#dfe1e7; --m-accent:#5266eb; --m-accent-h:#4355d6;
+      --m-accent-soft:#eef0fd; --m-radius:12px; --m-r-sm:8px;
+      --m-shadow:0 1px 2px rgba(16,24,40,.08),0 2px 6px rgba(16,24,40,.08);
+    }
+    body{background:var(--m-bg);color:var(--m-ink);
+      font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+      font-size:15px;letter-spacing:-.005em;}
+    body *{font-family:inherit;}
+
+    /* Top toolbar */
+    .builder{background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(12px);
+      -webkit-backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--m-line);}
+    .builder-inner{max-width:1040px;padding:12px 28px;}
+    .bbtns{gap:6px;}
+    .btn,.bbtns select{font-size:13px;font-weight:500;padding:8px 13px;border-radius:var(--m-r-sm);
+      border:1px solid var(--m-line);background:#fff;color:var(--m-ink);box-shadow:var(--m-shadow);
+      transition:background .15s,border-color .15s;}
+    .btn:hover,.bbtns select:hover{background:#f9f9fb;border-color:#d9dae1;}
+    .btn.primary{background:var(--m-accent);border-color:var(--m-accent);color:#fff;}
+    .btn.primary:hover{background:var(--m-accent-h);border-color:var(--m-accent-h);}
+    .btn.small{padding:6px 11px;font-size:12.5px;}
+    .linkwrap{border-top-color:var(--m-line-2);}
+    .linkhint{color:var(--m-accent);font-weight:600;}
+    .linkout{border:1px solid var(--m-line);border-radius:var(--m-r-sm);background:#fafafb;}
+    .sendstatus.ok{color:#14804a;font-weight:500;}
+    .sendstatus.err{color:#c8322b;font-weight:500;}
+
+    /* Header */
+    .masthead{background:transparent;}
+    .mast-inner{max-width:1040px;padding:40px 28px 4px;}
+    .kicker{color:var(--m-muted);letter-spacing:.02em;text-transform:none;font-weight:600;font-size:13px;margin-bottom:6px;}
+    h1{font-family:inherit;color:var(--m-ink);text-transform:none;font-size:30px;font-weight:600;letter-spacing:-.02em;}
+    .goldbar{display:none;}
+    .wrap{max-width:1040px;padding-top:24px;}
+
+    /* Job details card */
+    .jobcard{background:var(--m-card);border:1px solid var(--m-line);border-radius:var(--m-radius);
+      box-shadow:var(--m-shadow);padding:22px 24px;margin-bottom:22px;}
+    .jobcard-hint{color:var(--m-muted);font-size:12.5px;}
+    .toprow{border-top:1px solid var(--m-line-2);margin-top:16px;padding-top:16px;}
+    .toprow label{text-transform:none;letter-spacing:0;font-size:12.5px;font-weight:600;color:var(--m-ink);}
+    .toprow input,.contractor-add-row input{border:1px solid var(--m-line);border-radius:var(--m-r-sm);
+      padding:9px 11px;font-size:14px;background:#fff;transition:border-color .15s,box-shadow .15s;}
+    input:focus,textarea:focus,select:focus{outline:none;border-color:var(--m-accent) !important;
+      box-shadow:0 0 0 3px var(--m-accent-soft);}
+    .item-row textarea:focus,.room-row input.room-name:focus,.qitem-row .q-text:focus{box-shadow:none;}
+    .key-location-toggle{font-weight:500;color:var(--m-ink);}
+    .key-location-toggle input{accent-color:var(--m-accent);}
+    .chip{border:1px solid var(--m-line);border-radius:999px;background:#f7f7f9;padding:4px 12px;font-size:12.5px;}
+
+    /* SOW table */
+    .sow-table-wrap{border:1px solid var(--m-line);border-radius:var(--m-radius);overflow:hidden;
+      box-shadow:var(--m-shadow);background:var(--m-card);}
+    .sow-colheader{background:#1c1e24;border-bottom:1px solid var(--m-line);font-weight:500;
+      text-transform:none;letter-spacing:0;color:#fff;font-size:12.5px;font-weight:600;}
+    .sow-colheader > div{border-left-color:transparent !important;}
+    .room-row{background:#e4e7ee;border-top:1px solid var(--m-line);box-shadow:inset 4px 0 0 var(--m-accent);}
+    .room-row .room-rest{border-left-color:transparent;}
+    .room-row input.room-name{font-weight:600;font-size:14px;}
+    .room-row .room-subtotal{color:var(--m-ink);font-weight:600;font-variant-numeric:tabular-nums;}
+    .room-row select.room-contractor-assign,.item-row select.contractor-select{border:1px solid var(--m-line);
+      border-radius:6px;background:#fff;}
+    .item-row,.qitem-row{border-top:1px solid var(--m-line-2);}
+    .item-row:hover{background:#f7f8fb;}
+    .item-row.optional{background:#eef0f4;}
+    .item-row > div,.qitem-row > div{border-left-color:transparent !important;}
+    .item-row input.price{border:1px solid var(--m-line);border-radius:6px;font-variant-numeric:tabular-nums;}
+    .item-row input.price.unconfirmed{background:#fafafb;}
+    .item-row .price-basis .accept-price{border:1px solid var(--m-line);border-radius:6px;}
+    .item-row .price-basis .accept-price:hover{background:var(--m-accent-soft);border-color:var(--m-accent);}
+    .item-row .c-del button,.qitem-row .c-del button{color:#6b6e76;border-radius:6px;}
+    .item-row .c-del button:hover,.qitem-row .c-del button:hover{color:#c8322b;background:#fdf0ef;}
+    .item-row .c-opt input{accent-color:var(--m-accent);}
+    .qitem-row .q-text{font-weight:600;}
+    .qitem-row .q-answer{border:1px solid var(--m-line);border-radius:6px;}
+
+    .section-heading{font-family:inherit;text-transform:none;letter-spacing:-.01em;font-size:17px;
+      font-weight:600;border-bottom:none;margin:32px 0 10px;padding:0;}
+
+    .footer-row{border-top:none;}
+    .footer-row .c-room-blank{background:transparent;font-weight:600;color:var(--m-ink);}
+    .footer-row .c-rest{border-left-color:transparent;}
+    .footer-row input.wide{border:1px solid var(--m-line);border-radius:6px;}
+
+    .totals-band{background:#fff;color:var(--m-ink);border-top:1px solid var(--m-line);
+      padding:16px 18px;font-weight:500;font-size:14px;}
+    .totals-band[style]{background:#1c1e24 !important;color:#fff;}
+    .totals-band span.n{color:#fff;font-size:22px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;}
+    .totals-band input.totals-override-input{border:1px solid var(--m-line);border-radius:var(--m-r-sm);
+      font-weight:600;font-variant-numeric:tabular-nums;}
+    .totals-variance{color:var(--m-muted);}
+  }
+  @media screen and (max-width:640px){
+    .builder-inner{padding:10px 16px;}
+    .mast-inner{padding:28px 16px 0;}
+    .wrap{padding-left:16px;padding-right:16px;}
+    h1{font-size:24px;}
+    .jobcard{padding:18px 16px;}
+  }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="screen">
 </head>
 <body data-mode="build">
 
